@@ -1,4 +1,4 @@
-using CatViP_API.Models;
+using CatViP_API.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CatViP_API.Migrations
 {
     /// <inheritdoc />
@@ -114,15 +116,16 @@ namespace CatViP_API.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Fullname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<bool>(type: "bit", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "date", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfileImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Longitude = table.Column<decimal>(type: "decimal(9,6)", nullable: false),
-                    Latitude = table.Column<decimal>(type: "decimal(9,6)", nullable: false),
+                    Longitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
+                    Latitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
+                    IsShownOnMap = table.Column<bool>(type: "bit", nullable: true),
                     RememberToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TokenCreated = table.Column<DateTime>(type: "datetime", nullable: true),
                     TokenExpires = table.Column<DateTime>(type: "datetime", nullable: true)
@@ -570,6 +573,97 @@ namespace CatViP_API.Migrations
                         principalTable: "CatCaseReports",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "ActionTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "Like" },
+                    { 2L, "DisLike" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CatCaseReportTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "Missing" },
+                    { 2L, "Dead" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ExpertApplicationStatuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "Success" },
+                    { 2L, "Pending" },
+                    { 3L, "Rejected" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PostReportStatuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "False information" },
+                    { 2L, "Inappropriate content" },
+                    { 3L, "Others" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PostTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "Daily sharing" },
+                    { 2L, "Expert tip" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "Food" },
+                    { 2L, "Collar" },
+                    { 3L, "Health care" },
+                    { 4L, "Toy" },
+                    { 5L, "Litter and tray" },
+                    { 6L, "Bowl" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "System Admin" },
+                    { 2L, "Cat Owner" },
+                    { 3L, "Cat Expert" },
+                    { 4L, "Cat Product Seller" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TransactionStatuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "Success" },
+                    { 2L, "Pending" },
+                    { 3L, "Failed" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "IsShownOnMap", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "TokenCreated", "TokenExpires", "Username" },
+                values: new object[] { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$CeE/P3icAlcmPnFQEe9N8OxVrJTxGqCXO2eueQdJW3bXlB89Finem", null, null, null, null, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "Id", "RoleId", "UserId" },
+                values: new object[] { 1L, 1L, 1L });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartProducts_CartId",

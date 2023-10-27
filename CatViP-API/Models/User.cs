@@ -9,7 +9,7 @@ public partial class User
 
     public string Username { get; set; } = null!;
 
-    public string Fullname { get; set; } = null!;
+    public string FullName { get; set; } = null!;
 
     public string Email { get; set; } = null!;
 
@@ -19,13 +19,15 @@ public partial class User
 
     public DateTime DateOfBirth { get; set; }
 
-    public string Address { get; set; } = null!;
+    public string? Address { get; set; }
 
     public byte[]? ProfileImage { get; set; }
 
-    public decimal Longitude { get; set; }
+    public decimal? Longitude { get; set; }
 
-    public decimal Latitude { get; set; }
+    public decimal? Latitude { get; set; }
+
+    public bool? IsShownOnMap { get; set; }
 
     public string? RememberToken { get; set; }
 
