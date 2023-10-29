@@ -1,5 +1,7 @@
 ﻿using CatViP_API.DTOs;
-using CatViP_API.Interfaces;
+using CatViP_API.Repositories.Interfaces;
+using CatViP_API.Services;
+using CatViP_API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,22 +11,22 @@ namespace CatViP_API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IAuthService _authService;
 
-        public AuthController(IUserRepository userRepository)
+        public AuthController(IAuthService authService)
         {
-            _userRepository = userRepository;
+            _authService = authService;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDTO userLogin)
         {
-            var authenticatedUser = await _userRepository.AuthenticateUser(userLogin);
+            var token = await _authService.Login(userLogin);
 
-            if (authenticatedUser == null)
+            if (token == string.Empty)
                 return Unauthorized();
 
-            return Ok(new { Token = "..." });
+            return Ok(token);
         }
     }
 }

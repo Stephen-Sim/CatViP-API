@@ -1,7 +1,7 @@
 ﻿using CatViP_API.Data;
 using CatViP_API.DTOs;
-using CatViP_API.Interfaces;
 using CatViP_API.Models;
+using CatViP_API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +30,7 @@ namespace CatViP_API.Repositories
                 }
             }
 
-            return null;
+            return user;
         }
 
     }

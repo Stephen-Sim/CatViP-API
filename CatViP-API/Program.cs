@@ -1,6 +1,6 @@
 using CatViP_API.Data;
-using CatViP_API.Interfaces;
 using CatViP_API.Repositories;
+using CatViP_API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +20,9 @@ builder.Services.AddDbContext<CatViPContext>(options =>
 
 // Add repository
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// auto mapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
