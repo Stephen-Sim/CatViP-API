@@ -115,9 +115,9 @@ namespace CatViP_API.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<bool>(type: "bit", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "date", nullable: false),
@@ -660,10 +660,10 @@ namespace CatViP_API.Migrations
                 columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "IsShownOnMap", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$tVr8qYgzni.e/nhM21F0RuMY0SmYFtXYCfTVEBQCgnIYngj/ADjXy", null, null, null, null, "admin" },
-                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "stephen@catvip.my", "stephen sim", true, null, null, null, "$2a$11$hXZXpljsB0wfjGMbCqkW0eSNFOGycPpDgqhsv19RpNv0cSFIHknlG", null, null, null, null, "stephen" },
-                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", true, null, null, null, "$2a$11$FbjnaUqAlNNmjGz6LSl/iu.XziWidFxjEsvf61QkHdxFLw5lhfujK", null, null, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$bpFP/Qv140laTfCiLQq6HeoCwq6rG2Czx74kxcX0qsTQZu/g9XE2i", null, null, null, null, "wafir" }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$D5vkOTg5wHeFFRRetFRsQ.y9liGXyCFkJEyIuqDRnAFBcn6muU/hK", null, null, null, null, "admin" },
+                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "stephen@catvip.my", "stephen sim", true, null, null, null, "$2a$11$EdS99cSOd.bWR3QDsnecM.aSgoS0qW9zmQhDqX8GoiuUoSqD0v032", null, null, null, null, "stephen" },
+                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", true, null, null, null, "$2a$11$FsKH/4YJl4OyYT.kb4r3a.ujLErXhv48kh96nlvwEA46XGUQBXxIu", null, null, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$MHHqM16JqgXTQr7dUnoLNu7Aymy4HYTfrv8lTOMx0Q4hJB3FCeVQO", null, null, null, null, "wafir" }
                 });
 
             migrationBuilder.InsertData(
@@ -837,18 +837,6 @@ namespace CatViP_API.Migrations
                 name: "IX_UserRoles_UserId",
                 table: "UserRoles",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Username",
-                table: "Users",
-                column: "Username",
-                unique: true);
         }
 
         /// <inheritdoc />

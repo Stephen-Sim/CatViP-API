@@ -68,19 +68,8 @@ namespace CatViP_API.Data
 
         public virtual DbSet<UserRole> UserRoles { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("Data Source=STEPHEN-SIM\\SQLEXPRESS;Initial Catalog=CatViP;Integrated Security=True;Trust Server Certificate=True");
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasIndex(x => x.Username)
-                .IsUnique();
-
-            modelBuilder.Entity<User>()
-                .HasIndex(x => x.Email)
-                .IsUnique();
-
             modelBuilder.Entity<Cart>(entity =>
             {
                 entity.HasOne(d => d.Transaction).WithMany(p => p.Carts)
