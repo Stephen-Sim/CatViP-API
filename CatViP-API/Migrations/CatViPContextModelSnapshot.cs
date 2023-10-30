@@ -747,7 +747,7 @@ namespace CatViP_API.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -783,9 +783,15 @@ namespace CatViP_API.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
 
@@ -797,8 +803,38 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$CeE/P3icAlcmPnFQEe9N8OxVrJTxGqCXO2eueQdJW3bXlB89Finem",
+                            Password = "$2a$11$tVr8qYgzni.e/nhM21F0RuMY0SmYFtXYCfTVEBQCgnIYngj/ADjXy",
                             Username = "admin"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "stephen@catvip.my",
+                            FullName = "stephen sim",
+                            Gender = true,
+                            Password = "$2a$11$hXZXpljsB0wfjGMbCqkW0eSNFOGycPpDgqhsv19RpNv0cSFIHknlG",
+                            Username = "stephen"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "tong@catvip.my",
+                            FullName = "yung huey",
+                            Gender = true,
+                            Password = "$2a$11$FbjnaUqAlNNmjGz6LSl/iu.XziWidFxjEsvf61QkHdxFLw5lhfujK",
+                            Username = "tong"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "wafir@catvip.my",
+                            FullName = "wafir the best",
+                            Gender = true,
+                            Password = "$2a$11$bpFP/Qv140laTfCiLQq6HeoCwq6rG2Czx74kxcX0qsTQZu/g9XE2i",
+                            Username = "wafir"
                         });
                 });
 
@@ -881,6 +917,30 @@ namespace CatViP_API.Migrations
                             Id = 1L,
                             RoleId = 1L,
                             UserId = 1L
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            RoleId = 2L,
+                            UserId = 2L
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            RoleId = 2L,
+                            UserId = 3L
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            RoleId = 3L,
+                            UserId = 3L
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            RoleId = 4L,
+                            UserId = 4L
                         });
                 });
 

@@ -115,9 +115,9 @@ namespace CatViP_API.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<bool>(type: "bit", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "date", nullable: false),
@@ -658,12 +658,25 @@ namespace CatViP_API.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "IsShownOnMap", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "TokenCreated", "TokenExpires", "Username" },
-                values: new object[] { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$CeE/P3icAlcmPnFQEe9N8OxVrJTxGqCXO2eueQdJW3bXlB89Finem", null, null, null, null, "admin" });
+                values: new object[,]
+                {
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$tVr8qYgzni.e/nhM21F0RuMY0SmYFtXYCfTVEBQCgnIYngj/ADjXy", null, null, null, null, "admin" },
+                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "stephen@catvip.my", "stephen sim", true, null, null, null, "$2a$11$hXZXpljsB0wfjGMbCqkW0eSNFOGycPpDgqhsv19RpNv0cSFIHknlG", null, null, null, null, "stephen" },
+                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", true, null, null, null, "$2a$11$FbjnaUqAlNNmjGz6LSl/iu.XziWidFxjEsvf61QkHdxFLw5lhfujK", null, null, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$bpFP/Qv140laTfCiLQq6HeoCwq6rG2Czx74kxcX0qsTQZu/g9XE2i", null, null, null, null, "wafir" }
+                });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
                 columns: new[] { "Id", "RoleId", "UserId" },
-                values: new object[] { 1L, 1L, 1L });
+                values: new object[,]
+                {
+                    { 1L, 1L, 1L },
+                    { 2L, 2L, 2L },
+                    { 3L, 2L, 3L },
+                    { 4L, 3L, 3L },
+                    { 5L, 4L, 4L }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartProducts_CartId",
@@ -824,6 +837,18 @@ namespace CatViP_API.Migrations
                 name: "IX_UserRoles_UserId",
                 table: "UserRoles",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
