@@ -21,10 +21,13 @@ namespace CatViP_API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDTO userLogin)
         {
-            var token = await _authService.Login(userLogin);
+            var user = await _authService.Login(userLogin);
 
-            if (token == string.Empty)
+            if (user == null)
                 return Unauthorized();
+
+            // get token
+            var token = await _authService.CreateToken(user, userLogin.IsMobileLogin);
 
             return Ok(token);
         }
