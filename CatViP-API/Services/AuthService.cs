@@ -65,9 +65,9 @@ namespace CatViP_API.Services
             return await Task.FromResult(jwt);
         }
 
-        public Task DeleteToken(string token)
+        public async Task DeleteToken(long userId)
         {
-            throw new NotImplementedException();
+            await _userRepository.DeleteUserToken(userId);
         }
 
         public async Task<User?> GetUserFromJWTToken(string token)

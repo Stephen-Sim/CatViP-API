@@ -45,6 +45,29 @@ namespace CatViP_API.Repositories
             return null;
         }
 
+        public async Task DeleteUserToken(long userId)
+        {
+            try
+            {
+                var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+
+                if (user != null)
+                {
+                    user.RememberToken = null;
+                    user.TokenCreated = null;
+                    user.TokenExpires = null;
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception err)
+            {
+                // Handle the exception, log it, or rethrow as needed.
+                Console.WriteLine(err.Message);
+                throw;
+            }
+        }
+
         public async Task<User?> GetUserById(long userId)
         {
             return await _context.Users.Include(x => x.Role).FirstOrDefaultAsync();

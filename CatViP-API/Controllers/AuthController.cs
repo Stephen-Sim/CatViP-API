@@ -5,6 +5,7 @@ using CatViP_API.Services;
 using CatViP_API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 
 namespace CatViP_API.Controllers
 {
@@ -33,7 +34,7 @@ namespace CatViP_API.Controllers
             return Ok(token);
         }
 
-        [HttpPost("refresh")]
+        [HttpPut("refresh")]
         public async Task<IActionResult> RefreshToken([FromHeader]string token)
         {
             var user = await _authService.GetUserFromJWTToken(token);
@@ -48,6 +49,23 @@ namespace CatViP_API.Controllers
             var newToken = await _authService.CreateToken(user);
 
             return Ok(newToken);
+        }
+
+        [HttpDelete("logout")]
+        public async Task<IActionResult> logout([FromHeader] string token)
+        {
+            var user = await _authService.GetUserFromJWTToken(token);
+
+            var res = _authService.VerifyToken(token, user);
+
+            if (!res.IsSuccessful)
+            {
+                return Unauthorized(res.ErrorMessage);
+            }
+
+            await _authService.DeleteToken(user.Id);
+
+            return Ok();
         }
     }
 }
