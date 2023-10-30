@@ -23,7 +23,7 @@ namespace CatViP_API.Services
             this._configuration = configuration;
         }
 
-        public async Task<User> Login(UserLoginDTO userLoginDTO)
+        public async Task<User?> Login(UserLoginDTO userLoginDTO)
         {
             var user = await _userRepository.AuthenticateUser(userLoginDTO);
 
@@ -35,9 +35,9 @@ namespace CatViP_API.Services
             return user;
         }
 
-        public async Task<string> CreateToken(User user, bool IsMobleLogin)
+        public async Task<string> CreateToken(User user)
         {
-            var roleName = IsMobleLogin ? _userRepository.GetMoibleUserTopRole(user) : _userRepository.GetWebUserRole(user);
+            var roleName = _userRepository.GetUserRoleName(user);
 
             List<Claim> claims = new List<Claim>
             {
@@ -70,9 +70,41 @@ namespace CatViP_API.Services
             throw new NotImplementedException();
         }
 
-        public Task<string> RefreshToken(string token)
+        public async Task<User?> GetUserFromJWTToken(string token)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var jwt = new JwtSecurityToken(token);
+                long userId = long.Parse(jwt.Claims.First(c => c.Type == _configuration.GetSection("Claims:Sid").Value).Value);
+                var user = await _userRepository.GetUserById(userId);
+                return user;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public ResponseResult VerifyToken(string token, User user)
+        {
+            var resResult = new ResponseResult();
+
+            if (user.RememberToken != token)
+            {
+                resResult.IsSuccessful = false;
+                resResult.ErrorMessage = "Invalid Token.";
+            }
+            else if (user.TokenExpires < DateTime.Now)
+            {
+                resResult.IsSuccessful = false;
+                resResult.ErrorMessage = "Token expired.";
+            }
+            else
+            {
+                resResult.IsSuccessful = true;
+            }
+
+            return resResult;
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatViP_API.Migrations
 {
     [DbContext(typeof(CatViPContext))]
-    [Migration("20231030050906_InitializeDatabase")]
+    [Migration("20231030064157_InitializeDatabase")]
     partial class InitializeDatabase
     {
         /// <inheritdoc />
@@ -778,6 +778,9 @@ namespace CatViP_API.Migrations
                     b.Property<string>("RememberToken")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("TokenCreated")
                         .HasColumnType("datetime");
 
@@ -790,6 +793,8 @@ namespace CatViP_API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("Users");
 
                     b.HasData(
@@ -800,7 +805,8 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$D5vkOTg5wHeFFRRetFRsQ.y9liGXyCFkJEyIuqDRnAFBcn6muU/hK",
+                            Password = "$2a$11$ilqq9lW46HWKjGc8PUaJpu7jGuahNB7W6uMff1m33mX/G09uof3TW",
+                            RoleId = 1L,
                             Username = "admin"
                         },
                         new
@@ -810,7 +816,8 @@ namespace CatViP_API.Migrations
                             Email = "stephen@catvip.my",
                             FullName = "stephen sim",
                             Gender = true,
-                            Password = "$2a$11$EdS99cSOd.bWR3QDsnecM.aSgoS0qW9zmQhDqX8GoiuUoSqD0v032",
+                            Password = "$2a$11$buiiV2TTyQWFauto/CIPpOITBRfHm4880.mLMj.mZCks6cQl364Xq",
+                            RoleId = 2L,
                             Username = "stephen"
                         },
                         new
@@ -819,8 +826,9 @@ namespace CatViP_API.Migrations
                             DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
-                            Gender = true,
-                            Password = "$2a$11$FsKH/4YJl4OyYT.kb4r3a.ujLErXhv48kh96nlvwEA46XGUQBXxIu",
+                            Gender = false,
+                            Password = "$2a$11$r600swPCS7ZxJwUqC6YjJOa5i37Ef3EM9U1B5LuxfZl5xseNE4CWW",
+                            RoleId = 3L,
                             Username = "tong"
                         },
                         new
@@ -830,7 +838,8 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$MHHqM16JqgXTQr7dUnoLNu7Aymy4HYTfrv8lTOMx0Q4hJB3FCeVQO",
+                            Password = "$2a$11$7OqHERqxU2krCxcTYqmZHuGORpSEGS3/HEYs3Eb0rosrAZloVRDFi",
+                            RoleId = 4L,
                             Username = "wafir"
                         });
                 });
@@ -884,61 +893,6 @@ namespace CatViP_API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserFollowers");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.UserRole", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            RoleId = 1L,
-                            UserId = 1L
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            RoleId = 2L,
-                            UserId = 2L
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            RoleId = 2L,
-                            UserId = 3L
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            RoleId = 3L,
-                            UserId = 3L
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            RoleId = 4L,
-                            UserId = 4L
-                        });
                 });
 
             modelBuilder.Entity("CatViP_API.Models.Cart", b =>
@@ -1184,6 +1138,17 @@ namespace CatViP_API.Migrations
                     b.Navigation("Status");
                 });
 
+            modelBuilder.Entity("CatViP_API.Models.User", b =>
+                {
+                    b.HasOne("CatViP_API.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Users_Roles");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("CatViP_API.Models.UserAction", b =>
                 {
                     b.HasOne("CatViP_API.Models.ActionType", "ActionType")
@@ -1226,25 +1191,6 @@ namespace CatViP_API.Migrations
                         .HasConstraintName("FK_UserFollowers_Users");
 
                     b.Navigation("Follower");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.UserRole", b =>
-                {
-                    b.HasOne("CatViP_API.Models.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .IsRequired()
-                        .HasConstraintName("FK_UserRoles_Roles");
-
-                    b.HasOne("CatViP_API.Models.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_UserRoles_Users");
-
-                    b.Navigation("Role");
 
                     b.Navigation("User");
                 });
@@ -1316,7 +1262,7 @@ namespace CatViP_API.Migrations
 
             modelBuilder.Entity("CatViP_API.Models.Role", b =>
                 {
-                    b.Navigation("UserRoles");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.Transaction", b =>
@@ -1354,8 +1300,6 @@ namespace CatViP_API.Migrations
                     b.Navigation("UserFollowerFollowers");
 
                     b.Navigation("UserFollowerUsers");
-
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

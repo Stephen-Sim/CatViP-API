@@ -17,9 +17,9 @@ namespace CatViP_API.Repositories
             _context = context;
         }
 
-        public async Task<User> AuthenticateUser(UserLoginDTO userLogin)
+        public async Task<User?> AuthenticateUser(UserLoginDTO userLogin)
         {
-            var user = await _context.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role).FirstOrDefaultAsync(x => x.Username == userLogin.Username);
+            var user = await _context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Username == userLogin.Username);
 
             if (user != null)
             {
@@ -35,10 +35,7 @@ namespace CatViP_API.Repositories
                         {4, false}
                     };
 
-                    // Check if any of the user's roles match the IsMobileLogin value
-                    var hasMatchingRole = user.UserRoles.Any(role => roleMap.ContainsKey(role.RoleId) && roleMap[role.RoleId] == userLogin.IsMobileLogin);
-
-                    if (hasMatchingRole)
+                    if (roleMap.ContainsKey(user.RoleId) && roleMap[user.RoleId] == userLogin.IsMobileLogin)
                     {
                         return user;
                     }
@@ -48,20 +45,14 @@ namespace CatViP_API.Repositories
             return null;
         }
 
-        public string GetMoibleUserTopRole(User user)
+        public async Task<User?> GetUserById(long userId)
         {
-            var rolePriorities = new List<long> { 3, 2 };
-
-            var validRoles = user.UserRoles.Where(r => rolePriorities.Contains(r.RoleId));
-
-            var topRole = validRoles.OrderBy(r => rolePriorities.IndexOf(r.RoleId)).FirstOrDefault();
-
-            return topRole?.Role.Name;
+            return await _context.Users.Include(x => x.Role).FirstOrDefaultAsync();
         }
 
-        public string GetWebUserRole(User user)
+        public string GetUserRoleName(User user)
         {
-            return user.UserRoles.FirstOrDefault()?.Role.Name;
+            return user.Role.Name;
         }
 
         public async Task UpdateUserToken(long userId, string JWT, DateTime TokenCreated, DateTime TokenExpires)

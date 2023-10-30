@@ -66,18 +66,10 @@ namespace CatViP_API.Data
                 new Models.TransactionStatus() { Id = 3, Name = "Failed" }
             );
             modelBuilder.Entity<User>().HasData(
-                new User() { Id = 1, Username = "admin", FullName = "CatViP Admin", Email = "admin@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1) },
-                new User() { Id = 2, Username = "stephen", FullName = "stephen sim", Email = "stephen@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1) },
-                new User() { Id = 3, Username = "tong", FullName = "yung huey", Email = "tong@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1) },
-                new User() { Id = 4, Username = "wafir", FullName = "wafir the best", Email = "wafir@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1) }
-            );
-
-            modelBuilder.Entity<UserRole>().HasData(
-                new UserRole() { Id = 1, UserId = 1, RoleId = 1 },
-                new UserRole() { Id = 2, UserId = 2, RoleId = 2 },
-                new UserRole() { Id = 3, UserId = 3, RoleId = 2 },
-                new UserRole() { Id = 4, UserId = 3, RoleId = 3 },
-                new UserRole() { Id = 5, UserId = 4, RoleId = 4 }
+                new User() { Id = 1, Username = "admin", FullName = "CatViP Admin", Email = "admin@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 1 },
+                new User() { Id = 2, Username = "stephen", FullName = "stephen sim", Email = "stephen@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 2 },
+                new User() { Id = 3, Username = "tong", FullName = "yung huey", Email = "tong@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = false, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 3 },
+                new User() { Id = 4, Username = "wafir", FullName = "wafir the best", Email = "wafir@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 4 }
             );
         }
     }

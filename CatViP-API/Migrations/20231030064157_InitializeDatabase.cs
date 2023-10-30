@@ -110,6 +110,27 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PostReports",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    StatusId = table.Column<long>(type: "bigint", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PostReports_PostReportStatusTypes",
+                        column: x => x.StatusId,
+                        principalTable: "PostReportStatuses",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -128,31 +149,16 @@ namespace CatViP_API.Migrations
                     IsShownOnMap = table.Column<bool>(type: "bit", nullable: true),
                     RememberToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TokenCreated = table.Column<DateTime>(type: "datetime", nullable: true),
-                    TokenExpires = table.Column<DateTime>(type: "datetime", nullable: true)
+                    TokenExpires = table.Column<DateTime>(type: "datetime", nullable: true),
+                    RoleId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PostReports",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    StatusId = table.Column<long>(type: "bigint", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PostReports", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostReports_PostReportStatusTypes",
-                        column: x => x.StatusId,
-                        principalTable: "PostReportStatuses",
+                        name: "FK_Users_Roles",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
                         principalColumn: "Id");
                 });
 
@@ -357,30 +363,6 @@ namespace CatViP_API.Migrations
                     table.ForeignKey(
                         name: "FK_UserFollowers_Users1",
                         column: x => x.FollowerId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRoles",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    RoleId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRoles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserRoles_Roles",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserRoles_Users",
-                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
@@ -657,25 +639,13 @@ namespace CatViP_API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "IsShownOnMap", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "TokenCreated", "TokenExpires", "Username" },
+                columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "IsShownOnMap", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$D5vkOTg5wHeFFRRetFRsQ.y9liGXyCFkJEyIuqDRnAFBcn6muU/hK", null, null, null, null, "admin" },
-                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "stephen@catvip.my", "stephen sim", true, null, null, null, "$2a$11$EdS99cSOd.bWR3QDsnecM.aSgoS0qW9zmQhDqX8GoiuUoSqD0v032", null, null, null, null, "stephen" },
-                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", true, null, null, null, "$2a$11$FsKH/4YJl4OyYT.kb4r3a.ujLErXhv48kh96nlvwEA46XGUQBXxIu", null, null, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$MHHqM16JqgXTQr7dUnoLNu7Aymy4HYTfrv8lTOMx0Q4hJB3FCeVQO", null, null, null, null, "wafir" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "UserRoles",
-                columns: new[] { "Id", "RoleId", "UserId" },
-                values: new object[,]
-                {
-                    { 1L, 1L, 1L },
-                    { 2L, 2L, 2L },
-                    { 3L, 2L, 3L },
-                    { 4L, 3L, 3L },
-                    { 5L, 4L, 4L }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$ilqq9lW46HWKjGc8PUaJpu7jGuahNB7W6uMff1m33mX/G09uof3TW", null, null, 1L, null, null, "admin" },
+                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "stephen@catvip.my", "stephen sim", true, null, null, null, "$2a$11$buiiV2TTyQWFauto/CIPpOITBRfHm4880.mLMj.mZCks6cQl364Xq", null, null, 2L, null, null, "stephen" },
+                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, null, "$2a$11$r600swPCS7ZxJwUqC6YjJOa5i37Ef3EM9U1B5LuxfZl5xseNE4CWW", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$7OqHERqxU2krCxcTYqmZHuGORpSEGS3/HEYs3Eb0rosrAZloVRDFi", null, null, 4L, null, null, "wafir" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -829,14 +799,9 @@ namespace CatViP_API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_RoleId",
-                table: "UserRoles",
+                name: "IX_Users_RoleId",
+                table: "Users",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_UserId",
-                table: "UserRoles",
-                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -876,9 +841,6 @@ namespace CatViP_API.Migrations
                 name: "UserFollowers");
 
             migrationBuilder.DropTable(
-                name: "UserRoles");
-
-            migrationBuilder.DropTable(
                 name: "Carts");
 
             migrationBuilder.DropTable(
@@ -900,9 +862,6 @@ namespace CatViP_API.Migrations
                 name: "ActionTypes");
 
             migrationBuilder.DropTable(
-                name: "Roles");
-
-            migrationBuilder.DropTable(
                 name: "Transactions");
 
             migrationBuilder.DropTable(
@@ -922,6 +881,9 @@ namespace CatViP_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }

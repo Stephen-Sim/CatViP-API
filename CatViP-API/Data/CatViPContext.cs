@@ -66,8 +66,6 @@ namespace CatViP_API.Data
 
         public virtual DbSet<UserFollower> UserFollowers { get; set; }
 
-        public virtual DbSet<UserRole> UserRoles { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cart>(entity =>
@@ -277,6 +275,11 @@ namespace CatViP_API.Data
                 entity.Property(e => e.Longitude).HasColumnType("decimal(9, 6)");
                 entity.Property(e => e.TokenCreated).HasColumnType("datetime");
                 entity.Property(e => e.TokenExpires).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Users_Roles");
             });
 
             modelBuilder.Entity<UserAction>(entity =>
@@ -308,19 +311,6 @@ namespace CatViP_API.Data
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserFollowers_Users");
-            });
-
-            modelBuilder.Entity<UserRole>(entity =>
-            {
-                entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UserRoles_Roles");
-
-                entity.HasOne(d => d.User).WithMany(p => p.UserRoles)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UserRoles_Users");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -34,6 +34,10 @@ public partial class User
     public DateTime? TokenCreated { get; set; }
 
     public DateTime? TokenExpires { get; set; }
+    
+    public long RoleId { get; set; }
+
+    public virtual Role Role { get; set; } = null!;
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
@@ -58,6 +62,4 @@ public partial class User
     public virtual ICollection<UserFollower> UserFollowerFollowers { get; set; } = new List<UserFollower>();
 
     public virtual ICollection<UserFollower> UserFollowerUsers { get; set; } = new List<UserFollower>();
-
-    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }
