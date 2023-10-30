@@ -21,8 +21,13 @@ namespace CatViP_API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserLoginDTO userLogin)
+        public async Task<IActionResult> Login([FromBody]UserLoginDTO userLogin)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = await _authService.Login(userLogin);
 
             if (user == null)
@@ -52,7 +57,7 @@ namespace CatViP_API.Controllers
         }
 
         [HttpDelete("logout")]
-        public async Task<IActionResult> logout([FromHeader] string token)
+        public async Task<IActionResult> Logout([FromHeader]string token)
         {
             var user = await _authService.GetUserFromJWTToken(token);
 
@@ -66,6 +71,40 @@ namespace CatViP_API.Controllers
             await _authService.DeleteToken(user.Id);
 
             return Ok();
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody]UserRegisterDTO userRegisterDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var resResult = _authService.ValidateRegisterRoleId(userRegisterDTO.RoleId);
+
+            if (!resResult.IsSuccessful)
+            {
+                return BadRequest(resResult.ErrorMessage);
+            }
+
+            resResult = _authService.ValidateUsernameAndEmail(userRegisterDTO);
+
+            if (!resResult.IsSuccessful)
+            {
+                return Conflict(resResult.ErrorMessage);
+            }
+
+            var user = await _authService.StoreUser(userRegisterDTO);
+
+            if (user == null)
+            {
+                return BadRequest("fail to register");
+            }
+
+            var newToken = await _authService.CreateToken(user);
+
+            return Ok(newToken);
         }
     }
 }

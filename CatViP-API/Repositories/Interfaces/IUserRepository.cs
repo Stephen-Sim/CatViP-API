@@ -10,5 +10,8 @@ namespace CatViP_API.Repositories.Interfaces
         string GetUserRoleName(User user);
         Task UpdateUserToken(long userId, string JWT, DateTime TokenCreated, DateTime TokenExpires);
         Task DeleteUserToken(long userId);
+        bool CheckIfUsernameExist(string username);
+        bool CheckIfEmailExist(string email);
+        Task<User?> StoreUser(UserRegisterDTO userRegisterDTO);
     }
 }

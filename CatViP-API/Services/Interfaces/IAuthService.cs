@@ -10,5 +10,8 @@ namespace CatViP_API.Services.Interfaces
         Task DeleteToken(long userId);
         Task<User?> GetUserFromJWTToken(string token);
         ResponseResult VerifyToken(string token, User userId);
+        ResponseResult ValidateUsernameAndEmail(UserRegisterDTO userRegisterDTO);
+        ResponseResult ValidateRegisterRoleId(long RoleId);
+        Task<User?> StoreUser(UserRegisterDTO userRegisterDTO);
     }
 }

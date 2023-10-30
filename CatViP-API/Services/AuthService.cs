@@ -106,5 +106,44 @@ namespace CatViP_API.Services
 
             return resResult;
         }
+
+        public ResponseResult ValidateUsernameAndEmail(UserRegisterDTO userRegisterDTO)
+        {
+            var resResult = new ResponseResult();
+            resResult.IsSuccessful = true;
+
+            if (_userRepository.CheckIfUsernameExist(userRegisterDTO.Username))
+            {
+                resResult.IsSuccessful = false;
+                resResult.ErrorMessage = "Username is already registered in the system.";
+            }
+            else if (_userRepository.CheckIfEmailExist(userRegisterDTO.Email))
+            {
+                resResult.IsSuccessful = false;
+                resResult.ErrorMessage = "Email is already registered in the system.";
+            }
+
+            return resResult;
+        }
+
+        public ResponseResult ValidateRegisterRoleId(long RoleId)
+        {
+            var resResult = new ResponseResult();
+            resResult.IsSuccessful = true;
+
+            if (RoleId != 2 && RoleId != 4)
+            {
+                resResult.IsSuccessful = false;
+                resResult.ErrorMessage = "Invalid Role Id";
+            }
+
+            return resResult;
+        }
+
+        public async Task<User?> StoreUser(UserRegisterDTO userRegisterDTO)
+        {
+            var user = await _userRepository.StoreUser(userRegisterDTO);
+            return user;
+        }
     }
 }
