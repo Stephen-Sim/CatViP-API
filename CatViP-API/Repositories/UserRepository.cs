@@ -71,7 +71,7 @@ namespace CatViP_API.Repositories
 
         public async Task<User?> GetUserById(long userId)
         {
-            return await _context.Users.Include(x => x.Role).FirstOrDefaultAsync();
+            return await _context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Id == userId);
         }
 
         public string GetUserRoleName(User user)
