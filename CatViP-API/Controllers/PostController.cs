@@ -20,14 +20,15 @@ namespace CatViP_API.Controllers
             _postService = postService;
         }
 
-        [HttpGet("GetPostTypes"), Authorize(Roles = "Cat Owner,Expert")]
+        [HttpGet("GetPostTypes"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public IActionResult GetPostTypes()
         {
-            var result = _postService.GetPostTypes();
+            var isExpert = User.IsInRole("Cat Expert");
+            var result = _postService.GetPostTypes(isExpert);
             return Ok(result);
         }
 
-        [HttpPost("CreatePost"), Authorize(Roles = "Cat Owner,Expert")]
+        [HttpPost("CreatePost"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> CreatePost([FromHeader]string token, [FromBody]CreatePostDTO createPostDTO)
         {
             if (!ModelState.IsValid)

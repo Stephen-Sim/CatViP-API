@@ -24,9 +24,15 @@ namespace CatViP_API.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<PostTypeDTO> GetPostTypes()
+        public ICollection<PostTypeDTO> GetPostTypes(bool isExpert)
         {
-            var postTypes = _mapper.Map<IEnumerable<PostTypeDTO>>(_postRepository.GetPostTypes());
+            var postTypes = _mapper.Map<ICollection<PostTypeDTO>>(_postRepository.GetPostTypes());
+
+            if (!isExpert)
+            {
+                var itemToRemove = postTypes.SingleOrDefault(pt => pt.Id == 2);
+                postTypes.Remove(itemToRemove!);
+            }
 
             return postTypes;
         }

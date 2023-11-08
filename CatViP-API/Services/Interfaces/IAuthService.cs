@@ -6,6 +6,7 @@ namespace CatViP_API.Services.Interfaces
     public interface IAuthService
     {
         Task<ResponseResult<User?>> Login(UserLoginDTO userLoginDTO);
+        Task<ResponseResult<User?>> GetUser(long userId);
         Task<ResponseResult<string>> CreateToken(User user);
         Task<ResponseResult> DeleteToken(long userId);
         Task<ResponseResult<User?>> GetUserFromJWTToken(string token);

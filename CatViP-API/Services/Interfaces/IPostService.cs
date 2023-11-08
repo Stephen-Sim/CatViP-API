@@ -5,7 +5,7 @@ namespace CatViP_API.Services.Interfaces
 {
     public interface IPostService
     {
-        IEnumerable<PostTypeDTO> GetPostTypes();
+        ICollection<PostTypeDTO> GetPostTypes(bool isExpert);
         Task<ResponseResult> CreatePost(User user, CreatePostDTO createPostDTO);
     }
 }

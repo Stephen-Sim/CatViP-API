@@ -224,5 +224,20 @@ namespace CatViP_API.Services
 
             await smtpClient.SendMailAsync(mailMessage);
         }
+
+        public async Task<ResponseResult<User?>> GetUser(long userId)
+        {
+            var resResult = new ResponseResult<User?>();
+
+            resResult.Result = await _userRepository.GetUserById(userId);
+            
+            if (resResult.Result == null)
+            {
+                resResult.IsSuccessful = false;
+                return resResult;
+            }
+
+            return resResult;
+        }
     }
 }

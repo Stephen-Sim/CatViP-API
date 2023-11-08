@@ -9,7 +9,7 @@ namespace CatViP_API.DTOs
         [Required]
         public string Description { get; set; } = null!;
         [Required]
-        public IEnumerable<PostImageDTO> PostImages { get; set; } = new List<PostImageDTO>();
+        public ICollection<PostImageDTO> PostImages { get; set; } = new List<PostImageDTO>();
     }
 
     public class PostImageDTO

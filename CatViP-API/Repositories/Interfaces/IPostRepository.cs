@@ -5,7 +5,7 @@ namespace CatViP_API.Repositories.Interfaces
 {
     public interface IPostRepository
     {
-        IEnumerable<PostType> GetPostTypes();
+        ICollection<PostType> GetPostTypes();
         Task<bool> StorePost(Post post);
     }
 }

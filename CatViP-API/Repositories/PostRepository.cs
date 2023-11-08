@@ -14,7 +14,7 @@ namespace CatViP_API.Repositories
             this._context = context;
         }
 
-        public IEnumerable<PostType> GetPostTypes()
+        public ICollection<PostType> GetPostTypes()
         {
             return _context.PostTypes.ToList();
         }
