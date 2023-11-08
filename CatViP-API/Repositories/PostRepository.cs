@@ -1,4 +1,5 @@
 ﻿using CatViP_API.Data;
+using CatViP_API.DTOs;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,20 @@ namespace CatViP_API.Repositories
         public IEnumerable<PostType> GetPostTypes()
         {
             return _context.PostTypes.ToList();
+        }
+
+        public async Task<bool> StorePost(Post post)
+        {
+            try
+            {
+                _context.Add(post);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

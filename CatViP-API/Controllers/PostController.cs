@@ -27,15 +27,28 @@ namespace CatViP_API.Controllers
             return Ok(result);
         }
 
-        [HttpPost(), Authorize(Roles = "Cat Owner,Expert")]
-        public async Task<IActionResult> StorePostAsync([FromHeader]string token, [FromBody]CreatePostDTO createPostDTO)
+        [HttpPost("CreatePost"), Authorize(Roles = "Cat Owner,Expert")]
+        public async Task<IActionResult> CreatePost([FromHeader]string token, [FromBody]CreatePostDTO createPostDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await _authService.GetUserFromJWTToken(token);
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            // check if user is expert
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var createPostResult = await _postService.CreatePost(userResult.Result!, createPostDTO);
+
+            if (!createPostResult.IsSuccessful)
+            {
+                return BadRequest(createPostResult.ErrorMessage);
+            }
 
             return Ok();
         }

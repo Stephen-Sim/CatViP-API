@@ -46,7 +46,7 @@ namespace CatViP_API.Repositories
             return null;
         }
 
-        public async Task DeleteUserToken(long userId)
+        public async Task<bool> DeleteUserToken(long userId)
         {
             try
             {
@@ -60,12 +60,12 @@ namespace CatViP_API.Repositories
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
+
+                return true;
             }
-            catch (Exception err)
+            catch (Exception)
             {
-                // Handle the exception, log it, or rethrow as needed.
-                Console.WriteLine(err.Message);
-                throw;
+                return false;
             }
         }
 
@@ -79,7 +79,7 @@ namespace CatViP_API.Repositories
             return _context.Roles.FirstOrDefault(x => x.Id == user.RoleId)!.Name;
         }
 
-        public async Task UpdateUserToken(long userId, string JWT, DateTime TokenCreated, DateTime TokenExpires)
+        public async Task<bool> UpdateUserToken(long userId, string JWT, DateTime TokenCreated, DateTime TokenExpires)
         {
             try
             {
@@ -93,12 +93,12 @@ namespace CatViP_API.Repositories
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
+
+                return true;
             }
-            catch (Exception err)
+            catch (Exception)
             {
-                // Handle the exception, log it, or rethrow as needed.
-                Console.WriteLine(err.Message);
-                throw; 
+                return false;
             }
         }
 

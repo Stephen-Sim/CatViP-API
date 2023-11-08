@@ -45,39 +45,38 @@ namespace CatViP_API.Services
         {
             var resResult = new ResponseResult<string>();
 
-            try
+            var roleName = _userRepository.GetUserRoleName(user);
+
+            List<Claim> claims = new List<Claim>
             {
-                var roleName = _userRepository.GetUserRoleName(user);
+                new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, roleName)
+            };
 
-                List<Claim> claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Sid, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, roleName)
-                };
+            var values = new
+            {
+                TokenCreated = DateTime.Now,
+                TokenExpires = DateTime.Now.AddDays(7)
+            };
 
-                var values = new
-                {
-                    TokenCreated = DateTime.Now,
-                    TokenExpires = DateTime.Now.AddDays(7)
-                };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-                var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            var token = new JwtSecurityToken(claims: claims, expires: values.TokenExpires, signingCredentials: cred);
 
-                var token = new JwtSecurityToken(claims: claims, expires: values.TokenExpires, signingCredentials: cred);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-                var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            var updateUserTokenAction = await _userRepository.UpdateUserToken(user.Id, jwt, values.TokenCreated, values.TokenExpires);
 
-                await _userRepository.UpdateUserToken(user.Id, jwt, values.TokenCreated, values.TokenExpires);
-
-                resResult.Result = jwt;
-            }
-            catch (Exception)
+            if (!updateUserTokenAction)
             {
                 resResult.IsSuccessful = false;
+                return resResult;
             }
+
+            resResult.Result = jwt;
 
             return resResult;
         }
@@ -85,11 +84,10 @@ namespace CatViP_API.Services
         public async Task<ResponseResult> DeleteToken(long userId)
         {
             var result = new ResponseResult();
-            try
-            {
-                await _userRepository.DeleteUserToken(userId);
-            }
-            catch (Exception)
+            
+            var deleteUserTokenAction = await _userRepository.DeleteUserToken(userId);
+
+            if (!deleteUserTokenAction)
             {
                 result.IsSuccessful = false;
             }
