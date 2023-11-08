@@ -21,20 +21,33 @@ namespace CatViP_API.Controllers
         }
 
         [HttpGet("GetPostTypes"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public IActionResult GetPostTypes()
+        public async Task<IActionResult> GetPostTypesAsync()
         {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
             var isExpert = User.IsInRole("Cat Expert");
             var result = _postService.GetPostTypes(isExpert);
             return Ok(result);
         }
 
         [HttpPost("CreatePost"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> CreatePost([FromHeader]string token, [FromBody]CreatePostDTO createPostDTO)
+        public async Task<IActionResult> CreatePost([FromBody]CreatePostDTO createPostDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
 
             var userResult = await _authService.GetUserFromJWTToken(token);
 
