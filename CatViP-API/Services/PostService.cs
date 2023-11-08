@@ -35,6 +35,13 @@ namespace CatViP_API.Services
         {
             var storeResult = new ResponseResult();
 
+            if (createPostDTO.PostTypeId == 2 && user.RoleId != 3)
+            {
+                storeResult.IsSuccessful = false;
+                storeResult.ErrorMessage = "user is not a expert";
+                return storeResult;
+            }
+
             if (createPostDTO.PostImages.IsNullOrEmpty())
             {
                 storeResult.IsSuccessful = false;
@@ -42,15 +49,18 @@ namespace CatViP_API.Services
                 return storeResult;
             }
 
-            foreach (var postImage in createPostDTO.PostImages)
+            if (createPostDTO.PostTypeId == 1)
             {
-                var isContainCat = await CheckIfPhotoContainCat(postImage.Image);
-
-                if (!isContainCat)
+                foreach (var postImage in createPostDTO.PostImages)
                 {
-                    storeResult.IsSuccessful = false;
-                    storeResult.ErrorMessage = "image may not contain cat.";
-                    return storeResult;
+                    var isContainCat = await CheckIfPhotoContainCat(postImage.Image);
+
+                    if (!isContainCat)
+                    {
+                        storeResult.IsSuccessful = false;
+                        storeResult.ErrorMessage = "image may not contain cat.";
+                        return storeResult;
+                    }
                 }
             }
 

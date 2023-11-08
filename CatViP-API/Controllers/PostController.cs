@@ -37,7 +37,6 @@ namespace CatViP_API.Controllers
 
             var userResult = await _authService.GetUserFromJWTToken(token);
 
-            // check if user is expert
             if (!userResult.IsSuccessful)
             {
                 return Unauthorized("invalid token");
