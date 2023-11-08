@@ -13,5 +13,7 @@ namespace CatViP_API.Services.Interfaces
         ResponseResult ValidateUsernameAndEmail(UserRegisterDTO userRegisterDTO);
         ResponseResult ValidateRegisterRoleId(long RoleId);
         Task<User?> StoreUser(UserRegisterDTO userRegisterDTO);
+        ResponseResult ValidateEmail(string email);
+        string GenerateForgotPasswordLink(string email);
     }
 }

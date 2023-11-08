@@ -7,6 +7,8 @@ using CatViP_API.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -126,6 +128,20 @@ namespace CatViP_API.Services
             return resResult;
         }
 
+        public ResponseResult ValidateEmail(string email)
+        {
+            var resResult = new ResponseResult();
+            resResult.IsSuccessful = true;
+            
+            if (_userRepository.CheckIfEmailExist(email))
+            {
+                resResult.IsSuccessful = false;
+                resResult.ErrorMessage = "Email is already registered in the system.";
+            }
+
+            return resResult;
+        }
+
         public ResponseResult ValidateRegisterRoleId(long RoleId)
         {
             var resResult = new ResponseResult();
@@ -144,6 +160,39 @@ namespace CatViP_API.Services
         {
             var user = await _userRepository.StoreUser(userRegisterDTO);
             return user;
+        }
+
+        public string GenerateForgotPasswordLink(string email)
+        {
+            var emailBytes = System.Text.Encoding.UTF8.GetBytes(email);
+
+            var encryptedEmail = Convert.ToBase64String(emailBytes);
+
+            var link = $"https://www.yourwebsite.com/forgotpassword?email={encryptedEmail}";
+
+            return link;
+        }
+
+        public async Task SendEmail(string email, string link)
+        {
+            var smtpClient = new SmtpClient("smtp.example.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("username@example.com", "password"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("username@example.com"),
+                Subject = "Forgot Password",
+                Body = $"<p>Please click the following link to reset your password:</p><a href='{link}'>Reset Password</a>",
+                IsBodyHtml = true,
+            };
+
+            mailMessage.To.Add(email);
+
+            await smtpClient.SendMailAsync(mailMessage);
         }
     }
 }

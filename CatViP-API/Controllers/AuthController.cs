@@ -106,5 +106,33 @@ namespace CatViP_API.Controllers
 
             return Ok(newToken);
         }
+
+        [HttpGet]
+        public IActionResult Get(string email)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email) || !email.Contains("@"))
+                {
+                    return BadRequest("Invalid email address");
+                }
+
+                var result = _authService.ValidateEmail(email);
+
+                if (!result.IsSuccessful)
+                {
+                    return BadRequest("Invalid Email");
+                }
+
+                var link = _authService.GenerateForgotPasswordLink(email);
+
+                return Ok(link);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
     }
 }
