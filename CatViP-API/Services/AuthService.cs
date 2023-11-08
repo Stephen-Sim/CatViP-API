@@ -25,66 +25,95 @@ namespace CatViP_API.Services
             this._configuration = configuration;
         }
 
-        public async Task<User?> Login(UserLoginDTO userLoginDTO)
+        public async Task<ResponseResult<User?>> Login(UserLoginDTO userLoginDTO)
         {
+            var resResult = new ResponseResult<User?>();
             var user = await _userRepository.AuthenticateUser(userLoginDTO);
 
             if (user == null)
             {
-                return null;
+                resResult.IsSuccessful = false;
+                return resResult;
             }
 
-            return user;
+            resResult.Result = user;
+
+            return resResult;
         }
 
-        public async Task<string> CreateToken(User user)
+        public async Task<ResponseResult<string>> CreateToken(User user)
         {
-            var roleName = _userRepository.GetUserRoleName(user);
+            var resResult = new ResponseResult<string>();
 
-            List<Claim> claims = new List<Claim>
+            try
             {
-                new Claim(ClaimTypes.Sid, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, roleName)
-            };
+                var roleName = _userRepository.GetUserRoleName(user);
 
-            var values = new
+                List<Claim> claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, roleName)
+                };
+
+                var values = new
+                {
+                    TokenCreated = DateTime.Now,
+                    TokenExpires = DateTime.Now.AddDays(7)
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+                var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+
+                var token = new JwtSecurityToken(claims: claims, expires: values.TokenExpires, signingCredentials: cred);
+
+                var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+                await _userRepository.UpdateUserToken(user.Id, jwt, values.TokenCreated, values.TokenExpires);
+
+                resResult.Result = jwt;
+            }
+            catch (Exception)
             {
-                TokenCreated = DateTime.Now,
-                TokenExpires = DateTime.Now.AddDays(7)
-            };
+                resResult.IsSuccessful = false;
+            }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-
-            var token = new JwtSecurityToken(claims: claims, expires: values.TokenExpires, signingCredentials: cred);
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            await _userRepository.UpdateUserToken(user.Id, jwt, values.TokenCreated, values.TokenExpires);
-
-            return await Task.FromResult(jwt);
+            return resResult;
         }
 
-        public async Task DeleteToken(long userId)
+        public async Task<ResponseResult> DeleteToken(long userId)
         {
-            await _userRepository.DeleteUserToken(userId);
+            var result = new ResponseResult();
+            try
+            {
+                await _userRepository.DeleteUserToken(userId);
+            }
+            catch (Exception)
+            {
+                result.IsSuccessful = false;
+            }
+
+            return result;
         }
 
-        public async Task<User?> GetUserFromJWTToken(string token)
+        public async Task<ResponseResult<User?>> GetUserFromJWTToken(string token)
         {
+            var resResult = new ResponseResult<User?>();
+
             try
             {
                 var jwt = new JwtSecurityToken(token);
                 long userId = long.Parse(jwt.Claims.First(c => c.Type == _configuration.GetSection("Claims:Sid").Value).Value);
-                var user = await _userRepository.GetUserById(userId);
-                return user;
+
+                resResult.Result = await _userRepository.GetUserById(userId);
             }
             catch (Exception)
             {
-                throw;
+                resResult.IsSuccessful = false;
             }
+
+            return resResult;
         }
 
         public ResponseResult VerifyToken(string token, User user)
@@ -101,10 +130,6 @@ namespace CatViP_API.Services
                 resResult.IsSuccessful = false;
                 resResult.ErrorMessage = "Token expired.";
             }
-            else
-            {
-                resResult.IsSuccessful = true;
-            }
 
             return resResult;
         }
@@ -112,7 +137,6 @@ namespace CatViP_API.Services
         public ResponseResult ValidateUsernameAndEmail(UserRegisterDTO userRegisterDTO)
         {
             var resResult = new ResponseResult();
-            resResult.IsSuccessful = true;
 
             if (_userRepository.CheckIfUsernameExist(userRegisterDTO.Username))
             {
@@ -131,7 +155,6 @@ namespace CatViP_API.Services
         public ResponseResult ValidateEmail(string email)
         {
             var resResult = new ResponseResult();
-            resResult.IsSuccessful = true;
             
             if (_userRepository.CheckIfEmailExist(email))
             {
@@ -145,7 +168,6 @@ namespace CatViP_API.Services
         public ResponseResult ValidateRegisterRoleId(long RoleId)
         {
             var resResult = new ResponseResult();
-            resResult.IsSuccessful = true;
 
             if (RoleId != 2 && RoleId != 4)
             {
@@ -156,10 +178,20 @@ namespace CatViP_API.Services
             return resResult;
         }
 
-        public async Task<User?> StoreUser(UserRegisterDTO userRegisterDTO)
+        public async Task<ResponseResult<User?>> StoreUser(UserRegisterDTO userRegisterDTO)
         {
-            var user = await _userRepository.StoreUser(userRegisterDTO);
-            return user;
+            var resResult = new ResponseResult<User?>();
+            
+            try
+            {
+                resResult.Result = await _userRepository.StoreUser(userRegisterDTO);
+            }
+            catch (Exception)
+            {
+                resResult.IsSuccessful = false;
+            }
+
+            return resResult;
         }
 
         public string GenerateForgotPasswordLink(string email)

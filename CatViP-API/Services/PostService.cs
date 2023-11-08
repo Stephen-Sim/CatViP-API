@@ -24,5 +24,10 @@ namespace CatViP_API.Services
 
             return postTypes;
         }
+
+        public ResponseResult CreatePost(PostTypeDTO postTypeDTO)
+        {
+            return null;
+        }
     }
 }

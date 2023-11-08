@@ -28,47 +28,51 @@ namespace CatViP_API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _authService.Login(userLogin);
+            var lgoinResult = await _authService.Login(userLogin);
 
-            if (user == null)
+            if (!lgoinResult.IsSuccessful)
                 return Unauthorized();
 
             // get token
-            var token = await _authService.CreateToken(user);
+            var tokenResult = await _authService.CreateToken(lgoinResult.Result!);
 
-            return Ok(token);
+            return Ok(tokenResult.Result);
         }
 
         [HttpPut("refresh")]
         public async Task<IActionResult> RefreshToken([FromHeader]string token)
         {
-            var user = await _authService.GetUserFromJWTToken(token);
+            var userResult = await _authService.GetUserFromJWTToken(token);
 
-            var res = _authService.VerifyToken(token, user);
+            if (!userResult.IsSuccessful)
+                return Unauthorized();
 
-            if (!res.IsSuccessful)
+            var verifyTokenResult = _authService.VerifyToken(token, userResult.Result!);
+
+            if (!verifyTokenResult.IsSuccessful)
             {
-                return Unauthorized(res.ErrorMessage);
+                return Unauthorized(verifyTokenResult.ErrorMessage);
             }
 
-            var newToken = await _authService.CreateToken(user);
+            var newTokenResult = await _authService.CreateToken(userResult.Result!);
 
-            return Ok(newToken);
+            return Ok(newTokenResult.Result);
         }
 
         [HttpDelete("logout")]
         public async Task<IActionResult> Logout([FromHeader]string token)
         {
-            var user = await _authService.GetUserFromJWTToken(token);
+            var userResult = await _authService.GetUserFromJWTToken(token);
 
-            var res = _authService.VerifyToken(token, user);
+            if (!userResult.IsSuccessful)
+                return Unauthorized();
+
+            var res = _authService.VerifyToken(token, userResult.Result!);
 
             if (!res.IsSuccessful)
-            {
                 return Unauthorized(res.ErrorMessage);
-            }
 
-            await _authService.DeleteToken(user.Id);
+            await _authService.DeleteToken(userResult.Result!.Id);
 
             return Ok();
         }
@@ -91,24 +95,23 @@ namespace CatViP_API.Controllers
             resResult = _authService.ValidateUsernameAndEmail(userRegisterDTO);
 
             if (!resResult.IsSuccessful)
-            {
+            { 
                 return Conflict(resResult.ErrorMessage);
             }
 
             var user = await _authService.StoreUser(userRegisterDTO);
 
-            if (user == null)
+            if (!user.IsSuccessful)
             {
                 return BadRequest("fail to register");
             }
 
-            var newToken = await _authService.CreateToken(user);
+            var newTokenResult = await _authService.CreateToken(user.Result!);
 
-            return Ok(newToken);
+            return Ok(newTokenResult.Result);
         }
 
-        [HttpGet]
-        public IActionResult Get(string email)
+        /*public IActionResult Get(string email)
         {
             try
             {
@@ -132,7 +135,7 @@ namespace CatViP_API.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-        }
+        }*/
 
     }
 }
