@@ -11,6 +11,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.VisualBasic;
 
 namespace CatViP_API.Services
 {
@@ -60,7 +61,7 @@ namespace CatViP_API.Services
                 TokenExpires = DateTime.Now.AddDays(7)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
 
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
@@ -238,6 +239,21 @@ namespace CatViP_API.Services
             }
 
             return resResult;
+        }
+
+        public async Task<ResponseResult> EditUserProfile(long userId, EditProfileDTO editProfileDTO)
+        {
+            var result = new ResponseResult();
+
+            result.IsSuccessful = await _userRepository.UpdateUserProfile(userId, editProfileDTO);
+
+            if (!result.IsSuccessful)
+            {
+                result.ErrorMessage = "fail to upate user profile";
+                return result;
+            }
+
+            return result;
         }
     }
 }

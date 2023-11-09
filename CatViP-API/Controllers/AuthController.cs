@@ -3,6 +3,7 @@ using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services;
 using CatViP_API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
@@ -109,6 +110,34 @@ namespace CatViP_API.Controllers
             var newTokenResult = await _authService.CreateToken(user.Result!);
 
             return Ok(newTokenResult.Result);
+        }
+
+        [HttpPut("editProfile-mobile"), Authorize("Cat Owner,Cat Expert")]
+        public async Task<IActionResult> EditProfileRequest(EditProfileDTO editProfileDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized(userResult.ErrorMessage);
+            }
+
+            var editUserResult = await _authService.EditUserProfile(userResult.Result!.Id, editProfileDTO);
+
+            if (!editUserResult.IsSuccessful)
+            {
+                return BadRequest(editUserResult.ErrorMessage);
+            }
+
+            return Ok();
         }
 
         /*public IActionResult Get(string email)

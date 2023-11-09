@@ -136,5 +136,29 @@ namespace CatViP_API.Repositories
                 return null;
             }
         }
+
+        public async Task<bool> UpdateUserProfile(long userId, EditProfileDTO editProfileDTO)
+        {
+            try
+            {
+                var user = await _context.Users.FirstAsync(x => x.Id == userId);
+                user.FullName = editProfileDTO.FullName;
+                user.DateOfBirth = editProfileDTO.DateOfBirth;
+                user.Gender = editProfileDTO.Gender;
+                user.Address = editProfileDTO.Address;
+                user.Longitude = editProfileDTO.Longitude;
+                user.Latitude = editProfileDTO.Latitude;
+                user.ProfileImage = editProfileDTO?.ProfileImage;
+
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
