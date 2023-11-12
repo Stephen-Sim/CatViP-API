@@ -313,6 +313,14 @@ namespace CatViP_API.Data
                     .HasConstraintName("FK_UserFollowers_Users");
             });
 
+            modelBuilder.Entity<User>()
+                .HasIndex(x => x.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(x => x.Username)
+                .IsUnique();
+
             OnModelCreatingPartial(modelBuilder);
             new DbInitializer(modelBuilder).Seed();
         }

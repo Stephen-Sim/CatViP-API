@@ -12,6 +12,8 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.VisualBasic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace CatViP_API.Services
 {
@@ -19,11 +21,13 @@ namespace CatViP_API.Services
     {
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(IUserRepository userRepository, IConfiguration configuration)
+        public AuthService(IUserRepository userRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this._userRepository = userRepository;
             this._configuration = configuration;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResponseResult<User?>> Login(UserLoginDTO userLoginDTO)
@@ -61,7 +65,7 @@ namespace CatViP_API.Services
                 TokenExpires = DateTime.Now.AddDays(7)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!               ));
 
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
@@ -193,15 +197,25 @@ namespace CatViP_API.Services
             return resResult;
         }
 
-        public string GenerateForgotPasswordLink(string email)
+        public ResponseResult<string> GenerateForgotPasswordLink(string email)
         {
+            var emailRes = new ResponseResult<string>();
+
+            emailRes.IsSuccessful = _userRepository.CheckIfEmailExist(email);
+
+            if (!emailRes.IsSuccessful)
+            {
+                emailRes.ErrorMessage = "Invalid Email";
+                return emailRes;
+            }
+
             var emailBytes = System.Text.Encoding.UTF8.GetBytes(email);
 
             var encryptedEmail = Convert.ToBase64String(emailBytes);
 
-            var link = $"https://www.yourwebsite.com/forgotpassword?email={encryptedEmail}";
+            emailRes.Result = $"http://{_httpContextAccessor.HttpContext!.Request.Host.Value}/auth/forgot-password?email={encryptedEmail}";
 
-            return link;
+            return emailRes;
         }
 
         public async Task SendEmail(string email, string link)
@@ -254,6 +268,50 @@ namespace CatViP_API.Services
             }
 
             return result;
+        }
+
+        public async Task SendRecoverEmail(string email, string url)
+        {
+            var mail = "catvipa5@gmail.com";
+            var pw = "uejw zktv cgje vcll";
+
+            var client = new SmtpClient("smtp.gmail.com", 587)
+            {
+                EnableSsl = true,
+                Credentials = new NetworkCredential(mail, pw)
+            };
+
+            var sub = "To Recover Your CatVip Account";
+
+            var message = new MailMessage
+            {
+                From = new MailAddress(mail),
+                Subject = sub,
+                Body = $"Click the following link to recover your CatVip account: {url}",
+                IsBodyHtml = true
+            };
+
+            message.To.Add(email);
+
+            await client.SendMailAsync(message);
+        }
+
+        public async Task<ResponseResult> ResetPassword(ResetPasswordDTO resetPasswordDTO)
+        {
+            var res = new ResponseResult();
+
+            var encryptedEmailBytes = Convert.FromBase64String(resetPasswordDTO.Email);
+
+            var email = System.Text.Encoding.UTF8.GetString(encryptedEmailBytes);
+
+            res.IsSuccessful = await _userRepository.ResetUserPassword(email, resetPasswordDTO.Password);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "fail to reset password.";
+            }
+
+            return res;
         }
     }
 }

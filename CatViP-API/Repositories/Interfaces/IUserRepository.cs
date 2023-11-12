@@ -14,5 +14,6 @@ namespace CatViP_API.Repositories.Interfaces
         bool CheckIfEmailExist(string email);
         Task<User?> StoreUser(UserRegisterDTO userRegisterDTO);
         Task<bool> UpdateUserProfile(long userId, EditProfileDTO editProfileDTO);
+        Task<bool> ResetUserPassword(string email, string password);
     }
 }

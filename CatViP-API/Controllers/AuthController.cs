@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
+using NuGet.Protocol.Core.Types;
 
 namespace CatViP_API.Controllers
 {
@@ -140,7 +141,8 @@ namespace CatViP_API.Controllers
             return Ok();
         }
 
-        /*public IActionResult Get(string email)
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPasswordAsync(string email)
         {
             try
             {
@@ -149,22 +151,39 @@ namespace CatViP_API.Controllers
                     return BadRequest("Invalid email address");
                 }
 
-                var result = _authService.ValidateEmail(email);
+                var linkRes = _authService.GenerateForgotPasswordLink(email);
 
-                if (!result.IsSuccessful)
+                if (!linkRes.IsSuccessful)
                 {
-                    return BadRequest("Invalid Email");
+                    return BadRequest(linkRes.ErrorMessage);
                 }
 
-                var link = _authService.GenerateForgotPasswordLink(email);
+                await _authService.SendRecoverEmail(email, linkRes.Result!);
 
-                return Ok(link);
+                return Ok();
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-        }*/
+        }
 
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDTO resetPasswordDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var res = await _authService.ResetPassword(resetPasswordDTO);
+
+            if (!res.IsSuccessful)
+            {
+                return BadRequest(res.ErrorMessage);
+            }
+
+            return Ok();
+        }
     }
 }

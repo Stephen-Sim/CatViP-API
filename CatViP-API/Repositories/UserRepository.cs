@@ -160,5 +160,21 @@ namespace CatViP_API.Repositories
 
             return true;
         }
+
+        public async Task<bool> ResetUserPassword(string email, string password)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Email == email);
+
+            try
+            {
+                user!.Password = BCrypt.Net.BCrypt.HashPassword(password);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

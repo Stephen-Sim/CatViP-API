@@ -16,6 +16,8 @@ namespace CatViP_API.Services.Interfaces
         Task<ResponseResult<User?>> StoreUser(UserRegisterDTO userRegisterDTO);
         ResponseResult ValidateEmail(string email);
         Task<ResponseResult> EditUserProfile(long userId, EditProfileDTO editProfileDTO);
-        // ResponseResult<string> GenerateForgotPasswordLink(string email);
+        ResponseResult<string> GenerateForgotPasswordLink(string email);
+        Task SendRecoverEmail(string email, string url);
+        Task<ResponseResult> ResetPassword(ResetPasswordDTO resetPasswordDTO);
     }
 }
