@@ -274,6 +274,7 @@ namespace CatViP_API.Services
         {
             var mail = "catvipa5@gmail.com";
             var pw = "uejw zktv cgje vcll";
+            // Abc@12345
 
             var client = new SmtpClient("smtp.gmail.com", 587)
             {
