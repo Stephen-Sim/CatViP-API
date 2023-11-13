@@ -46,7 +46,7 @@ namespace CatViP_API.Controllers
         {
             var userResult = await _authService.GetUserFromJWTToken(token);
 
-            if (!userResult.IsSuccessful || userResult.Result == null)
+            if (!userResult.IsSuccessful)
                 return Unauthorized();
 
             var verifyTokenResult = _authService.VerifyToken(token, userResult.Result!);

@@ -110,6 +110,12 @@ namespace CatViP_API.Services
                 long userId = long.Parse(jwt.Claims.First(c => c.Type == _configuration.GetSection("Claims:Sid").Value).Value);
 
                 resResult.Result = await _userRepository.GetUserById(userId);
+
+                if (resResult.Result == null)
+                {
+                    resResult.IsSuccessful = false;
+                    return resResult;
+                }
             }
             catch (Exception)
             {
