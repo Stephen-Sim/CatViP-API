@@ -18,7 +18,7 @@ namespace CatViP_API.Repositories
             _context = context;
         }
 
-        public async Task<User?> AuthenticateUser(UserLoginDTO userLogin)
+        public async Task<User?> AuthenticateUser(UserLoginRequestDTO userLogin)
         {
             var user = await _context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Username == userLogin.Username);
 
@@ -112,7 +112,7 @@ namespace CatViP_API.Repositories
             return _context.Users.Any(x => x.Email == email);
         }
         
-        public async Task<User?> StoreUser(UserRegisterDTO userRegisterDTO)
+        public async Task<User?> StoreUser(UserRegisterRequestDTO userRegisterDTO)
         {
             try
             {

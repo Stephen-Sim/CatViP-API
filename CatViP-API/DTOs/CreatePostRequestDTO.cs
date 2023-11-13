@@ -2,7 +2,7 @@
 
 namespace CatViP_API.DTOs
 {
-    public class CreatePostDTO
+    public class CreatePostRequestDTO
     {
         [Required]
         public long PostTypeId { get; set; }
@@ -12,11 +12,4 @@ namespace CatViP_API.DTOs
         public ICollection<PostImageDTO> PostImages { get; set; } = new List<PostImageDTO>();
     }
 
-    public class PostImageDTO
-    {
-        [Required]
-        public byte[] Image { get; set; } = null!;
-        [Required]
-        public bool IsBloodyContent { get; set; }
-    }
 }

@@ -2,7 +2,7 @@
 
 namespace CatViP_API.DTOs
 {
-    public class UserLoginDTO
+    public class UserLoginRequestDTO
     {
         [Required]
         public string Username { get; set; } = null!;

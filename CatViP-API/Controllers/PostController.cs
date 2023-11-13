@@ -20,8 +20,90 @@ namespace CatViP_API.Controllers
             _postService = postService;
         }
 
+        [HttpGet("GetPosts"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetPosts()
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var posts = _postService.GetPosts(userResult.Result!);
+
+            return Ok(posts);
+        }
+
+        [HttpGet("GetPostComments"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetPostComments(int postId)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var postComments = _postService.GetPostComments(postId);
+
+            return Ok(postComments);
+        }
+
+        [HttpPost("PostAct"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> PostActAsync([FromBody] PostActionRequestDTO postActionDTO)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var postActRes = await _postService.ActionPost(userResult.Result!, postActionDTO);
+
+            if (!postActRes.IsSuccessful)
+            {
+                return BadRequest("fail to act the post");
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("CreateComment"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> CreateComment([FromBody] CommentRequestDTO commentRequestDTO)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var postActRes = await _postService.CommentPost(userResult.Result!, commentRequestDTO);
+
+            if (!postActRes.IsSuccessful)
+            {
+                return BadRequest("fail to comment");
+            }
+
+            return Ok();
+        }
+
         [HttpGet("GetPostTypes"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> GetPostTypesAsync()
+        public async Task<IActionResult> GetPostTypes()
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -39,7 +121,7 @@ namespace CatViP_API.Controllers
         }
 
         [HttpPost("CreatePost"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> CreatePost([FromBody]CreatePostDTO createPostDTO)
+        public async Task<IActionResult> CreatePost([FromBody]CreatePostRequestDTO createPostDTO)
         {
             if (!ModelState.IsValid)
             {

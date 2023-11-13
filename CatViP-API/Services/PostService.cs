@@ -24,6 +24,22 @@ namespace CatViP_API.Services
             _mapper = mapper;
         }
 
+        public ICollection<PostDTO> GetPosts(User currentUser)
+        {
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPosts());
+
+            foreach (var post in posts)
+            {
+                post.LikeCount = _postRepository.GetPostLikeCount(post.Id);
+                post.DislikeCount = _postRepository.GetPostDisLikeCount(post.Id);
+                post.CommentCount = _postRepository.GetPostCommentCount(post.Id);
+                post.PostImages = _mapper.Map<ICollection<PostImageDTO>>(_postRepository.GetPostImages(post.Id));
+                post.CurrentUserAction = _postRepository.GetCurrentUserStatusOnPost(currentUser.Id, post.Id);
+            }
+
+            return posts;
+        }
+
         public ICollection<PostTypeDTO> GetPostTypes(bool isExpert)
         {
             var postTypes = _mapper.Map<ICollection<PostTypeDTO>>(_postRepository.GetPostTypes());
@@ -37,7 +53,7 @@ namespace CatViP_API.Services
             return postTypes;
         }
 
-        public async Task<ResponseResult> CreatePost(User user, CreatePostDTO createPostDTO)
+        public async Task<ResponseResult> CreatePost(User user, CreatePostRequestDTO createPostDTO)
         {
             var storeResult = new ResponseResult();
 
@@ -117,6 +133,41 @@ namespace CatViP_API.Services
             }
 
             return false;
+        }
+
+        public async Task<ResponseResult> ActionPost(User user, PostActionRequestDTO postActionDTO)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _postRepository.ActPost(user.Id, postActionDTO);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "Fail to store.";
+            }
+
+            return res;
+        }
+
+        public async Task<ResponseResult> CommentPost(User user, CommentRequestDTO commentRequestDTO)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _postRepository.CommentPost(user.Id, commentRequestDTO);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "Fail to store.";
+            }
+
+            return res;
+        }
+
+        public ICollection<CommentDTO> GetPostComments(int postId)
+        {
+            var postComments = _mapper.Map<ICollection<CommentDTO>>(_postRepository.GetPostComments(postId));
+
+            return postComments;
         }
     }
 }

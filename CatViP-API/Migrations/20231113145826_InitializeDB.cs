@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CatViP_API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDatabase : Migration
+    public partial class InitializeDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -322,36 +322,6 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserActions",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PostId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    ActionTypeId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserActions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserActions_ActionTypes",
-                        column: x => x.ActionTypeId,
-                        principalTable: "ActionTypes",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserActions_PostTypes",
-                        column: x => x.PostId,
-                        principalTable: "PostTypes",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserActions_Users",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserFollowers",
                 columns: table => new
                 {
@@ -497,6 +467,36 @@ namespace CatViP_API.Migrations
                         name: "FK_PostImages_Posts",
                         column: x => x.PostId,
                         principalTable: "Posts",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserActions",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PostId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    ActionTypeId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserActions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserActions_ActionTypes",
+                        column: x => x.ActionTypeId,
+                        principalTable: "ActionTypes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserActions_Post",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserActions_Users",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -650,10 +650,10 @@ namespace CatViP_API.Migrations
                 columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "IsShownOnMap", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$.IBcuIw2pPHbYkHxR35kX.0xumIBBP53Y.CTCCd/mjw/inNuNfF7.", null, null, 1L, null, null, "admin" },
-                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, null, "$2a$11$0QQYpB4rTW07XgnkItdtrOyER2w5KVx4QWS5IzBN.w.zOIYOUNElK", null, null, 2L, null, null, "stephen" },
-                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, null, "$2a$11$9.gAAwyfr0HNOypfvMFkze9IFG.qOhPgGwMLWRs91yJG0crBwhkwa", null, null, 3L, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$nE1EA2vOusWv4KJCef3Pp.gHKVA91fcmVUBAYQeSoiHHz/g0/slI6", null, null, 4L, null, null, "wafir" }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$2oDy/KPK911Znn6lRw0nQuVmd.frf4pnGwDQ37EANwOOJb28.AhPO", null, null, 1L, null, null, "admin" },
+                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, null, "$2a$11$ccM/wGmKkHyfPBinqk3/RukoZH5x6.ZKH5SxGyvtoXfwxp9owaWrW", null, null, 2L, null, null, "stephen" },
+                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, null, "$2a$11$QFIzkLIFuCrH0PL8373pue8.Cwga58Ps8O3TK.zndE1PdXso.lC8y", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$BHkIpFrrnKO49tOuGNZbzOX7UUn8lslMyaGE36c7VLNldFSvxeyxi", null, null, 4L, null, null, "wafir" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -870,9 +870,6 @@ namespace CatViP_API.Migrations
                 name: "ExpertApplicationStatuses");
 
             migrationBuilder.DropTable(
-                name: "Posts");
-
-            migrationBuilder.DropTable(
                 name: "PostReportStatuses");
 
             migrationBuilder.DropTable(
@@ -880,6 +877,9 @@ namespace CatViP_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "ActionTypes");
+
+            migrationBuilder.DropTable(
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "Transactions");
@@ -891,10 +891,10 @@ namespace CatViP_API.Migrations
                 name: "Cats");
 
             migrationBuilder.DropTable(
-                name: "PostTypes");
+                name: "ProductTypes");
 
             migrationBuilder.DropTable(
-                name: "ProductTypes");
+                name: "PostTypes");
 
             migrationBuilder.DropTable(
                 name: "TransactionStatuses");

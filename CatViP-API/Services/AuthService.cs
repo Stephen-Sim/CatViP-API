@@ -30,7 +30,7 @@ namespace CatViP_API.Services
             this._httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ResponseResult<User?>> Login(UserLoginDTO userLoginDTO)
+        public async Task<ResponseResult<User?>> Login(UserLoginRequestDTO userLoginDTO)
         {
             var resResult = new ResponseResult<User?>();
             var user = await _userRepository.AuthenticateUser(userLoginDTO);
@@ -143,7 +143,7 @@ namespace CatViP_API.Services
             return resResult;
         }
 
-        public ResponseResult ValidateUsernameAndEmail(UserRegisterDTO userRegisterDTO)
+        public ResponseResult ValidateUsernameAndEmail(UserRegisterRequestDTO userRegisterDTO)
         {
             var resResult = new ResponseResult();
 
@@ -187,7 +187,7 @@ namespace CatViP_API.Services
             return resResult;
         }
 
-        public async Task<ResponseResult<User?>> StoreUser(UserRegisterDTO userRegisterDTO)
+        public async Task<ResponseResult<User?>> StoreUser(UserRegisterRequestDTO userRegisterDTO)
         {
             var resResult = new ResponseResult<User?>();
             
@@ -303,7 +303,7 @@ namespace CatViP_API.Services
             await client.SendMailAsync(message);
         }
 
-        public async Task<ResponseResult> ResetPassword(ResetPasswordDTO resetPasswordDTO)
+        public async Task<ResponseResult> ResetPassword(ResetPasswordRequestDTO resetPasswordDTO)
         {
             var res = new ResponseResult();
 

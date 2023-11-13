@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatViP_API.Migrations
 {
     [DbContext(typeof(CatViPContext))]
-    [Migration("20231112113751_InitializeDatabase")]
-    partial class InitializeDatabase
+    [Migration("20231113145826_InitializeDB")]
+    partial class InitializeDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -811,7 +811,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$.IBcuIw2pPHbYkHxR35kX.0xumIBBP53Y.CTCCd/mjw/inNuNfF7.",
+                            Password = "$2a$11$2oDy/KPK911Znn6lRw0nQuVmd.frf4pnGwDQ37EANwOOJb28.AhPO",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -822,7 +822,7 @@ namespace CatViP_API.Migrations
                             Email = "simshansiong2002@gmail.com",
                             FullName = "stephen sim",
                             Gender = true,
-                            Password = "$2a$11$0QQYpB4rTW07XgnkItdtrOyER2w5KVx4QWS5IzBN.w.zOIYOUNElK",
+                            Password = "$2a$11$ccM/wGmKkHyfPBinqk3/RukoZH5x6.ZKH5SxGyvtoXfwxp9owaWrW",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -833,7 +833,7 @@ namespace CatViP_API.Migrations
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
                             Gender = false,
-                            Password = "$2a$11$9.gAAwyfr0HNOypfvMFkze9IFG.qOhPgGwMLWRs91yJG0crBwhkwa",
+                            Password = "$2a$11$QFIzkLIFuCrH0PL8373pue8.Cwga58Ps8O3TK.zndE1PdXso.lC8y",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -844,7 +844,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$nE1EA2vOusWv4KJCef3Pp.gHKVA91fcmVUBAYQeSoiHHz/g0/slI6",
+                            Password = "$2a$11$BHkIpFrrnKO49tOuGNZbzOX7UUn8lslMyaGE36c7VLNldFSvxeyxi",
                             RoleId = 4L,
                             Username = "wafir"
                         });
@@ -1163,11 +1163,11 @@ namespace CatViP_API.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_UserActions_ActionTypes");
 
-                    b.HasOne("CatViP_API.Models.PostType", "Post")
+                    b.HasOne("CatViP_API.Models.Post", "Post")
                         .WithMany("UserActions")
                         .HasForeignKey("PostId")
                         .IsRequired()
-                        .HasConstraintName("FK_UserActions_PostTypes");
+                        .HasConstraintName("FK_UserActions_Post");
 
                     b.HasOne("CatViP_API.Models.User", "User")
                         .WithMany("UserActions")
@@ -1240,6 +1240,8 @@ namespace CatViP_API.Migrations
                     b.Navigation("MentionedCats");
 
                     b.Navigation("PostImages");
+
+                    b.Navigation("UserActions");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.PostReportStatus", b =>
@@ -1250,8 +1252,6 @@ namespace CatViP_API.Migrations
             modelBuilder.Entity("CatViP_API.Models.PostType", b =>
                 {
                     b.Navigation("Posts");
-
-                    b.Navigation("UserActions");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.Product", b =>

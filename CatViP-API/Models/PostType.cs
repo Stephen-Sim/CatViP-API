@@ -11,5 +11,4 @@ public partial class PostType
 
     public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
-    public virtual ICollection<UserAction> UserActions { get; set; } = new List<UserAction>();
 }

@@ -14,6 +14,21 @@ namespace CatViP_API.Repositories
             this._context = context;
         }
 
+        public ICollection<Post> GetPosts()
+        {
+            return _context.Posts.Where(x => x.Status).ToList();
+        }
+
+        public int GetPostLikeCount(long postId)
+        {
+            return _context.Posts.Include(x => x.UserActions).FirstOrDefault(x => x.Id == postId)!.UserActions.Count(x => x.ActionTypeId == 1);
+        }
+
+        public int GetPostDisLikeCount(long postId)
+        {
+            return _context.Posts.Include(x => x.UserActions).FirstOrDefault(x => x.Id == postId)!.UserActions.Count(x => x.ActionTypeId == 2);
+        }
+
         public ICollection<PostType> GetPostTypes()
         {
             return _context.PostTypes.ToList();
@@ -31,6 +46,90 @@ namespace CatViP_API.Repositories
             {
                 return false;
             }
+        }
+
+        public ICollection<Comment> GetPostComments(long postId)
+        {
+            return _context.Comments.Where(x => x.PostId == postId).Include(x => x.User).OrderByDescending(x => x.DateTime).ToList();
+        }
+
+        public ICollection<PostImage> GetPostImages(long postId)
+        {
+            return _context.PostImages.Where(x => x.PostId == postId).ToList();
+        }
+
+        public int GetCurrentUserStatusOnPost(long userId, long postId)
+        {
+            var post = _context.Posts.Include(x => x.UserActions).FirstOrDefault(x => x.Id == postId);
+
+            if (post!.UserActions.Any(x => x.UserId == userId))
+            {
+                var userAction = post!.UserActions.FirstOrDefault(x => x.UserId == userId);
+                return (int)userAction!.ActionTypeId;
+            }
+
+            return 0;
+        }
+
+        public int GetPostCommentCount(long postId)
+        {
+            return _context.Comments.Where(x => x.PostId == postId).Count();
+        }
+
+        public async Task<bool> ActPost(long userId, PostActionRequestDTO postActionDTO)
+        {
+            var postAction = await _context.UserActions.FirstOrDefaultAsync(x => x.UserId == userId && x.PostId == postActionDTO.PostId);
+
+            try
+            {
+                if (postAction != null)
+                {
+                    postAction.ActionTypeId = postActionDTO.ActionTypeId;
+                    _context.Update(postAction);
+                }
+                else
+                {
+                    var newPostAction = new UserAction
+                    {
+                        UserId = userId,
+                        PostId = postActionDTO.PostId,
+                        ActionTypeId = postActionDTO.ActionTypeId,
+                    };
+
+                    _context.Add(newPostAction);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> CommentPost(long userId, CommentRequestDTO commentRequestDTO)
+        {
+            try
+            {
+                var comment = new Comment
+                {
+                    UserId = userId, 
+                    PostId = commentRequestDTO.PostId,
+                    DateTime = DateTime.Now,
+                    Description = commentRequestDTO.Description
+                };
+
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

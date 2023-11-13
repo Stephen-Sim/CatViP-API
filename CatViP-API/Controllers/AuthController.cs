@@ -23,7 +23,7 @@ namespace CatViP_API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]UserLoginDTO userLogin)
+        public async Task<IActionResult> Login([FromBody]UserLoginRequestDTO userLogin)
         {
             if (!ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace CatViP_API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]UserRegisterDTO userRegisterDTO)
+        public async Task<IActionResult> Register([FromBody]UserRegisterRequestDTO userRegisterDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -169,7 +169,7 @@ namespace CatViP_API.Controllers
         }
 
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordDTO resetPasswordDTO)
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequestDTO resetPasswordDTO)
         {
             if (!ModelState.IsValid)
             {

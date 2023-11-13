@@ -15,7 +15,7 @@ public partial class UserAction
 
     public virtual ActionType ActionType { get; set; } = null!;
 
-    public virtual PostType Post { get; set; } = null!;
+    public virtual Post Post { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
 }

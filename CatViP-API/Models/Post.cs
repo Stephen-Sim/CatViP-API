@@ -17,6 +17,8 @@ public partial class Post
 
     public long PostTypeId { get; set; }
 
+    public virtual ICollection<UserAction> UserActions { get; set; } = new List<UserAction>();
+
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<MentionedCat> MentionedCats { get; set; } = new List<MentionedCat>();

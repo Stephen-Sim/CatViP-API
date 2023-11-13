@@ -292,7 +292,7 @@ namespace CatViP_API.Data
                 entity.HasOne(d => d.Post).WithMany(p => p.UserActions)
                     .HasForeignKey(d => d.PostId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_UserActions_PostTypes");
+                    .HasConstraintName("FK_UserActions_Post");
 
                 entity.HasOne(d => d.User).WithMany(p => p.UserActions)
                     .HasForeignKey(d => d.UserId)

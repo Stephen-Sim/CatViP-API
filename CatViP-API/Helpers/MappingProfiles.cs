@@ -9,6 +9,10 @@ namespace CatViP_API.Helpers
         public MappingProfiles()
         {
             CreateMap<PostType, PostTypeDTO>();
+            CreateMap<Post, PostDTO>();
+            CreateMap<PostImage, PostImageDTO>();
+            CreateMap<Comment, CommentDTO>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName));
         }
     }
 }
