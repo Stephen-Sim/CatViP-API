@@ -39,7 +39,7 @@ namespace CatViP_API.Controllers
         }
 
         [HttpGet("GetCatPosts/{catId}"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> GetPostByCatAsync(long catId)
+        public async Task<IActionResult> GetPostByCat(long catId)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -91,8 +91,8 @@ namespace CatViP_API.Controllers
             return Ok(postComments);
         }
 
-        [HttpPut("PostAct"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> PostActAsync([FromBody] PostActionRequestDTO postActionDTO)
+        [HttpPut("ActPost"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> ActPost([FromBody] PostActionRequestDTO postActionDTO)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -104,7 +104,7 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var postActRes = await _postService.ActionPost(userResult.Result!, postActionDTO);
+            var postActRes = await _postService.ActPost(userResult.Result!, postActionDTO);
 
             if (!postActRes.IsSuccessful)
             {
@@ -178,6 +178,66 @@ namespace CatViP_API.Controllers
             if (!createPostResult.IsSuccessful)
             {
                 return BadRequest(createPostResult.ErrorMessage);
+            }
+
+            return Ok();
+        }
+
+        [HttpPut("EditPost/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> EditPost(long Id, [FromBody] EditPostRequestDTO editPostRequestDTO)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var checkPostRes = _postService.CheckIfPostExist(userResult.Result!.Id, Id);
+
+            if (!checkPostRes.IsSuccessful)
+            {
+                return BadRequest(checkPostRes.ErrorMessage);
+            }
+
+            var postActRes = await _postService.EditPost(userResult.Result!.Id, editPostRequestDTO);
+
+            if (!postActRes.IsSuccessful)
+            {
+                return BadRequest("fail to act the post");
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("DeletePost/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> DeleteCat(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var checkPostRes = _postService.CheckIfPostExist(userResult.Result!.Id, Id);
+
+            if (!checkPostRes.IsSuccessful)
+            {
+                return BadRequest(checkPostRes.ErrorMessage);
+            }
+
+            var catRes = await _postService.DeletePost(Id);
+
+            if (!catRes.IsSuccessful)
+            {
+                return BadRequest(catRes.ErrorMessage);
             }
 
             return Ok();

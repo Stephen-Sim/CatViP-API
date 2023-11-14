@@ -18,5 +18,8 @@ namespace CatViP_API.Repositories.Interfaces
         Task<bool> CommentPost(long userId, CommentRequestDTO commentRequestDTO);
         ICollection<Post> GetOwnPosts(long userId);
         ICollection<Post> GetPostsByCatId(long catId);
+        bool CheckIfPostExist(long userId, long postId);
+        Task<bool> DeletePost(long postId);
+        Task<bool> EditPost(long postId, EditPostRequestDTO editPostRequestDTO);
     }
 }

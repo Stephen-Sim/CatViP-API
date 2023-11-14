@@ -140,7 +140,7 @@ namespace CatViP_API.Services
             return false;
         }
 
-        public async Task<ResponseResult> ActionPost(User user, PostActionRequestDTO postActionDTO)
+        public async Task<ResponseResult> ActPost(User user, PostActionRequestDTO postActionDTO)
         {
             var res = new ResponseResult();
 
@@ -205,6 +205,48 @@ namespace CatViP_API.Services
             }
 
             return posts;
+        }
+
+        public async Task<ResponseResult> DeletePost(long id)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _postRepository.DeletePost(id);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "fail to delete the post.";
+            }
+
+            return res;
+        }
+
+        public async Task<ResponseResult> EditPost(long postId, EditPostRequestDTO editPostRequestDTO)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _postRepository.EditPost(postId, editPostRequestDTO);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "fail to edit the post.";
+            }
+
+            return res;
+        }
+
+        public ResponseResult CheckIfPostExist(long userId, long postId)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = _postRepository.CheckIfPostExist(userId, postId);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "Post is not exist.";
+            }
+
+            return res;
         }
     }
 }

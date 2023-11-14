@@ -10,8 +10,11 @@ namespace CatViP_API.Services.Interfaces
         ICollection<PostDTO> GetPostsByCatId(long currentUserId, long catId);
         ICollection<PostTypeDTO> GetPostTypes(bool isExpert);
         Task<ResponseResult> CreatePost(User user, PostRequestDTO createPostDTO);
-        Task<ResponseResult> ActionPost(User user, PostActionRequestDTO postActionDTO);
+        Task<ResponseResult> ActPost(User user, PostActionRequestDTO postActionDTO);
         Task<ResponseResult> CommentPost(User user, CommentRequestDTO commentRequestDTO);
         ICollection<CommentDTO> GetPostComments(int postId);
+        Task<ResponseResult> DeletePost(long id);
+        Task<ResponseResult> EditPost(long id, EditPostRequestDTO editPostRequestDTO);
+        ResponseResult CheckIfPostExist(long userId, long postId);
     }
 }

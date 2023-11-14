@@ -141,5 +141,42 @@ namespace CatViP_API.Repositories
         {
             return _context.Posts.Where(x => x.MentionedCats.Any(y => y.CatId == catId)).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
         }
+
+        public bool CheckIfPostExist(long userId, long postId)
+        {
+            return _context.Posts.Any(x => x.UserId == userId && x.Id == postId && x.Status);
+        }
+
+        public async Task<bool> DeletePost(long postId)
+        {
+            try
+            {
+                var post = _context.Posts.FirstOrDefault(x => x.Id == postId);
+                post!.Status = false;
+                _context.Update(post);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> EditPost(long postId, EditPostRequestDTO editPostRequestDTO)
+        {
+            try
+            {
+                var post = _context.Posts.FirstOrDefault(x => x.Id == postId);
+                post!.Description = editPostRequestDTO.Description;
+                _context.Update(post);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
