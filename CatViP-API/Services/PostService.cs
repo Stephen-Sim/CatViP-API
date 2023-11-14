@@ -15,12 +15,14 @@ namespace CatViP_API.Services
     {
         private readonly IConfiguration _configuration;
         private readonly IPostRepository _postRepository;
+        private readonly ICatRepository _catRepository;
         private readonly IMapper _mapper;
 
-        public PostService(IConfiguration configuration, IPostRepository postRepository, IMapper mapper)
+        public PostService(IConfiguration configuration, IPostRepository postRepository, ICatRepository catRepository, IMapper mapper)
         {
             _configuration = configuration;
             _postRepository = postRepository;
+            _catRepository = catRepository;
             _mapper = mapper;
         }
 
@@ -69,6 +71,16 @@ namespace CatViP_API.Services
                 storeResult.IsSuccessful = false;
                 storeResult.ErrorMessage = "must be at least one image.";
                 return storeResult;
+            }
+
+            foreach (var mentionCat in createPostDTO.MentionedCats)
+            {
+                if (!_catRepository.CheckIfCatExist(user.Id, mentionCat.CatId))
+                {
+                    storeResult.IsSuccessful = false;
+                    storeResult.ErrorMessage = "mentioned cat is not exist.";
+                    return storeResult;
+                }
             }
 
             if (createPostDTO.PostTypeId == 1)
