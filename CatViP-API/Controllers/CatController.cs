@@ -39,8 +39,8 @@ namespace CatViP_API.Controllers
             return Ok(cats);
         }
 
-        [HttpGet("GetCat"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> GetCat([FromQuery] long Id)
+        [HttpGet("GetCat/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetCat(long Id)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -52,7 +52,7 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var checkCatRes = _catService.CheckIfCatExist(Id);
+            var checkCatRes = _catService.CheckIfCatExist(userResult.Result!.Id, Id);
 
             if (!checkCatRes.IsSuccessful)
             {
@@ -65,7 +65,7 @@ namespace CatViP_API.Controllers
         }
 
         [HttpPost("StoreCat"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> StoreCat([FromBody] CreateCatRequestDTO createCatRequestDTO)
+        public async Task<IActionResult> StoreCat([FromBody] CatRequestDTO createCatRequestDTO)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -87,8 +87,8 @@ namespace CatViP_API.Controllers
             return Ok();
         }
 
-        [HttpPut("EditCat"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> EditCat([FromBody] EditCatRequestDTO editCatRequestDTO)
+        [HttpPut("EditCat/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> EditCat(long Id, [FromBody] CatRequestDTO editCatRequestDTO)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -100,14 +100,14 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var checkCatRes = _catService.CheckIfCatExist(editCatRequestDTO.Id);
+            var checkCatRes = _catService.CheckIfCatExist(userResult.Result!.Id, Id);
 
             if (!checkCatRes.IsSuccessful)
             {
                 return BadRequest(checkCatRes.ErrorMessage);
             }
 
-            var catRes = await _catService.EditCat(editCatRequestDTO);
+            var catRes = await _catService.EditCat(Id, editCatRequestDTO);
 
             if (!catRes.IsSuccessful)
             {
@@ -117,8 +117,8 @@ namespace CatViP_API.Controllers
             return Ok();
         }
 
-        [HttpDelete("DeleteCat"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> DeleteCat([FromForm] long Id)
+        [HttpDelete("DeleteCat/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> DeleteCat(long Id)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -130,7 +130,7 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var checkCatRes = _catService.CheckIfCatExist(Id);
+            var checkCatRes = _catService.CheckIfCatExist(userResult.Result!.Id, Id);
 
             if (!checkCatRes.IsSuccessful)
             {

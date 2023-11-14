@@ -7,9 +7,9 @@ namespace CatViP_API.Services.Interfaces
     {
         ICollection<CatDTO> GetCats(long userId);
         CatDTO GetCat(long catId);
-        Task<ResponseResult> StoreCat(long userId, CreateCatRequestDTO createCatRequestDTO);
-        Task<ResponseResult> EditCat(EditCatRequestDTO editCatRequestDTO);
+        Task<ResponseResult> StoreCat(long userId, CatRequestDTO createCatRequestDTO);
+        Task<ResponseResult> EditCat(long catId, CatRequestDTO editCatRequestDTO);
         Task<ResponseResult> DeleteCat(long catId);
-        ResponseResult CheckIfCatExist(long catId);
+        ResponseResult CheckIfCatExist(long userId, long catId);
     }
 }

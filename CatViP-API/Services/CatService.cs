@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using CatViP_API.DTOs.CatDTOs;
-using CatViP_API.Models;
-using CatViP_API.Repositories;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services.Interfaces;
 
@@ -28,7 +26,7 @@ namespace CatViP_API.Services
             return _mapper.Map<ICollection<CatDTO>>(_catRepository.GetCats(userId));
         }
 
-        public async Task<ResponseResult> StoreCat(long userId, CreateCatRequestDTO createCatRequestDTO)
+        public async Task<ResponseResult> StoreCat(long userId, CatRequestDTO createCatRequestDTO)
         {
             var res = new ResponseResult();
 
@@ -42,11 +40,11 @@ namespace CatViP_API.Services
             return res;
         }
 
-        public async Task<ResponseResult> EditCat(EditCatRequestDTO editCatRequestDTO)
+        public async Task<ResponseResult> EditCat(long catId, CatRequestDTO editCatRequestDTO)
         {
             var res = new ResponseResult();
 
-            res.IsSuccessful = await _catRepository.EditCat(editCatRequestDTO);
+            res.IsSuccessful = await _catRepository.EditCat(catId, editCatRequestDTO);
 
             if (!res.IsSuccessful)
             {
@@ -70,11 +68,11 @@ namespace CatViP_API.Services
             return res;
         }
 
-        public ResponseResult CheckIfCatExist(long catId)
+        public ResponseResult CheckIfCatExist(long userId, long catId)
         {
             var res = new ResponseResult();
 
-            res.IsSuccessful = _catRepository.CheckIfCatExist(catId);
+            res.IsSuccessful = _catRepository.CheckIfCatExist(userId, catId);
 
             if (!res.IsSuccessful)
             {

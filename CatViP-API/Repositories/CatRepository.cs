@@ -14,9 +14,9 @@ namespace CatViP_API.Repositories
             this._context = context;
         }
 
-        public bool CheckIfCatExist(long catId)
+        public bool CheckIfCatExist(long userId, long catId)
         {
-            return _context.Cats.Any(x => x.Id == catId && x.Status);
+            return _context.Cats.Any(x => x.Id == catId && x.Status && x.UserId == userId);
         }
 
         public async Task<bool> DeleteCat(long catId)
@@ -35,11 +35,11 @@ namespace CatViP_API.Repositories
             }
         }
 
-        public async Task<bool> EditCat(EditCatRequestDTO editCatRequestDTO)
+        public async Task<bool> EditCat(long catId, CatRequestDTO editCatRequestDTO)
         {
             try
             {
-                var cat = _context.Cats.FirstOrDefault(x => x.Id == editCatRequestDTO.Id)!;
+                var cat = _context.Cats.FirstOrDefault(x => x.Id == catId)!;
                 cat.Name = editCatRequestDTO.Name;
                 cat.Description = editCatRequestDTO.Description;
                 cat.DateOfBirth = editCatRequestDTO.DateOfBirth;
@@ -64,10 +64,10 @@ namespace CatViP_API.Repositories
 
         public ICollection<Cat> GetCats(long userId)
         {
-            return _context.Cats.Where(x => x.UserId == userId).ToList();
+            return _context.Cats.Where(x => x.UserId == userId && x.Status).ToList();
         }
 
-        public async Task<bool> StoreCat(long userId, CreateCatRequestDTO createCatRequestDTO)
+        public async Task<bool> StoreCat(long userId, CatRequestDTO createCatRequestDTO)
         {
             try
             {

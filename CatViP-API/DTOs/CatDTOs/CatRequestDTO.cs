@@ -2,7 +2,7 @@
 
 namespace CatViP_API.DTOs.CatDTOs
 {
-    public class CreateCatRequestDTO
+    public class CatRequestDTO
     {
         [Required]
         public string Name { get; set; } = null!;
