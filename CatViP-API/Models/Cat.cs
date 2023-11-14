@@ -18,6 +18,7 @@ public partial class Cat
     public bool Gender { get; set; }
 
     public byte[]? ProfileImage { get; set; }
+    public bool Status { get; set; }
 
     public long UserId { get; set; }
 

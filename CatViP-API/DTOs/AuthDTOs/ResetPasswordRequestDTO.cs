@@ -1,4 +1,4 @@
-﻿namespace CatViP_API.DTOs
+﻿namespace CatViP_API.DTOs.AuthDTOs
 {
     public class ResetPasswordRequestDTO
     {

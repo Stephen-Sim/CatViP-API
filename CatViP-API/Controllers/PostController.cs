@@ -1,4 +1,4 @@
-﻿using CatViP_API.DTOs;
+﻿using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Services;
 using CatViP_API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -20,6 +20,24 @@ namespace CatViP_API.Controllers
             _postService = postService;
         }
 
+        [HttpGet("GetOwnPosts"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetOwnPosts()
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var posts = _postService.GetPosts(userResult.Result!);
+
+            return Ok(posts);
+        }
+
         [HttpGet("GetPosts"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetPosts()
         {
@@ -33,7 +51,7 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var posts = _postService.GetPosts(userResult.Result!);
+            var posts = _postService.GetOwnPosts(userResult.Result!);
 
             return Ok(posts);
         }
@@ -56,7 +74,7 @@ namespace CatViP_API.Controllers
             return Ok(postComments);
         }
 
-        [HttpPost("PostAct"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        [HttpPut("PostAct"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> PostActAsync([FromBody] PostActionRequestDTO postActionDTO)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;

@@ -1,5 +1,4 @@
 ﻿using Azure.Core;
-using CatViP_API.DTOs;
 using CatViP_API.Models;
 using CatViP_API.Repositories;
 using CatViP_API.Repositories.Interfaces;
@@ -14,6 +13,7 @@ using System.Text;
 using Microsoft.VisualBasic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using CatViP_API.DTOs.AuthDTOs;
 
 namespace CatViP_API.Services
 {

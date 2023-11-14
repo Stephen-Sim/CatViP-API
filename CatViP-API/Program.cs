@@ -28,11 +28,12 @@ builder.Services.AddDbContext<CatViPContext>(options =>
 // Add repository
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
-
+builder.Services.AddScoped<ICatRepository, CatRepository>();
 
 // Add services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<ICatService, CatService>();
 
 
 //Add token configuration

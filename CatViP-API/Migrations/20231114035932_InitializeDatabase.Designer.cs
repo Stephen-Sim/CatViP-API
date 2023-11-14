@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatViP_API.Migrations
 {
     [DbContext(typeof(CatViPContext))]
-    [Migration("20231113145826_InitializeDB")]
-    partial class InitializeDB
+    [Migration("20231114035932_InitializeDatabase")]
+    partial class InitializeDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,6 +130,9 @@ namespace CatViP_API.Migrations
 
                     b.Property<byte[]>("ProfileImage")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -811,7 +814,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$2oDy/KPK911Znn6lRw0nQuVmd.frf4pnGwDQ37EANwOOJb28.AhPO",
+                            Password = "$2a$11$3Jvb4BRp6GcbA6OU2kbqIej2H..xP0ngBv4sINkT6x0SoUy.goTCq",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -822,7 +825,7 @@ namespace CatViP_API.Migrations
                             Email = "simshansiong2002@gmail.com",
                             FullName = "stephen sim",
                             Gender = true,
-                            Password = "$2a$11$ccM/wGmKkHyfPBinqk3/RukoZH5x6.ZKH5SxGyvtoXfwxp9owaWrW",
+                            Password = "$2a$11$c.xIkREtANEgI.FQG7EddOxxb2mUpeemPcheq3elhQ6P85VtPb01C",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -833,7 +836,7 @@ namespace CatViP_API.Migrations
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
                             Gender = false,
-                            Password = "$2a$11$QFIzkLIFuCrH0PL8373pue8.Cwga58Ps8O3TK.zndE1PdXso.lC8y",
+                            Password = "$2a$11$fXJtF1Wkf8KdIo3MMLcfbeMHQdtJpCrkA.V1zWYnQHfMAorcS/NOC",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -844,7 +847,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$BHkIpFrrnKO49tOuGNZbzOX7UUn8lslMyaGE36c7VLNldFSvxeyxi",
+                            Password = "$2a$11$KamO7QswbOhQe0KmsgO2sOBaJwFtiURm8vwRj7cO9Dd.PZVsftfc.",
                             RoleId = 4L,
                             Username = "wafir"
                         });

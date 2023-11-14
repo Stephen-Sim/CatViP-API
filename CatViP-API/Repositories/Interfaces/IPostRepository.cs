@@ -1,4 +1,4 @@
-﻿using CatViP_API.DTOs;
+﻿using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Models;
 
 namespace CatViP_API.Repositories.Interfaces
@@ -16,5 +16,6 @@ namespace CatViP_API.Repositories.Interfaces
         ICollection<PostImage> GetPostImages(long postId);
         Task<bool> ActPost(long userId, PostActionRequestDTO postActionDTO);
         Task<bool> CommentPost(long userId, CommentRequestDTO commentRequestDTO);
+        ICollection<Post> GetOwnPosts(long userId);
     }
 }

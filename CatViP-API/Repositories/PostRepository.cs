@@ -1,5 +1,5 @@
 ﻿using CatViP_API.Data;
-using CatViP_API.DTOs;
+using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -130,6 +130,11 @@ namespace CatViP_API.Repositories
             }
 
             return true;
+        }
+
+        public ICollection<Post> GetOwnPosts(long userId)
+        {
+            return _context.Posts.Where(x => x.UserId == userId && x.Status).ToList();
         }
     }
 }

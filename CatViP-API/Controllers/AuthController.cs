@@ -1,4 +1,4 @@
-﻿using CatViP_API.DTOs;
+﻿using CatViP_API.DTOs.AuthDTOs;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services;

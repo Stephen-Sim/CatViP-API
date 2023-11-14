@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using CatViP_API.DTOs;
+using CatViP_API.DTOs.CatDTOs;
+using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Models;
 
 namespace CatViP_API.Helpers
@@ -13,6 +14,8 @@ namespace CatViP_API.Helpers
             CreateMap<PostImage, PostImageDTO>();
             CreateMap<Comment, CommentDTO>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName));
+
+            CreateMap<Cat, CatDTO>();
         }
     }
 }

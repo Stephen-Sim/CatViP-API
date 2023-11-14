@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CatViP_API.DTOs
+namespace CatViP_API.DTOs.PostDTOs
 {
     public class CommentRequestDTO
     {

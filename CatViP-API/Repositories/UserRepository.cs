@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
 using CatViP_API.Data;
-using CatViP_API.DTOs;
+using CatViP_API.DTOs.AuthDTOs;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;

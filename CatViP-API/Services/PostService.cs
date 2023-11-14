@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Azure;
-using CatViP_API.DTOs;
+using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services.Interfaces;
@@ -24,9 +24,9 @@ namespace CatViP_API.Services
             _mapper = mapper;
         }
 
-        public ICollection<PostDTO> GetPosts(User currentUser)
+        public ICollection<PostDTO> GetOwnPosts(User currentUser)
         {
-            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPosts());
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetOwnPosts(currentUser.Id));
 
             foreach (var post in posts)
             {
@@ -168,6 +168,22 @@ namespace CatViP_API.Services
             var postComments = _mapper.Map<ICollection<CommentDTO>>(_postRepository.GetPostComments(postId));
 
             return postComments;
+        }
+
+        public ICollection<PostDTO> GetPosts(User currentUser)
+        {
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPosts());
+
+            foreach (var post in posts)
+            {
+                post.LikeCount = _postRepository.GetPostLikeCount(post.Id);
+                post.DislikeCount = _postRepository.GetPostDisLikeCount(post.Id);
+                post.CommentCount = _postRepository.GetPostCommentCount(post.Id);
+                post.PostImages = _mapper.Map<ICollection<PostImageDTO>>(_postRepository.GetPostImages(post.Id));
+                post.CurrentUserAction = _postRepository.GetCurrentUserStatusOnPost(currentUser.Id, post.Id);
+            }
+
+            return posts;
         }
     }
 }
