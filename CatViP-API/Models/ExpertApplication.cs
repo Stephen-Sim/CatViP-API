@@ -13,7 +13,7 @@ public partial class ExpertApplication
 
     public string? RejectedReason { get; set; }
 
-    public string DateTimie { get; set; } = null!;
+    public DateTime DateTime { get; set; }
 
     public long StatusId { get; set; }
 

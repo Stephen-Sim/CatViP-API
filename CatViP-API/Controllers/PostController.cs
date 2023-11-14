@@ -13,11 +13,13 @@ namespace CatViP_API.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IPostService _postService;
+        private readonly ICatService _catService;
 
-        public PostController(IAuthService authService, IPostService postService)
+        public PostController(IAuthService authService, IPostService postService, ICatService catService)
         {
             _authService = authService;
             _postService = postService;
+            _catService = catService;
         }
 
         [HttpGet("GetOwnPosts"), Authorize(Roles = "Cat Owner,Cat Expert")]
@@ -49,6 +51,13 @@ namespace CatViP_API.Controllers
             if (!userResult.IsSuccessful)
             {
                 return Unauthorized("invalid token");
+            }
+
+            var checkCatRes = _catService.CheckIfCatExist(userResult.Result!.Id, catId);
+
+            if (!checkCatRes.IsSuccessful)
+            {
+                return Unauthorized(checkCatRes.ErrorMessage);
             }
 
             var posts = _postService.GetPostsByCatId(userResult.Result!.Id, catId);
@@ -94,6 +103,11 @@ namespace CatViP_API.Controllers
         [HttpPut("ActPost"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> ActPost([FromBody] PostActionRequestDTO postActionDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
 
@@ -117,6 +131,11 @@ namespace CatViP_API.Controllers
         [HttpPost("CreateComment"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> CreateComment([FromBody] CommentRequestDTO commentRequestDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
 
@@ -186,6 +205,11 @@ namespace CatViP_API.Controllers
         [HttpPut("EditPost/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> EditPost(long Id, [FromBody] EditPostRequestDTO editPostRequestDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
 

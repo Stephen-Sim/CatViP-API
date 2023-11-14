@@ -29,11 +29,13 @@ builder.Services.AddDbContext<CatViPContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ICatRepository, CatRepository>();
+builder.Services.AddScoped<IExpertRepository, ExpertRepository>();
 
 // Add services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICatService, CatService>();
+builder.Services.AddScoped<IExpertService, ExpertService>();
 
 
 //Add token configuration

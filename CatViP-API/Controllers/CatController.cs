@@ -67,6 +67,11 @@ namespace CatViP_API.Controllers
         [HttpPost("StoreCat"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> StoreCat([FromBody] CatRequestDTO createCatRequestDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
 
@@ -90,6 +95,11 @@ namespace CatViP_API.Controllers
         [HttpPut("EditCat/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> EditCat(long Id, [FromBody] CatRequestDTO editCatRequestDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
 
