@@ -17,5 +17,6 @@ namespace CatViP_API.Repositories.Interfaces
         Task<bool> ActPost(long userId, PostActionRequestDTO postActionDTO);
         Task<bool> CommentPost(long userId, CommentRequestDTO commentRequestDTO);
         ICollection<Post> GetOwnPosts(long userId);
+        ICollection<Post> GetPostsByCatId(long catId);
     }
 }

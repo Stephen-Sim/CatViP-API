@@ -53,7 +53,7 @@ namespace CatViP_API.Services
             return postTypes;
         }
 
-        public async Task<ResponseResult> CreatePost(User user, CreatePostRequestDTO createPostDTO)
+        public async Task<ResponseResult> CreatePost(User user, PostRequestDTO createPostDTO)
         {
             var storeResult = new ResponseResult();
 
@@ -98,6 +98,11 @@ namespace CatViP_API.Services
                 {
                     Image = pi.Image,
                     IsBloodyContent = pi.IsBloodyContent
+                }).ToList(),
+
+                MentionedCats = createPostDTO.MentionedCats.Select(mc => new MentionedCat
+                {
+                    CatId = mc.CatId,
                 }).ToList()
             };
 
@@ -181,6 +186,22 @@ namespace CatViP_API.Services
                 post.CommentCount = _postRepository.GetPostCommentCount(post.Id);
                 post.PostImages = _mapper.Map<ICollection<PostImageDTO>>(_postRepository.GetPostImages(post.Id));
                 post.CurrentUserAction = _postRepository.GetCurrentUserStatusOnPost(currentUser.Id, post.Id);
+            }
+
+            return posts;
+        }
+
+        public ICollection<PostDTO> GetPostsByCatId(long currentUserId, long catId)
+        {
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPostsByCatId(catId));
+
+            foreach (var post in posts)
+            {
+                post.LikeCount = _postRepository.GetPostLikeCount(post.Id);
+                post.DislikeCount = _postRepository.GetPostDisLikeCount(post.Id);
+                post.CommentCount = _postRepository.GetPostCommentCount(post.Id);
+                post.PostImages = _mapper.Map<ICollection<PostImageDTO>>(_postRepository.GetPostImages(post.Id));
+                post.CurrentUserAction = _postRepository.GetCurrentUserStatusOnPost(currentUserId, post.Id);
             }
 
             return posts;

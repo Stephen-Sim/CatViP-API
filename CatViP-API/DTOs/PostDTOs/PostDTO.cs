@@ -20,5 +20,6 @@
 
         public int DislikeCount { get; set; }
         public ICollection<PostImageDTO> PostImages { get; set; } = new List<PostImageDTO>();
+        public ICollection<MentionedCatDTO> MentionedCats { get; set; } = new List<MentionedCatDTO>();
     }
 }

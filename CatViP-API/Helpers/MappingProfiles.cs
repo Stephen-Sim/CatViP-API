@@ -14,7 +14,8 @@ namespace CatViP_API.Helpers
             CreateMap<PostImage, PostImageDTO>();
             CreateMap<Comment, CommentDTO>()
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName));
-
+            CreateMap<MentionedCat, MentionedCatDTO>()
+                .ForMember(dest => dest.CatName, opt => opt.MapFrom(src => src.Cat.Name));
             CreateMap<Cat, CatDTO>();
         }
     }
