@@ -3,12 +3,14 @@ using CatViP_API.Models;
 using CatViP_API.Services;
 using CatViP_API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatViP_API.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("AllowAll")]
     [ApiController]
     public class CatController : ControllerBase
     {
