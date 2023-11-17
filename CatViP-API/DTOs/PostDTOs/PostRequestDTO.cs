@@ -9,6 +9,6 @@ namespace CatViP_API.DTOs.PostDTOs
         [Required]
         public string Description { get; set; } = null!;
         public ICollection<PostImageDTO> PostImages { get; set; } = new List<PostImageDTO>();
-        public ICollection<MentionedCatDTO> MentionedCats { get; set; } = new List<MentionedCatDTO>();
+        public ICollection<MentionedCatRequestDTO> MentionedCats { get; set; } = new List<MentionedCatRequestDTO>();
     }
 }
