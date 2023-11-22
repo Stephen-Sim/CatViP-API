@@ -15,5 +15,8 @@ namespace CatViP_API.Repositories.Interfaces
         Task<User?> StoreUser(UserRegisterRequestDTO userRegisterDTO);
         Task<bool> UpdateUserProfile(long userId, EditProfileDTO editProfileDTO);
         Task<bool> ResetUserPassword(string email, string password);
+        int GetUserFollowerCount(long UserId);
+        int GetUserFollowingCount(long UserId);
+        int GetExpertTipsCount(long iUserIdd);
     }
 }

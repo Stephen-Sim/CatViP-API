@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CatViP_API.DTOs.AuthDTOs;
 using CatViP_API.DTOs.CatDTOs;
 using CatViP_API.DTOs.ExpertDTOs;
 using CatViP_API.DTOs.PostDTOs;
@@ -10,6 +11,8 @@ namespace CatViP_API.Helpers
     {
         public MappingProfiles()
         {
+            CreateMap<User, UserInfoDTO>();
+
             CreateMap<PostType, PostTypeDTO>();
             CreateMap<Post, PostDTO>();
             CreateMap<PostImage, PostImageDTO>();

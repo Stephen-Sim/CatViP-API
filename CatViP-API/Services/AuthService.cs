@@ -14,6 +14,8 @@ using Microsoft.VisualBasic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using CatViP_API.DTOs.AuthDTOs;
+using AutoMapper;
+using CatViP_API.DTOs.CatDTOs;
 
 namespace CatViP_API.Services
 {
@@ -22,10 +24,12 @@ namespace CatViP_API.Services
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
 
-        public AuthService(IUserRepository userRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public AuthService(IUserRepository userRepository, IMapper mapper, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             this._userRepository = userRepository;
+            this._mapper = mapper;
             this._configuration = configuration;
             this._httpContextAccessor = httpContextAccessor;
         }
@@ -319,6 +323,21 @@ namespace CatViP_API.Services
             }
 
             return res;
+        }
+
+        public UserInfoDTO GetUserInfo(User user)
+        {
+            var userDTO = _mapper.Map<UserInfoDTO>(user);
+            userDTO.IsExpert = (user.RoleId == 3);
+            userDTO.Following = _userRepository.GetUserFollowingCount(user.Id);
+            userDTO.Follwer = _userRepository.GetUserFollowerCount(user.Id);
+
+            if (userDTO.IsExpert)
+            {
+                userDTO.ExpertTips = _userRepository.GetExpertTipsCount(user.Id);
+            }
+
+            return userDTO;
         }
     }
 }

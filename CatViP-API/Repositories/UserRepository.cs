@@ -176,5 +176,20 @@ namespace CatViP_API.Repositories
                 return false;
             }
         }
+
+        public int GetUserFollowerCount(long UserId)
+        {
+            return _context.UserFollowers.Where(x => x.UserId == UserId).Count();
+        }
+
+        public int GetUserFollowingCount(long UserId)
+        {
+            return _context.UserFollowers.Where(x => x.FollowerId == UserId).Count();
+        }
+
+        public int GetExpertTipsCount(long UserId)
+        {
+            return _context.Posts.Where(x => x.PostTypeId == 2 && x.UserId == UserId).Count();
+        }
     }
 }

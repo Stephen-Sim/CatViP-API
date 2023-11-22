@@ -115,7 +115,7 @@ namespace CatViP_API.Controllers
             return Ok(newTokenResult.Result);
         }
 
-        [HttpPut("editProfile-mobile"), Authorize("Cat Owner,Cat Expert")]
+        [HttpPut("editProfile-mobile"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> EditProfileRequest(EditProfileDTO editProfileDTO)
         {
             if (!ModelState.IsValid)
@@ -186,6 +186,24 @@ namespace CatViP_API.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet("GetUserInfo"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized(userResult.ErrorMessage);
+            }
+
+            var userProfileDTO = _authService.GetUserInfo(userResult.Result!);
+
+            return Ok(userProfileDTO);
         }
     }
 }
