@@ -12,6 +12,7 @@ namespace CatViP_API.DTOs.CatDTOs
         public DateTime DateOfBirth { get; set; }
         [Required]
         public bool Gender { get; set; }
+        [Required]
         public byte[]? ProfileImage { get; set; }
     }
 }

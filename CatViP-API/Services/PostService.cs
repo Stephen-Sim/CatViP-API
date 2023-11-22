@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure;
 using CatViP_API.DTOs.PostDTOs;
+using CatViP_API.Helpers;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services.Interfaces;
@@ -87,7 +88,7 @@ namespace CatViP_API.Services
             {
                 foreach (var postImage in createPostDTO.PostImages)
                 {
-                    var isContainCat = await CheckIfPhotoContainCat(postImage.Image);
+                    var isContainCat = await CatDetectionHelper.CheckIfPhotoContainCat(postImage.Image);
 
                     if (!isContainCat)
                     {
@@ -128,28 +129,6 @@ namespace CatViP_API.Services
             }
 
             return storeResult;
-        }
-
-        public async Task<bool> CheckIfPhotoContainCat(byte[] image)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                var obj = new { image = image };
-                var json = JsonConvert.SerializeObject(obj);
-
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var res = await client.PostAsync("http://127.0.0.1:5000/predict", content);
-
-                if (res.IsSuccessStatusCode)
-                {
-                    string responseContent = await res.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<dynamic>(responseContent);
-                    return result!.result;
-                }
-            }
-
-            return false;
         }
 
         public async Task<ResponseResult> ActPost(User user, PostActionRequestDTO postActionDTO)

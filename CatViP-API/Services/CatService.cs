@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using CatViP_API.DTOs.CatDTOs;
+using CatViP_API.Helpers;
+using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services.Interfaces;
 
@@ -29,6 +31,14 @@ namespace CatViP_API.Services
         public async Task<ResponseResult> StoreCat(long userId, CatRequestDTO createCatRequestDTO)
         {
             var res = new ResponseResult();
+
+            res.IsSuccessful = await CatDetectionHelper.CheckIfPhotoContainCat(createCatRequestDTO.ProfileImage);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "image may not contain cat.";
+                return res;
+            }
 
             res.IsSuccessful = await _catRepository.StoreCat(userId, createCatRequestDTO);
 
