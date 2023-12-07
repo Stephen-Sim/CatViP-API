@@ -3,6 +3,7 @@ using CatViP_API.DTOs.AuthDTOs;
 using CatViP_API.DTOs.CatDTOs;
 using CatViP_API.DTOs.ExpertDTOs;
 using CatViP_API.DTOs.PostDTOs;
+using CatViP_API.DTOs.UserDTOs;
 using CatViP_API.Models;
 
 namespace CatViP_API.Helpers
@@ -33,6 +34,10 @@ namespace CatViP_API.Helpers
             CreateMap<ExpertApplication, ExpertApplicationDTO>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Name))
                 .ForMember(dest => dest.CatOnwerId, opt => opt.MapFrom(src => src.UserId));
+
+            CreateMap<User, SearchUserDTO>();
+
+            CreateMap<User, UserInfoDTO>();
         }
     }
 }

@@ -191,5 +191,19 @@ namespace CatViP_API.Repositories
         {
             return _context.Posts.Where(x => x.PostTypeId == 2 && x.UserId == UserId).Count();
         }
+
+        public ICollection<User> SearchByUsenameOrFullName(string name, long authId)
+        {
+            return _context.Users
+                .Where(x => (x.RoleId == 2 || x.RoleId == 3) &&
+                            (x.FullName.ToLower().StartsWith(name) || x.Username.ToLower().StartsWith(name)) &&
+                            x.Id != authId)
+                .ToList();
+        }
+
+        public async Task<User?> GetSearchUserById(long userId)
+        {
+            return await _context.Users.Where(x => x.RoleId == 2 || x.RoleId == 3).Include(x => x.Role).FirstOrDefaultAsync(x => x.Id == userId);
+        }
     }
 }

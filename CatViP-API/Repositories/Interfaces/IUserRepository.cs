@@ -7,6 +7,7 @@ namespace CatViP_API.Repositories.Interfaces
     {
         Task<User?> AuthenticateUser(UserLoginRequestDTO userLogin);
         Task<User?> GetUserById(long userId);
+        Task<User?> GetSearchUserById(long userId);
         string GetUserRoleName(User user);
         Task<bool> UpdateUserToken(long userId, string JWT, DateTime TokenCreated, DateTime TokenExpires);
         Task<bool> DeleteUserToken(long userId);
@@ -18,5 +19,6 @@ namespace CatViP_API.Repositories.Interfaces
         int GetUserFollowerCount(long UserId);
         int GetUserFollowingCount(long UserId);
         int GetExpertTipsCount(long iUserIdd);
+        ICollection<User> SearchByUsenameOrFullName(string name, long authId);
     }
 }
