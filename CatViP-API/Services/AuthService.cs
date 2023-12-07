@@ -325,9 +325,9 @@ namespace CatViP_API.Services
             return res;
         }
 
-        public UserInfoDTO GetUserInfo(User user)
+        public AuthInfoDTO GetUserInfo(User user)
         {
-            var userDTO = _mapper.Map<UserInfoDTO>(user);
+            var userDTO = _mapper.Map<AuthInfoDTO>(user);
             userDTO.IsExpert = (user.RoleId == 3);
             userDTO.Following = _userRepository.GetUserFollowingCount(user.Id);
             userDTO.Follwer = _userRepository.GetUserFollowerCount(user.Id);

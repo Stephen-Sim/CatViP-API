@@ -13,5 +13,7 @@
         public DateTime DateTime { get; set; }
 
         public string Status { get; set; } = null!;
+
+        public long CatOnwerId { get; set; }
     }
 }

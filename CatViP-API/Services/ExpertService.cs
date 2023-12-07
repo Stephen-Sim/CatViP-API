@@ -14,6 +14,7 @@ namespace CatViP_API.Services
         private readonly IConfiguration _configuration;
         private readonly IExpertRepository _expertRepository;
         private readonly IMapper _mapper;
+
         public ExpertService(IConfiguration configuration, IExpertRepository expertRepository, IMapper mapper)
         {
             this._configuration = configuration;
@@ -42,9 +43,9 @@ namespace CatViP_API.Services
             return res;
         }
 
-        public ICollection<ExpertApplicationDTO> GetApplications(long userId)
+        public ExpertApplicationDTO GetLastestApplication(long userId)
         {
-            return _mapper.Map<ICollection<ExpertApplicationDTO>>(_expertRepository.GetExpertApplications(userId));
+            return _mapper.Map<ExpertApplicationDTO>(_expertRepository.GetExpertLastestApplication(userId));
         }
 
         public ICollection<ExpertApplicationDTO> GetPendingApplications()
@@ -73,6 +74,34 @@ namespace CatViP_API.Services
             return res;
         }
 
+        public async Task<ResponseResult> RevokeApplication(long Id)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _expertRepository.RevokeApplicaton(Id);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "fail to revoke expert application status.";
+            }
+
+            return res;
+        }
+
+        public ResponseResult CheckIfPendingApplicationExist(long userId, long applicationId)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = _expertRepository.CheckIfPendingApplicationExist(userId, applicationId);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "application is not exist or may not belong to this user.";
+            }
+
+            return res;
+        }
+
         public ResponseResult CheckIfPendingApplicationExist(long applicationId)
         {
             var res = new ResponseResult();
@@ -85,6 +114,16 @@ namespace CatViP_API.Services
             }
 
             return res;
+        }
+
+        public ICollection<ExpertApplicationDTO> GetApplications()
+        {
+            return _mapper.Map<ICollection<ExpertApplicationDTO>>(_expertRepository.GetApplications());
+        }
+
+        public ExpertApplicationDTO GetApplicationById(long id)
+        {
+            return _mapper.Map<ExpertApplicationDTO>(_expertRepository.GetApplicationById(id));
         }
     }
 }

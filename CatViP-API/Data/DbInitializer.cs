@@ -30,7 +30,8 @@ namespace CatViP_API.Data
             modelBuilder.Entity<ExpertApplicationStatus>().HasData(
                 new ExpertApplicationStatus() { Id = 1, Name = "Success" },
                 new ExpertApplicationStatus() { Id = 2, Name = "Pending" },
-                new ExpertApplicationStatus() { Id = 3, Name = "Rejected" }
+                new ExpertApplicationStatus() { Id = 3, Name = "Rejected" },
+                new ExpertApplicationStatus() { Id = 4, Name = "Revoked" }
             );
 
             modelBuilder.Entity<PostReportStatus>().HasData(

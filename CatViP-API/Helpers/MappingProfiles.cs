@@ -11,18 +11,28 @@ namespace CatViP_API.Helpers
     {
         public MappingProfiles()
         {
-            CreateMap<User, UserInfoDTO>();
+            CreateMap<User, AuthInfoDTO>();
 
             CreateMap<PostType, PostTypeDTO>();
-            CreateMap<Post, PostDTO>();
+
+            CreateMap<Post, PostDTO>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
+
             CreateMap<PostImage, PostImageDTO>();
+
             CreateMap<Comment, CommentDTO>()
-                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName));
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
+
             CreateMap<MentionedCat, MentionedCatDTO>()
                 .ForMember(dest => dest.CatName, opt => opt.MapFrom(src => src.Cat.Name));
+
             CreateMap<Cat, CatDTO>();
+
             CreateMap<ExpertApplication, ExpertApplicationDTO>()
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Name));
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Name))
+                .ForMember(dest => dest.CatOnwerId, opt => opt.MapFrom(src => src.UserId));
         }
     }
 }

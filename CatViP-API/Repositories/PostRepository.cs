@@ -16,7 +16,7 @@ namespace CatViP_API.Repositories
 
         public ICollection<Post> GetPosts()
         {
-            return _context.Posts.Where(x => x.Status).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
+            return _context.Posts.Where(x => x.Status).Include(x => x.User).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
         }
 
         public int GetPostLikeCount(long postId)

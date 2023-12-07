@@ -32,7 +32,7 @@ namespace CatViP_API.Services
         {
             var res = new ResponseResult();
 
-            res.IsSuccessful = await CatDetectionHelper.CheckIfPhotoContainCat(createCatRequestDTO.ProfileImage);
+            res.IsSuccessful = await CatDetectionHelper.CheckIfPhotoContainCat(createCatRequestDTO.ProfileImage!);
 
             if (!res.IsSuccessful)
             {
@@ -53,6 +53,14 @@ namespace CatViP_API.Services
         public async Task<ResponseResult> EditCat(long catId, CatRequestDTO editCatRequestDTO)
         {
             var res = new ResponseResult();
+
+            res.IsSuccessful = await CatDetectionHelper.CheckIfPhotoContainCat(editCatRequestDTO.ProfileImage!);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "image may not contain cat.";
+                return res;
+            }
 
             res.IsSuccessful = await _catRepository.EditCat(catId, editCatRequestDTO);
 

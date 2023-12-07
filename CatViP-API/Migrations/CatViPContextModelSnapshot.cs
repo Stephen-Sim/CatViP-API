@@ -357,6 +357,11 @@ namespace CatViP_API.Migrations
                         {
                             Id = 3L,
                             Name = "Rejected"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Name = "Revoked"
                         });
                 });
 
@@ -810,7 +815,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$ZZkA/PU9PYcFsbBohmXQ5eExT.t89O7TEtSfhWqhPP97uK/QP4uYC",
+                            Password = "$2a$11$aCebeoSH2dlDe27Z3jol/OQiWysLVMsHD8V3eVvw6nRyIVK4jfjIW",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -821,7 +826,7 @@ namespace CatViP_API.Migrations
                             Email = "simshansiong2002@gmail.com",
                             FullName = "stephen sim",
                             Gender = true,
-                            Password = "$2a$11$VPd1j7ZSVx8vsYADoHee2.WXWRdBevQP7W4dD4FXjirbrzNrM6fNG",
+                            Password = "$2a$11$8wA7r18dQhdUiqpy5SmAKuLnfTThZGA3gKrxPzIU4vk7WoIXzAMHi",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -832,7 +837,7 @@ namespace CatViP_API.Migrations
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
                             Gender = false,
-                            Password = "$2a$11$c1QsYsMOU/lXQzOazfrLs.HP/Db1kWvjgeHAquVPdFZTNwQ11OLK6",
+                            Password = "$2a$11$dnE9QtgOXW8CPoKS6Dz.deBb23SLAkaDzalXXOG5TAHvQvphDT0rm",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -843,7 +848,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$jvNuoF3ERBly8HPfQceGkuR0oIBFWXDJuymxoSSSzpvKykEpfY99C",
+                            Password = "$2a$11$VDsPVqdr.J0Ub3f1u9H5/ugH33QvKsGaO1tp4bFVOUKeddS4090Kq",
                             RoleId = 4L,
                             Username = "wafir"
                         });

@@ -19,6 +19,6 @@ namespace CatViP_API.Services.Interfaces
         ResponseResult<string> GenerateForgotPasswordLink(string email);
         Task SendRecoverEmail(string email, string url);
         Task<ResponseResult> ResetPassword(ResetPasswordRequestDTO resetPasswordDTO);
-        UserInfoDTO GetUserInfo(User user);
+        AuthInfoDTO GetUserInfo(User user);
     }
 }

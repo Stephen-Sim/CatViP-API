@@ -9,5 +9,7 @@
         public DateTime DateTime { get; set; }
 
         public string Username { get; set; } = null!;
+
+        public byte[]? ProfileImage { get; set; }
     }
 }

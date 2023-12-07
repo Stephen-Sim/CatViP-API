@@ -21,8 +21,8 @@ namespace CatViP_API.Controllers
             _expertService = expertService;
         }
 
-        [HttpGet("GetApplications"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> GetApplications() 
+        [HttpGet("GetLastestApplication"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetLastestApplication()
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -34,13 +34,13 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var applications = _expertService.GetApplications(userResult.Result!.Id);
+            var application = _expertService.GetLastestApplication(userResult.Result!.Id);
 
-            return Ok(applications);
+            return Ok(application);
         }
 
         [HttpPost("ApplyAsExpert"), Authorize(Roles = "Cat Owner")]
-        public async Task<IActionResult> ExpertApplicationAsync([FromBody] ExpertApplicationRequestDTO expertApplicationRequestDTO)
+        public async Task<IActionResult> ExpertApplication([FromBody] ExpertApplicationRequestDTO expertApplicationRequestDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -67,6 +67,41 @@ namespace CatViP_API.Controllers
             return Ok();
         }
 
+        [HttpDelete("RevokeApplication/{Id}"), Authorize(Roles = "Cat Owner")]
+        public async Task<IActionResult> RevokeApplication(long Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var checkApplicationRes = _expertService.CheckIfPendingApplicationExist(userResult.Result!.Id, Id);
+
+            if (!checkApplicationRes.IsSuccessful)
+            {
+                return BadRequest(checkApplicationRes.ErrorMessage);
+            }
+
+            var revokeApplicationRes = await _expertService.RevokeApplication(Id);
+
+            if (!revokeApplicationRes.IsSuccessful)
+            {
+                return BadRequest(revokeApplicationRes.ErrorMessage);
+            }
+
+            return Ok();
+        }
+
         [HttpGet("GetPendingApplications"), Authorize(Roles = "System Admin")]
         public async Task<IActionResult> GetPendingApplications()
         {
@@ -83,6 +118,42 @@ namespace CatViP_API.Controllers
             var applications = _expertService.GetPendingApplications();
 
             return Ok(applications);
+        }
+
+        [HttpGet("GetApplications"), Authorize(Roles = "System Admin")]
+        public async Task<IActionResult> GetApplications()
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var applications = _expertService.GetApplications();
+
+            return Ok(applications);
+        }
+
+        [HttpGet("GetApplicationById/{Id}"), Authorize(Roles = "System Admin")]
+        public async Task<IActionResult> GetApplicationById(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var application = _expertService.GetApplicationById(Id);
+
+            return Ok(application);
         }
 
         [HttpPut("UpateExpertApplicationStatus"), Authorize(Roles = "System Admin")]

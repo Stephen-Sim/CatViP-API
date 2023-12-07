@@ -115,7 +115,7 @@ namespace CatViP_API.Controllers
             return Ok(newTokenResult.Result);
         }
 
-        [HttpPut("editProfile-mobile"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        [HttpPut("editProfile-mobile"), Authorize(Roles = "Cat Owner,Cat Expert,Cat Product Seller")]
         public async Task<IActionResult> EditProfileRequest(EditProfileDTO editProfileDTO)
         {
             if (!ModelState.IsValid)

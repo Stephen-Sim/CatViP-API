@@ -10,6 +10,10 @@
 
         public long UserId { get; set; }
 
+        public string Username { get; set; } = null!;
+
+        public byte[]? ProfileImage { get; set; }
+
         public long PostTypeId { get; set; }
 
         public int LikeCount { get; set; }

@@ -33,6 +33,7 @@ builder.Services.AddScoped<IExpertRepository, ExpertRepository>();
 
 // Add services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICatService, CatService>();
 builder.Services.AddScoped<IExpertService, ExpertService>();

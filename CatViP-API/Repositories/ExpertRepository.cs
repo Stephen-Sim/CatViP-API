@@ -20,9 +20,14 @@ namespace CatViP_API.Repositories
             return _context.ExpertApplications.Any(x => x.Id == applicationId && x.StatusId == 2);
         }
 
-        public ICollection<ExpertApplication> GetExpertApplications(long userId)
+        public bool CheckIfPendingApplicationExist(long userId, long applicationId)
         {
-            return _context.ExpertApplications.Include(x => x.Status).Where(x => x.UserId == userId).OrderByDescending(x => x.DateTime).ToList();
+            return _context.ExpertApplications.Any(x => x.Id == applicationId && x.UserId == userId && x.StatusId == 2);
+        }
+
+        public ExpertApplication GetExpertLastestApplication(long userId)
+        {
+            return _context.ExpertApplications.Include(x => x.Status).Where(x => x.UserId == userId).OrderByDescending(x => x.DateTime).Last();
         }
 
         public ICollection<ExpertApplication> GetPendingApplications()
@@ -86,6 +91,32 @@ namespace CatViP_API.Repositories
             {
                 return false;
             }
+        }
+
+        public async Task<bool> RevokeApplicaton(long id)
+        {
+            try
+            {
+                var application = _context.ExpertApplications.FirstOrDefault(x => x.Id == id);
+                application!.StatusId = 4;
+                _context.Update(application);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public ICollection<ExpertApplication> GetApplications()
+        {
+            return _context.ExpertApplications.Include(x => x.Status).OrderByDescending(x => x.DateTime).ToList();
+        }
+
+        public ExpertApplication GetApplicationById(long Id)
+        {
+            return _context.ExpertApplications.Include(x => x.Status).FirstOrDefault(x => x.Id == Id)!;
         }
     }
 }

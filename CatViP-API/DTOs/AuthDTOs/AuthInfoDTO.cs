@@ -1,6 +1,6 @@
 ﻿namespace CatViP_API.DTOs.AuthDTOs
 {
-    public class UserInfoDTO
+    public class AuthInfoDTO
     {
         public string Username { get; set; } = null!;
         public string FullName { get; set; } = null!;
