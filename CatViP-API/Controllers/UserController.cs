@@ -39,7 +39,7 @@ namespace CatViP_API.Controllers
             return Ok(users);
         }
 
-        [HttpGet("GetUserInfoById/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        [HttpGet("GetUserInfoById/{Id}"), Authorize(Roles = "System Admin,Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetUserInfoById(long Id)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
