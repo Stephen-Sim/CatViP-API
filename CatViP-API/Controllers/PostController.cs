@@ -229,7 +229,7 @@ namespace CatViP_API.Controllers
                 return BadRequest(checkPostRes.ErrorMessage);
             }
 
-            var postActRes = await _postService.EditPost(userResult.Result!.Id, editPostRequestDTO);
+            var postActRes = await _postService.EditPost(Id, editPostRequestDTO);
 
             if (!postActRes.IsSuccessful)
             {
