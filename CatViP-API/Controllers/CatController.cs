@@ -41,6 +41,24 @@ namespace CatViP_API.Controllers
             return Ok(cats);
         }
 
+        [HttpGet("GetCats/{UserId}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetCats(long UserId)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var cats = _catService.GetCats(UserId);
+
+            return Ok(cats);
+        }
+
         [HttpGet("GetCat/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetCat(long Id)
         {
