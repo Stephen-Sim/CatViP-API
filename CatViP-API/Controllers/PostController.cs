@@ -37,7 +37,7 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var posts = _postService.GetPosts(userResult.Result!);
+            var posts = _postService.GetOwnPosts(userResult.Result!);
 
             return Ok(posts);
         }
