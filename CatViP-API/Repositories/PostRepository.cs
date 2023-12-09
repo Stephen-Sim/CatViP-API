@@ -14,9 +14,9 @@ namespace CatViP_API.Repositories
             this._context = context;
         }
 
-        public ICollection<Post> GetPosts()
+        public ICollection<Post> GetPosts(long authId)
         {
-            return _context.Posts.Where(x => x.Status).Include(x => x.User).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
+            return _context.Posts.Where(x => x.Status && !x.PostReports.Any(y => y.UserId == authId)).Include(x => x.User).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
         }
 
         public int GetPostLikeCount(long postId)
@@ -132,14 +132,14 @@ namespace CatViP_API.Repositories
             return true;
         }
 
-        public ICollection<Post> GetPostsById(long userId)
+        public ICollection<Post> GetPostsByAuthId(long authId)
         {
-            return _context.Posts.Where(x => x.UserId == userId && x.Status).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
+            return _context.Posts.Where(x => x.UserId == authId && x.Status).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
         }
 
-        public ICollection<Post> GetPostsByCatId(long catId)
+        public ICollection<Post> GetPostsByCatId(long authId, long catId)
         {
-            return _context.Posts.Where(x => x.MentionedCats.Any(y => y.CatId == catId) && x.Status).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
+            return _context.Posts.Where(x => x.MentionedCats.Any(y => y.CatId == catId) && x.Status && !x.PostReports.Any(y => y.UserId == authId)).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
         }
 
         public bool CheckIfPostExist(long userId, long postId)
@@ -192,6 +192,54 @@ namespace CatViP_API.Repositories
             {
                 return false;
             }
+        }
+
+        public async Task<bool> CreateReportPost(PostReportRequestDTO reportPostDTO, long authId)
+        {
+            try
+            {
+                var reportPost = new PostReport()
+                {
+                    DateTime = DateTime.Now,
+                    PostId = reportPostDTO.PostId,
+                    Description = reportPostDTO.Description,
+                    UserId = authId,
+                };
+
+                _context.Add(reportPost);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool AuthHasPostReported(long authId, long postId)
+        {
+            return _context.PostReports.Any(x => x.UserId == authId && x.PostId == postId);
+        }
+
+        public bool HasReportEqualOrMoreThan10(long postId)
+        {
+            return _context.PostReports.Where(x => x.PostId == postId).Count() >= 10;
+        }
+
+        public ICollection<Post> GetPostsByUserId(long authId, long userId)
+        {
+            return _context.Posts.Where(x => x.UserId == userId && x.Status && !x.PostReports.Any(y => y.UserId == authId)).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
+        }
+
+        public ICollection<Post> GetReportedPost()
+        {
+            return _context.Posts.Where(x => x.Status && x.PostReports.Any()).Include(x => x.User).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
+        }
+
+        public ICollection<PostReport> GetReportedPostDetails(long postId)
+        {
+            return _context.PostReports.Where(x => x.Post.Status && x.PostId == postId).Include(x => x.User).ToList();
         }
     }
 }

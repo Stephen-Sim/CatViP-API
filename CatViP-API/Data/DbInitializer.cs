@@ -34,12 +34,6 @@ namespace CatViP_API.Data
                 new ExpertApplicationStatus() { Id = 4, Name = "Revoked" }
             );
 
-            modelBuilder.Entity<PostReportStatus>().HasData(
-                new PostReportStatus() { Id = 1, Name = "False information" },
-                new PostReportStatus() { Id = 2, Name = "Inappropriate content" },
-                new PostReportStatus() { Id = 3, Name = "Others" }
-            );
-
             modelBuilder.Entity<PostType>().HasData(
                 new PostType() { Id = 1, Name = "Daily sharing" },
                 new PostType() { Id = 2, Name = "Expert tip" }

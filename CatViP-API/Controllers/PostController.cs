@@ -97,7 +97,7 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var posts = _postService.GetPostsByUserId(UserId);
+            var posts = _postService.GetPostsByUserId(userResult.Result!.Id, UserId);
 
             return Ok(posts);
         }
@@ -285,8 +285,8 @@ namespace CatViP_API.Controllers
             return Ok();
         }
 
-        [HttpDelete("DeletePost/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
-        public async Task<IActionResult> DeleteCat(long Id)
+        [HttpDelete("DeletePost/{Id}"), Authorize(Roles = "System Admin,Cat Owner,Cat Expert")]
+        public async Task<IActionResult> DeletePost(long Id)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -298,21 +298,83 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var checkPostRes = _postService.CheckIfPostExist(userResult.Result!.Id, Id);
-
-            if (!checkPostRes.IsSuccessful)
+            if (userResult.Result!.RoleId != 1)
             {
-                return BadRequest(checkPostRes.ErrorMessage);
+                var checkPostRes = _postService.CheckIfPostExist(userResult.Result!.Id, Id);
+
+                if (!checkPostRes.IsSuccessful)
+                {
+                    return BadRequest(checkPostRes.ErrorMessage);
+                }
             }
 
-            var catRes = await _postService.DeletePost(Id);
+            var delPostRes = await _postService.DeletePost(Id);
 
-            if (!catRes.IsSuccessful)
+            if (!delPostRes.IsSuccessful)
             {
-                return BadRequest(catRes.ErrorMessage);
+                return BadRequest(delPostRes.ErrorMessage);
             }
 
             return Ok();
+        }
+
+        [HttpPost("ReportPost"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> ReportPost([FromBody] PostReportRequestDTO reportPostDTO)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var reportPostRes = await _postService.ReportPost(reportPostDTO, userResult.Result!.Id);
+
+            if (!reportPostRes.IsSuccessful)
+            {
+                return BadRequest(reportPostRes.ErrorMessage);
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("GetReportedPosts"), Authorize(Roles = "System Admin")]
+        public async Task<IActionResult> GetReportedPosts()
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var reportPosts = _postService.GetReportedPosts();
+
+            return Ok(reportPosts);
+        }
+
+        [HttpPost("GetReportedPostDetails/{Id}"), Authorize(Roles = "System Admin")]
+        public async Task<IActionResult> GetReportedPostDetails(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var reportPostDetails = _postService.GetReportedPostDetails(Id);
+
+            return Ok(reportPostDetails);
         }
     }
 }

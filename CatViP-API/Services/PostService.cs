@@ -29,7 +29,7 @@ namespace CatViP_API.Services
 
         public ICollection<PostDTO> GetOwnPosts(User currentUser)
         {
-            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPostsById(currentUser.Id));
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPostsByAuthId(currentUser.Id));
 
             foreach (var post in posts)
             {
@@ -168,7 +168,7 @@ namespace CatViP_API.Services
 
         public ICollection<PostDTO> GetPosts(User currentUser)
         {
-            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPosts());
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPosts(currentUser.Id));
 
             foreach (var post in posts)
             {
@@ -184,7 +184,7 @@ namespace CatViP_API.Services
 
         public ICollection<PostDTO> GetPostsByCatId(long currentUserId, long catId)
         {
-            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPostsByCatId(catId));
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPostsByCatId(currentUserId, catId));
 
             foreach (var post in posts)
             {
@@ -254,9 +254,9 @@ namespace CatViP_API.Services
             return res;
         }
 
-        public ICollection<PostDTO> GetPostsByUserId(long userId)
+        public ICollection<PostDTO> GetPostsByUserId(long authId, long userId)
         {
-            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPostsById(userId));
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPostsByUserId(authId, userId));
 
             foreach (var post in posts)
             {
@@ -264,10 +264,62 @@ namespace CatViP_API.Services
                 post.DislikeCount = _postRepository.GetPostDisLikeCount(post.Id);
                 post.CommentCount = _postRepository.GetPostCommentCount(post.Id);
                 post.PostImages = _mapper.Map<ICollection<PostImageDTO>>(_postRepository.GetPostImages(post.Id));
-                post.CurrentUserAction = _postRepository.GetCurrentUserStatusOnPost(userId, post.Id);
+                post.CurrentUserAction = _postRepository.GetCurrentUserStatusOnPost(authId, post.Id);
             }
 
             return posts;
+        }
+
+        public async Task<ResponseResult> ReportPost(PostReportRequestDTO reportPostDTO, long authId)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = !_postRepository.CheckIfPostExist(authId, reportPostDTO.PostId);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "you can't report your own post.";
+                return res;
+            }
+
+            res.IsSuccessful = !_postRepository.AuthHasPostReported(authId, reportPostDTO.PostId);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "you have already reported the post.";
+                return res;
+            }
+
+            res.IsSuccessful = await _postRepository.CreateReportPost(reportPostDTO, authId);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "fail to report the post.";
+            }
+
+            if (_postRepository.HasReportEqualOrMoreThan10(reportPostDTO.PostId))
+            {
+                await _postRepository.DeletePost(reportPostDTO.PostId);
+            }
+
+            return res;
+        }
+
+        public ICollection<ReportedPostDTO> GetReportedPosts()
+        {
+            var posts =  _mapper.Map<ICollection<ReportedPostDTO>>(_postRepository.GetReportedPost());
+
+            foreach (var post in posts)
+            {
+                post.PostImages = _mapper.Map<ICollection<PostImageDTO>>(_postRepository.GetPostImages(post.Id));
+            }
+
+            return posts;
+        }
+
+        public ICollection<PostReportDTO> GetReportedPostDetails(long id)
+        {
+            return _mapper.Map<ICollection<PostReportDTO>>(_postRepository.GetReportedPostDetails(id));
         }
     }
 }

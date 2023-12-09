@@ -44,8 +44,6 @@ namespace CatViP_API.Data
 
         public virtual DbSet<PostReport> PostReports { get; set; }
 
-        public virtual DbSet<PostReportStatus> PostReportStatuses { get; set; }
-
         public virtual DbSet<PostType> PostTypes { get; set; }
 
         public virtual DbSet<Product> Products { get; set; }
@@ -219,15 +217,15 @@ namespace CatViP_API.Data
             {
                 entity.Property(e => e.DateTime).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Status).WithMany(p => p.PostReports)
-                    .HasForeignKey(d => d.StatusId)
+                entity.HasOne(d => d.User).WithMany(p => p.PostReports)
+                    .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PostReports_PostReportStatusTypes");
-            });
+                    .HasConstraintName("FK_PostReports_Users");
 
-            modelBuilder.Entity<PostReportStatus>(entity =>
-            {
-                entity.HasKey(e => e.Id).HasName("PK_PostReportStatusTypes");
+                entity.HasOne(d => d.Post).WithMany(p => p.PostReports)
+                    .HasForeignKey(d => d.PostId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PostReports_Posts");
             });
 
             modelBuilder.Entity<Product>(entity =>

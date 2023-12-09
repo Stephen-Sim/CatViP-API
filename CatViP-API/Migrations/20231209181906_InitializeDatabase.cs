@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CatViP_API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDatabase : Migration
+    public partial class InitializeDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,19 +50,6 @@ namespace CatViP_API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ExpertApplicationStatusTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PostReportStatuses",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PostReportStatusTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,27 +102,6 @@ namespace CatViP_API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TransactionStatusTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PostReports",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    StatusId = table.Column<long>(type: "bigint", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PostReports", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PostReports_PostReportStatusTypes",
-                        column: x => x.StatusId,
-                        principalTable: "PostReportStatuses",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -472,6 +438,32 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PostReports",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    PostId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PostReports_Posts",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PostReports_Users",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserActions",
                 columns: table => new
                 {
@@ -595,16 +587,6 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "PostReportStatuses",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1L, "False information" },
-                    { 2L, "Inappropriate content" },
-                    { 3L, "Others" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "PostTypes",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -652,10 +634,10 @@ namespace CatViP_API.Migrations
                 columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "IsShownOnMap", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$aCebeoSH2dlDe27Z3jol/OQiWysLVMsHD8V3eVvw6nRyIVK4jfjIW", null, null, 1L, null, null, "admin" },
-                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, null, "$2a$11$8wA7r18dQhdUiqpy5SmAKuLnfTThZGA3gKrxPzIU4vk7WoIXzAMHi", null, null, 2L, null, null, "stephen" },
-                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, null, "$2a$11$dnE9QtgOXW8CPoKS6Dz.deBb23SLAkaDzalXXOG5TAHvQvphDT0rm", null, null, 3L, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$VDsPVqdr.J0Ub3f1u9H5/ugH33QvKsGaO1tp4bFVOUKeddS4090Kq", null, null, 4L, null, null, "wafir" }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$A.Nvfall.p1QAMu1g.zPuuaT9xuqN4UGl26xC/pvJ3yjUVnMWi0yG", null, null, 1L, null, null, "admin" },
+                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, null, "$2a$11$hPt/.CpVjFk/goz3PC91L.GuR9JX41Ri90SnjBI.7Krd4Pb8fdTm2", null, null, 2L, null, null, "stephen" },
+                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, null, "$2a$11$1r6DdkBjDydaZggPH0jSeeny/fNjKpgzbliIMDWAyNfE2CZSgTAIa", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$aewDOqagPQjMaIniqPOJ1.Nx7AQEcHcUTpQIbA0VhK7tA82kZwb.K", null, null, 4L, null, null, "wafir" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -749,9 +731,14 @@ namespace CatViP_API.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostReports_StatusId",
+                name: "IX_PostReports_PostId",
                 table: "PostReports",
-                column: "StatusId");
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostReports_UserId",
+                table: "PostReports",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_PostTypeId",
@@ -870,9 +857,6 @@ namespace CatViP_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "ExpertApplicationStatuses");
-
-            migrationBuilder.DropTable(
-                name: "PostReportStatuses");
 
             migrationBuilder.DropTable(
                 name: "Products");

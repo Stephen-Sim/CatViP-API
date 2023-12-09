@@ -457,11 +457,11 @@ namespace CatViP_API.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime");
 
-                    b.Property<byte[]>("Description")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("StatusId")
+                    b.Property<long>("PostId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("UserId")
@@ -469,44 +469,11 @@ namespace CatViP_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StatusId");
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("PostReports");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.PostReportStatus", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id")
-                        .HasName("PK_PostReportStatusTypes");
-
-                    b.ToTable("PostReportStatuses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "False information"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "Inappropriate content"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "Others"
-                        });
                 });
 
             modelBuilder.Entity("CatViP_API.Models.PostType", b =>
@@ -815,7 +782,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$aCebeoSH2dlDe27Z3jol/OQiWysLVMsHD8V3eVvw6nRyIVK4jfjIW",
+                            Password = "$2a$11$A.Nvfall.p1QAMu1g.zPuuaT9xuqN4UGl26xC/pvJ3yjUVnMWi0yG",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -826,7 +793,7 @@ namespace CatViP_API.Migrations
                             Email = "simshansiong2002@gmail.com",
                             FullName = "stephen sim",
                             Gender = true,
-                            Password = "$2a$11$8wA7r18dQhdUiqpy5SmAKuLnfTThZGA3gKrxPzIU4vk7WoIXzAMHi",
+                            Password = "$2a$11$hPt/.CpVjFk/goz3PC91L.GuR9JX41Ri90SnjBI.7Krd4Pb8fdTm2",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -837,7 +804,7 @@ namespace CatViP_API.Migrations
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
                             Gender = false,
-                            Password = "$2a$11$dnE9QtgOXW8CPoKS6Dz.deBb23SLAkaDzalXXOG5TAHvQvphDT0rm",
+                            Password = "$2a$11$1r6DdkBjDydaZggPH0jSeeny/fNjKpgzbliIMDWAyNfE2CZSgTAIa",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -848,7 +815,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$VDsPVqdr.J0Ub3f1u9H5/ugH33QvKsGaO1tp4bFVOUKeddS4090Kq",
+                            Password = "$2a$11$aewDOqagPQjMaIniqPOJ1.Nx7AQEcHcUTpQIbA0VhK7tA82kZwb.K",
                             RoleId = 4L,
                             Username = "wafir"
                         });
@@ -1098,13 +1065,21 @@ namespace CatViP_API.Migrations
 
             modelBuilder.Entity("CatViP_API.Models.PostReport", b =>
                 {
-                    b.HasOne("CatViP_API.Models.PostReportStatus", "Status")
+                    b.HasOne("CatViP_API.Models.Post", "Post")
                         .WithMany("PostReports")
-                        .HasForeignKey("StatusId")
+                        .HasForeignKey("PostId")
                         .IsRequired()
-                        .HasConstraintName("FK_PostReports_PostReportStatusTypes");
+                        .HasConstraintName("FK_PostReports_Posts");
 
-                    b.Navigation("Status");
+                    b.HasOne("CatViP_API.Models.User", "User")
+                        .WithMany("PostReports")
+                        .HasForeignKey("UserId")
+                        .IsRequired()
+                        .HasConstraintName("FK_PostReports_Users");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.Product", b =>
@@ -1245,12 +1220,9 @@ namespace CatViP_API.Migrations
 
                     b.Navigation("PostImages");
 
-                    b.Navigation("UserActions");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.PostReportStatus", b =>
-                {
                     b.Navigation("PostReports");
+
+                    b.Navigation("UserActions");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.PostType", b =>
@@ -1300,6 +1272,8 @@ namespace CatViP_API.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("ExpertApplications");
+
+                    b.Navigation("PostReports");
 
                     b.Navigation("Posts");
 

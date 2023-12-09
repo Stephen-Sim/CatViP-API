@@ -20,6 +20,14 @@ namespace CatViP_API.Helpers
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName))
                 .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
 
+            CreateMap<Post, ReportedPostDTO>()
+               .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName))
+               .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
+
+            CreateMap<PostReport, PostReportDTO>()
+               .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName))
+               .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
+
             CreateMap<PostImage, PostImageDTO>();
 
             CreateMap<Comment, CommentDTO>()
