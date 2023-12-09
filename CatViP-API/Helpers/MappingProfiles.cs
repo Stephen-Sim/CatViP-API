@@ -36,7 +36,7 @@ namespace CatViP_API.Helpers
                 .ForMember(dest => dest.CatOnwerId, opt => opt.MapFrom(src => src.UserId));
 
             CreateMap<User, SearchUserDTO>();
-
+            CreateMap<User, SerachUserInfoDTO>();
             CreateMap<User, UserInfoDTO>();
         }
     }

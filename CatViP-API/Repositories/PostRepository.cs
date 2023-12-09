@@ -178,5 +178,20 @@ namespace CatViP_API.Repositories
                 return false;
             }
         }
+
+        public async Task<bool> DeleteActPost(long userId, long postId)
+        {
+            try
+            {
+                var postAction = await _context.UserActions.FirstOrDefaultAsync(x => x.UserId == userId && x.PostId == postId);
+                _context.UserActions.Remove(postAction!);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

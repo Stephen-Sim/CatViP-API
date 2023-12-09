@@ -20,5 +20,8 @@ namespace CatViP_API.Repositories.Interfaces
         int GetUserFollowingCount(long UserId);
         int GetExpertTipsCount(long iUserIdd);
         ICollection<User> SearchByUsenameOrFullName(string name, long authId);
+        bool CheckIfIsFollowed(long authId, long id);
+        Task<bool> FollowUser(long authId, long userId);
+        Task<bool> UnfollowUser(long authId, long userId);
     }
 }

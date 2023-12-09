@@ -21,5 +21,6 @@ namespace CatViP_API.Repositories.Interfaces
         bool CheckIfPostExist(long userId, long postId);
         Task<bool> DeletePost(long postId);
         Task<bool> EditPost(long postId, EditPostRequestDTO editPostRequestDTO);
+        Task<bool> DeleteActPost(long userId, long postId);
     }
 }

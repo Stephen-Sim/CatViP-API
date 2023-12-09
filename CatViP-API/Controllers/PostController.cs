@@ -130,6 +130,34 @@ namespace CatViP_API.Controllers
             return Ok();
         }
 
+        [HttpDelete("DeleteActPost/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> DeleteActPost(long Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var delPostActRes = await _postService.DeleteActPost(userResult.Result!.Id, Id);
+
+            if (!delPostActRes.IsSuccessful)
+            {
+                return BadRequest("fail to delete act the post");
+            }
+
+            return Ok();
+        }
+
         [HttpPost("CreateComment"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> CreateComment([FromBody] CommentRequestDTO commentRequestDTO)
         {

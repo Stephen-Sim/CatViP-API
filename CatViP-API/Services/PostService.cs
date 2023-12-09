@@ -239,5 +239,19 @@ namespace CatViP_API.Services
 
             return res;
         }
+
+        public async Task<ResponseResult> DeleteActPost(long userId, long postId)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _postRepository.DeleteActPost(userId, postId);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "Post is not exist.";
+            }
+
+            return res;
+        }
     }
 }

@@ -205,5 +205,46 @@ namespace CatViP_API.Repositories
         {
             return await _context.Users.Where(x => x.RoleId == 2 || x.RoleId == 3).Include(x => x.Role).FirstOrDefaultAsync(x => x.Id == userId);
         }
+
+        public bool CheckIfIsFollowed(long authId, long id)
+        {
+            return _context.UserFollowers.Any(x => x.UserId == id && x.FollowerId == authId);
+        }
+
+        public async Task<bool> FollowUser(long authId, long userId)
+        {
+            try
+            {
+                var userFollow = new UserFollower
+                {
+                    UserId = userId,
+                    FollowerId = authId,
+                };
+
+                _context.Add(userFollow);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UnfollowUser(long authId, long userId)
+        {
+            try
+            {
+                var userFollow = _context.UserFollowers.FirstOrDefault(x => x.UserId == userId && x.FollowerId == authId);
+                _context.UserFollowers.Remove(userFollow!);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
