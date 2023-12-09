@@ -17,5 +17,6 @@ namespace CatViP_API.Services.Interfaces
         Task<ResponseResult> EditPost(long id, EditPostRequestDTO editPostRequestDTO);
         ResponseResult CheckIfPostExist(long userId, long postId);
         Task<ResponseResult> DeleteActPost(long userId, long postId);
+        ICollection<PostDTO> GetPostsByUserId(long userId);
     }
 }

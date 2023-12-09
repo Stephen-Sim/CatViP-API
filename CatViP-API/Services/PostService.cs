@@ -29,7 +29,7 @@ namespace CatViP_API.Services
 
         public ICollection<PostDTO> GetOwnPosts(User currentUser)
         {
-            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetOwnPosts(currentUser.Id));
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPostsById(currentUser.Id));
 
             foreach (var post in posts)
             {
@@ -252,6 +252,22 @@ namespace CatViP_API.Services
             }
 
             return res;
+        }
+
+        public ICollection<PostDTO> GetPostsByUserId(long userId)
+        {
+            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPostsById(userId));
+
+            foreach (var post in posts)
+            {
+                post.LikeCount = _postRepository.GetPostLikeCount(post.Id);
+                post.DislikeCount = _postRepository.GetPostDisLikeCount(post.Id);
+                post.CommentCount = _postRepository.GetPostCommentCount(post.Id);
+                post.PostImages = _mapper.Map<ICollection<PostImageDTO>>(_postRepository.GetPostImages(post.Id));
+                post.CurrentUserAction = _postRepository.GetCurrentUserStatusOnPost(userId, post.Id);
+            }
+
+            return posts;
         }
     }
 }

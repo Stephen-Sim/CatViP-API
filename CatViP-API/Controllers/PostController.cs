@@ -79,7 +79,25 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var posts = _postService.GetOwnPosts(userResult.Result!);
+            var posts = _postService.GetPosts(userResult.Result!);
+
+            return Ok(posts);
+        }
+
+        [HttpGet("GetPosts/{UserId}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetPostsByUserId(long UserId)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var posts = _postService.GetPostsByUserId(UserId);
 
             return Ok(posts);
         }

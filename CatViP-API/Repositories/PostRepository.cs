@@ -132,7 +132,7 @@ namespace CatViP_API.Repositories
             return true;
         }
 
-        public ICollection<Post> GetOwnPosts(long userId)
+        public ICollection<Post> GetPostsById(long userId)
         {
             return _context.Posts.Where(x => x.UserId == userId && x.Status).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
         }

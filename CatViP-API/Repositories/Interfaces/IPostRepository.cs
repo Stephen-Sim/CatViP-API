@@ -16,7 +16,7 @@ namespace CatViP_API.Repositories.Interfaces
         ICollection<PostImage> GetPostImages(long postId);
         Task<bool> ActPost(long userId, PostActionRequestDTO postActionDTO);
         Task<bool> CommentPost(long userId, CommentRequestDTO commentRequestDTO);
-        ICollection<Post> GetOwnPosts(long userId);
+        ICollection<Post> GetPostsById(long userId);
         ICollection<Post> GetPostsByCatId(long catId);
         bool CheckIfPostExist(long userId, long postId);
         Task<bool> DeletePost(long postId);
