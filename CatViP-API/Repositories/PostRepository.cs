@@ -139,7 +139,7 @@ namespace CatViP_API.Repositories
 
         public ICollection<Post> GetPostsByCatId(long catId)
         {
-            return _context.Posts.Where(x => x.MentionedCats.Any(y => y.CatId == catId)).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
+            return _context.Posts.Where(x => x.MentionedCats.Any(y => y.CatId == catId) && x.Status).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
         }
 
         public bool CheckIfPostExist(long userId, long postId)
