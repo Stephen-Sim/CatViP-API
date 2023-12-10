@@ -39,8 +39,6 @@ public partial class User
 
     public virtual Role Role { get; set; } = null!;
 
-    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
-
     public virtual ICollection<CatCaseReport> CatCaseReports { get; set; } = new List<CatCaseReport>();
 
     public virtual ICollection<Cat> Cats { get; set; } = new List<Cat>();

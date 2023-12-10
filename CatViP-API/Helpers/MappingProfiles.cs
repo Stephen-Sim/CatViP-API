@@ -49,6 +49,10 @@ namespace CatViP_API.Helpers
             CreateMap<User, UserInfoDTO>();
 
             CreateMap<ProductType, ProductTypeDTO>();
+
+            CreateMap<Product, ProductDTO>()
+                .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.ProductType.Name));
+
         }
     }
 }

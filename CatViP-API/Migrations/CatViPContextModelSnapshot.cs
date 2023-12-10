@@ -51,55 +51,6 @@ namespace CatViP_API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CatViP_API.Models.Cart", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long?>("TransactionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TransactionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.CartProduct", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CartId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CartProducts");
-                });
-
             modelBuilder.Entity("CatViP_API.Models.Cat", b =>
                 {
                     b.Property<long>("Id")
@@ -517,6 +468,10 @@ namespace CatViP_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -537,28 +492,6 @@ namespace CatViP_API.Migrations
                     b.HasIndex("SellerId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.ProductImage", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<byte[]>("Image")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.ProductType", b =>
@@ -649,62 +582,6 @@ namespace CatViP_API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CatViP_API.Models.Transaction", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime");
-
-                    b.Property<long>("StatusId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StatusId");
-
-                    b.ToTable("Transactions");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.TransactionStatus", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id")
-                        .HasName("PK_TransactionStatusTypes");
-
-                    b.ToTable("TransactionStatuses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Success"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "Pending"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "Failed"
-                        });
-                });
-
             modelBuilder.Entity("CatViP_API.Models.User", b =>
                 {
                     b.Property<long>("Id")
@@ -782,7 +659,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$A.Nvfall.p1QAMu1g.zPuuaT9xuqN4UGl26xC/pvJ3yjUVnMWi0yG",
+                            Password = "$2a$11$uWPmlnO/T.JV77z4E47MWuHfnAWDtGQU/.NVfichcmD2KTJD/8Lky",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -793,7 +670,7 @@ namespace CatViP_API.Migrations
                             Email = "simshansiong2002@gmail.com",
                             FullName = "stephen sim",
                             Gender = true,
-                            Password = "$2a$11$hPt/.CpVjFk/goz3PC91L.GuR9JX41Ri90SnjBI.7Krd4Pb8fdTm2",
+                            Password = "$2a$11$hslIfX9wBXDAPpUK5kHRgu7ZEXV1LP3v81D37IZzz0fvg5jsNf31O",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -804,7 +681,7 @@ namespace CatViP_API.Migrations
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
                             Gender = false,
-                            Password = "$2a$11$1r6DdkBjDydaZggPH0jSeeny/fNjKpgzbliIMDWAyNfE2CZSgTAIa",
+                            Password = "$2a$11$dYms7CNHHn7bpNH9vQh6HeZlBgzkFaUmNE2wVL924zSTCEpLTNSV2",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -815,7 +692,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$aewDOqagPQjMaIniqPOJ1.Nx7AQEcHcUTpQIbA0VhK7tA82kZwb.K",
+                            Password = "$2a$11$URnWkek7k7DTCcJFmttKguIw44K4oB86RKqLyHAht.UXAntczS3bm",
                             RoleId = 4L,
                             Username = "wafir"
                         });
@@ -870,43 +747,6 @@ namespace CatViP_API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserFollowers");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.Cart", b =>
-                {
-                    b.HasOne("CatViP_API.Models.Transaction", "Transaction")
-                        .WithMany("Carts")
-                        .HasForeignKey("TransactionId")
-                        .HasConstraintName("FK_Carts_Transactions");
-
-                    b.HasOne("CatViP_API.Models.User", "User")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Carts_Users");
-
-                    b.Navigation("Transaction");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.CartProduct", b =>
-                {
-                    b.HasOne("CatViP_API.Models.Cart", "Cart")
-                        .WithMany("CartProducts")
-                        .HasForeignKey("CartId")
-                        .IsRequired()
-                        .HasConstraintName("FK_CartProducts_Carts");
-
-                    b.HasOne("CatViP_API.Models.Product", "Product")
-                        .WithMany("CartProducts")
-                        .HasForeignKey("ProductId")
-                        .IsRequired()
-                        .HasConstraintName("FK_CartProducts_Products");
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.Cat", b =>
@@ -1101,28 +941,6 @@ namespace CatViP_API.Migrations
                     b.Navigation("Seller");
                 });
 
-            modelBuilder.Entity("CatViP_API.Models.ProductImage", b =>
-                {
-                    b.HasOne("CatViP_API.Models.Product", "Product")
-                        .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .IsRequired()
-                        .HasConstraintName("FK_ProductImages_Products");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.Transaction", b =>
-                {
-                    b.HasOne("CatViP_API.Models.TransactionStatus", "Status")
-                        .WithMany("Transactions")
-                        .HasForeignKey("StatusId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Transactions_TransactionStatusTypes");
-
-                    b.Navigation("Status");
-                });
-
             modelBuilder.Entity("CatViP_API.Models.User", b =>
                 {
                     b.HasOne("CatViP_API.Models.Role", "Role")
@@ -1185,11 +1003,6 @@ namespace CatViP_API.Migrations
                     b.Navigation("UserActions");
                 });
 
-            modelBuilder.Entity("CatViP_API.Models.Cart", b =>
-                {
-                    b.Navigation("CartProducts");
-                });
-
             modelBuilder.Entity("CatViP_API.Models.Cat", b =>
                 {
                     b.Navigation("CatCaseReports");
@@ -1230,13 +1043,6 @@ namespace CatViP_API.Migrations
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("CatViP_API.Models.Product", b =>
-                {
-                    b.Navigation("CartProducts");
-
-                    b.Navigation("ProductImages");
-                });
-
             modelBuilder.Entity("CatViP_API.Models.ProductType", b =>
                 {
                     b.Navigation("Products");
@@ -1247,20 +1053,8 @@ namespace CatViP_API.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("CatViP_API.Models.Transaction", b =>
-                {
-                    b.Navigation("Carts");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.TransactionStatus", b =>
-                {
-                    b.Navigation("Transactions");
-                });
-
             modelBuilder.Entity("CatViP_API.Models.User", b =>
                 {
-                    b.Navigation("Carts");
-
                     b.Navigation("CatCaseReports");
 
                     b.Navigation("Cats");

@@ -16,10 +16,6 @@ namespace CatViP_API.Data
 
         public virtual DbSet<ActionType> ActionTypes { get; set; }
 
-        public virtual DbSet<Cart> Carts { get; set; }
-
-        public virtual DbSet<CartProduct> CartProducts { get; set; }
-
         public virtual DbSet<Cat> Cats { get; set; }
 
         public virtual DbSet<CatCaseReport> CatCaseReports { get; set; }
@@ -48,15 +44,9 @@ namespace CatViP_API.Data
 
         public virtual DbSet<Product> Products { get; set; }
 
-        public virtual DbSet<ProductImage> ProductImages { get; set; }
-
         public virtual DbSet<ProductType> ProductTypes { get; set; }
 
         public virtual DbSet<Role> Roles { get; set; }
-
-        public virtual DbSet<Transaction> Transactions { get; set; }
-
-        public virtual DbSet<TransactionStatus> TransactionStatuses { get; set; }
 
         public virtual DbSet<User> Users { get; set; }
 
@@ -66,31 +56,6 @@ namespace CatViP_API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Cart>(entity =>
-            {
-                entity.HasOne(d => d.Transaction).WithMany(p => p.Carts)
-                    .HasForeignKey(d => d.TransactionId)
-                    .HasConstraintName("FK_Carts_Transactions");
-
-                entity.HasOne(d => d.User).WithMany(p => p.Carts)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Carts_Users");
-            });
-
-            modelBuilder.Entity<CartProduct>(entity =>
-            {
-                entity.HasOne(d => d.Cart).WithMany(p => p.CartProducts)
-                    .HasForeignKey(d => d.CartId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CartProducts_Carts");
-
-                entity.HasOne(d => d.Product).WithMany(p => p.CartProducts)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CartProducts_Products");
-            });
-
             modelBuilder.Entity<Cat>(entity =>
             {
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
@@ -241,29 +206,6 @@ namespace CatViP_API.Data
                     .HasForeignKey(d => d.SellerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Products_Users");
-            });
-
-            modelBuilder.Entity<ProductImage>(entity =>
-            {
-                entity.HasOne(d => d.Product).WithMany(p => p.ProductImages)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductImages_Products");
-            });
-
-            modelBuilder.Entity<Transaction>(entity =>
-            {
-                entity.Property(e => e.DateTime).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Status).WithMany(p => p.Transactions)
-                    .HasForeignKey(d => d.StatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Transactions_TransactionStatusTypes");
-            });
-
-            modelBuilder.Entity<TransactionStatus>(entity =>
-            {
-                entity.HasKey(e => e.Id).HasName("PK_TransactionStatusTypes");
             });
 
             modelBuilder.Entity<User>(entity =>

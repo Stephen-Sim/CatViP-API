@@ -4,7 +4,12 @@ namespace CatViP_API.Services.Interfaces
 {
     public interface IProductService
     {
+        ResponseResult CheckProductExist(long authId, long productId);
+        Task<ResponseResult> DeleteProduct(long id);
+        Task<ResponseResult> EditProduct(long id, ProductEditRequestDTO productRequestDTO);
+        ProductDTO GetProductById(long id);
+        ICollection<ProductDTO> GetProducts(long authId);
         ICollection<ProductTypeDTO> GetProductTypes();
-        object StoreProduct(long id, ProductRequestDTO productRequestDTO);
+        Task<ResponseResult> StoreProduct(long authId, ProductRequestDTO productRequestDTO);
     }
 }

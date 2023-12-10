@@ -2,7 +2,7 @@
 
 namespace CatViP_API.DTOs.ProductDTOs
 {
-    public class ProductRequestDTO
+    public class ProductEditRequestDTO
     {
         [Required]
         public string Name { get; set; } = null!;
@@ -12,7 +12,5 @@ namespace CatViP_API.DTOs.ProductDTOs
         public string Description { get; set; } = null!;
         [Required]
         public long ProductTypeId { get; set; }
-        [Required]
-        public byte[] Image { get; set; } = null!;
     }
 }

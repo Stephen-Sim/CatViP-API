@@ -17,9 +17,7 @@ public partial class Product
 
     public long ProductTypeId { get; set; }
 
-    public virtual ICollection<CartProduct> CartProducts { get; set; } = new List<CartProduct>();
-
-    public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
+    public byte[] Image { get; set; } = null!;
 
     public virtual ProductType ProductType { get; set; } = null!;
 

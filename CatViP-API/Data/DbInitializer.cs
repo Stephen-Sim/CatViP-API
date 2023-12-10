@@ -55,11 +55,6 @@ namespace CatViP_API.Data
                 new Role() { Id = 4, Name = "Cat Product Seller" }
             );
 
-            modelBuilder.Entity<Models.TransactionStatus>().HasData(
-                new Models.TransactionStatus() { Id = 1, Name = "Success" },
-                new Models.TransactionStatus() { Id = 2, Name = "Pending" },
-                new Models.TransactionStatus() { Id = 3, Name = "Failed" }
-            );
             modelBuilder.Entity<User>().HasData(
                 new User() { Id = 1, Username = "admin", FullName = "CatViP Admin", Email = "admin@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 1 },
                 new User() { Id = 2, Username = "stephen", FullName = "stephen sim", Email = "simshansiong2002@gmail.com", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 2 },

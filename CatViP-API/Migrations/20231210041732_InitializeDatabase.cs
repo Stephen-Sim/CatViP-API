@@ -92,19 +92,6 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TransactionStatuses",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TransactionStatusTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -133,25 +120,6 @@ namespace CatViP_API.Migrations
                         name: "FK_Users_Roles",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Transactions",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DateTime = table.Column<DateTime>(type: "datetime", nullable: false),
-                    StatusId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Transactions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Transactions_TransactionStatusTypes",
-                        column: x => x.StatusId,
-                        principalTable: "TransactionStatuses",
                         principalColumn: "Id");
                 });
 
@@ -271,7 +239,8 @@ namespace CatViP_API.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SellerId = table.Column<long>(type: "bigint", nullable: false),
-                    ProductTypeId = table.Column<long>(type: "bigint", nullable: false)
+                    ProductTypeId = table.Column<long>(type: "bigint", nullable: false),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -308,30 +277,6 @@ namespace CatViP_API.Migrations
                     table.ForeignKey(
                         name: "FK_UserFollowers_Users1",
                         column: x => x.FollowerId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Carts",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    TransactionId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Carts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Carts_Transactions",
-                        column: x => x.TransactionId,
-                        principalTable: "Transactions",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Carts_Users",
-                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
@@ -494,50 +439,6 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductImages",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    ProductId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductImages_Products",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CartProducts",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    CartId = table.Column<long>(type: "bigint", nullable: false),
-                    ProductId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CartProducts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CartProducts_Carts",
-                        column: x => x.CartId,
-                        principalTable: "Carts",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CartProducts_Products",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CatCaseReportImages",
                 columns: table => new
                 {
@@ -620,45 +521,15 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "TransactionStatuses",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1L, "Success" },
-                    { 2L, "Pending" },
-                    { 3L, "Failed" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "IsShownOnMap", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$A.Nvfall.p1QAMu1g.zPuuaT9xuqN4UGl26xC/pvJ3yjUVnMWi0yG", null, null, 1L, null, null, "admin" },
-                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, null, "$2a$11$hPt/.CpVjFk/goz3PC91L.GuR9JX41Ri90SnjBI.7Krd4Pb8fdTm2", null, null, 2L, null, null, "stephen" },
-                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, null, "$2a$11$1r6DdkBjDydaZggPH0jSeeny/fNjKpgzbliIMDWAyNfE2CZSgTAIa", null, null, 3L, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$aewDOqagPQjMaIniqPOJ1.Nx7AQEcHcUTpQIbA0VhK7tA82kZwb.K", null, null, 4L, null, null, "wafir" }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$uWPmlnO/T.JV77z4E47MWuHfnAWDtGQU/.NVfichcmD2KTJD/8Lky", null, null, 1L, null, null, "admin" },
+                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, null, "$2a$11$hslIfX9wBXDAPpUK5kHRgu7ZEXV1LP3v81D37IZzz0fvg5jsNf31O", null, null, 2L, null, null, "stephen" },
+                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, null, "$2a$11$dYms7CNHHn7bpNH9vQh6HeZlBgzkFaUmNE2wVL924zSTCEpLTNSV2", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$URnWkek7k7DTCcJFmttKguIw44K4oB86RKqLyHAht.UXAntczS3bm", null, null, 4L, null, null, "wafir" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CartProducts_CartId",
-                table: "CartProducts",
-                column: "CartId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CartProducts_ProductId",
-                table: "CartProducts",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Carts_TransactionId",
-                table: "Carts",
-                column: "TransactionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Carts_UserId",
-                table: "Carts",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CatCaseReportImages_CatCaseReportId",
@@ -751,11 +622,6 @@ namespace CatViP_API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductImages_ProductId",
-                table: "ProductImages",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_ProductTypeId",
                 table: "Products",
                 column: "ProductTypeId");
@@ -764,11 +630,6 @@ namespace CatViP_API.Migrations
                 name: "IX_Products_SellerId",
                 table: "Products",
                 column: "SellerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_StatusId",
-                table: "Transactions",
-                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserActions_ActionTypeId",
@@ -817,9 +678,6 @@ namespace CatViP_API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CartProducts");
-
-            migrationBuilder.DropTable(
                 name: "CatCaseReportImages");
 
             migrationBuilder.DropTable(
@@ -841,7 +699,7 @@ namespace CatViP_API.Migrations
                 name: "PostReports");
 
             migrationBuilder.DropTable(
-                name: "ProductImages");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "UserActions");
@@ -850,16 +708,13 @@ namespace CatViP_API.Migrations
                 name: "UserFollowers");
 
             migrationBuilder.DropTable(
-                name: "Carts");
-
-            migrationBuilder.DropTable(
                 name: "CatCaseReports");
 
             migrationBuilder.DropTable(
                 name: "ExpertApplicationStatuses");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "ProductTypes");
 
             migrationBuilder.DropTable(
                 name: "ActionTypes");
@@ -868,22 +723,13 @@ namespace CatViP_API.Migrations
                 name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "Transactions");
-
-            migrationBuilder.DropTable(
                 name: "CatCaseReportTypes");
 
             migrationBuilder.DropTable(
                 name: "Cats");
 
             migrationBuilder.DropTable(
-                name: "ProductTypes");
-
-            migrationBuilder.DropTable(
                 name: "PostTypes");
-
-            migrationBuilder.DropTable(
-                name: "TransactionStatuses");
 
             migrationBuilder.DropTable(
                 name: "Users");
