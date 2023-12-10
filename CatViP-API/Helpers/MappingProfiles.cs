@@ -3,6 +3,7 @@ using CatViP_API.DTOs.AuthDTOs;
 using CatViP_API.DTOs.CatDTOs;
 using CatViP_API.DTOs.ExpertDTOs;
 using CatViP_API.DTOs.PostDTOs;
+using CatViP_API.DTOs.ProductDTOs;
 using CatViP_API.DTOs.UserDTOs;
 using CatViP_API.Models;
 
@@ -46,6 +47,8 @@ namespace CatViP_API.Helpers
             CreateMap<User, SearchUserDTO>();
             CreateMap<User, SerachUserInfoDTO>();
             CreateMap<User, UserInfoDTO>();
+
+            CreateMap<ProductType, ProductTypeDTO>();
         }
     }
 }

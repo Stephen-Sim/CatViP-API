@@ -55,14 +55,8 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var checkCatRes = _catService.CheckIfCatExist(userResult.Result!.Id, catId);
-
-            if (!checkCatRes.IsSuccessful)
-            {
-                return Unauthorized(checkCatRes.ErrorMessage);
-            }
-
             var posts = _postService.GetPostsByCatId(userResult.Result!.Id, catId);
+
             return Ok(posts);
         }
 

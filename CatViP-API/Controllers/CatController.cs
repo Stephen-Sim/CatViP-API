@@ -72,13 +72,6 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var checkCatRes = _catService.CheckIfCatExist(userResult.Result!.Id, Id);
-
-            if (!checkCatRes.IsSuccessful)
-            {
-                return BadRequest(checkCatRes.ErrorMessage);
-            }
-
             var cats = _catService.GetCat(Id);
 
             return Ok(cats);
