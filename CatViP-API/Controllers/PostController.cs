@@ -109,7 +109,7 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var postComments = _postService.GetPostComments(postId);
+            var postComments = _postService.GetPostComments(userResult.Result!.Id, postId);
 
             return Ok(postComments);
         }
@@ -369,6 +369,36 @@ namespace CatViP_API.Controllers
             var reportPostDetails = _postService.GetReportedPostDetails(Id);
 
             return Ok(reportPostDetails);
+        }
+
+        [HttpDelete("DeleteComment/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> DeleteComment(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var checkPostRes = _postService.CheckIfCommentExist(userResult.Result!.Id, Id);
+
+            if (!checkPostRes.IsSuccessful)
+            {
+                return BadRequest(checkPostRes.ErrorMessage);
+            }
+
+            var delPostRes = await _postService.DeleteComment(Id);
+
+            if (!delPostRes.IsSuccessful)
+            {
+                return BadRequest(delPostRes.ErrorMessage);
+            }
+
+            return Ok();
         }
     }
 }

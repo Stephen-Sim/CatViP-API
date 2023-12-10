@@ -159,9 +159,14 @@ namespace CatViP_API.Services
             return res;
         }
 
-        public ICollection<CommentDTO> GetPostComments(int postId)
+        public ICollection<CommentDTO> GetPostComments(long autId, long postId)
         {
             var postComments = _mapper.Map<ICollection<CommentDTO>>(_postRepository.GetPostComments(postId));
+
+            foreach (var comment in postComments)
+            {
+                comment.IsCurrentLoginUser = _postRepository.CheckCommentIsFromCurrentUser(autId, comment.Id);
+            }
 
             return postComments;
         }
@@ -248,7 +253,7 @@ namespace CatViP_API.Services
 
             if (!res.IsSuccessful)
             {
-                res.ErrorMessage = "Post is not exist.";
+                res.ErrorMessage = "Post act is not exist.";
             }
 
             return res;
@@ -320,6 +325,34 @@ namespace CatViP_API.Services
         public ICollection<PostReportDTO> GetReportedPostDetails(long id)
         {
             return _mapper.Map<ICollection<PostReportDTO>>(_postRepository.GetReportedPostDetails(id));
+        }
+
+        public async Task<ResponseResult> DeleteComment(long id)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _postRepository.DeleteComment(id);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "fail to delete the comment.";
+            }
+
+            return res;
+        }
+
+        public ResponseResult CheckIfCommentExist(long authId, long commentId)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = _postRepository.CheckCommentIsFromCurrentUser(authId, commentId);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "comment is not exist.";
+            }
+
+            return res;
         }
     }
 }

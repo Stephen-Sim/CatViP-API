@@ -11,7 +11,6 @@
         public byte[]? ProfileImage { get; set; }
         public decimal? Longitude { get; set; }
         public decimal? Latitude { get; set; }
-        public bool? IsShownOnMap { get; set; }
         public int Follwer { get; set; }
         public int Following { get; set; }
         public bool IsExpert { get; set; }

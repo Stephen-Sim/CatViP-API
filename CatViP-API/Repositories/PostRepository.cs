@@ -3,6 +3,7 @@ using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CatViP_API.Repositories
 {
@@ -240,6 +241,26 @@ namespace CatViP_API.Repositories
         public ICollection<PostReport> GetReportedPostDetails(long postId)
         {
             return _context.PostReports.Where(x => x.Post.Status && x.PostId == postId).Include(x => x.User).ToList();
+        }
+
+        public bool CheckCommentIsFromCurrentUser(long authId, long commentId)
+        {
+            return _context.Comments.Any(x => x.Id == commentId && x.UserId == commentId);
+        }
+
+        public async Task<bool> DeleteComment(long id)
+        {
+            try
+            {
+                var comment = _context.Comments.FirstOrDefault(x => x.Id == id);
+                _context.Comments.Remove(comment!);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

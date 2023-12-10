@@ -12,7 +12,7 @@ namespace CatViP_API.Services.Interfaces
         Task<ResponseResult> CreatePost(User user, PostRequestDTO createPostDTO);
         Task<ResponseResult> ActPost(User user, PostActionRequestDTO postActionDTO);
         Task<ResponseResult> CommentPost(User user, CommentRequestDTO commentRequestDTO);
-        ICollection<CommentDTO> GetPostComments(int postId);
+        ICollection<CommentDTO> GetPostComments(long autId, long postId);
         Task<ResponseResult> DeletePost(long id);
         Task<ResponseResult> EditPost(long id, EditPostRequestDTO editPostRequestDTO);
         ResponseResult CheckIfPostExist(long userId, long postId);
@@ -21,5 +21,7 @@ namespace CatViP_API.Services.Interfaces
         Task<ResponseResult> ReportPost(PostReportRequestDTO reportPostDTO, long authId);
         ICollection<ReportedPostDTO> GetReportedPosts();
         ICollection<PostReportDTO> GetReportedPostDetails(long id);
+        Task<ResponseResult> DeleteComment(long id);
+        ResponseResult CheckIfCommentExist(long authId, long commentId);
     }
 }

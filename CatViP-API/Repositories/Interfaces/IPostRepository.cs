@@ -28,5 +28,7 @@ namespace CatViP_API.Repositories.Interfaces
         ICollection<Post> GetPostsByUserId(long authId, long userId);
         ICollection<Post> GetReportedPost();
         ICollection<PostReport> GetReportedPostDetails(long postId);
+        bool CheckCommentIsFromCurrentUser(long autId, long id);
+        Task<bool> DeleteComment(long id);
     }
 }

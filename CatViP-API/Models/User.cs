@@ -27,8 +27,6 @@ public partial class User
 
     public decimal? Latitude { get; set; }
 
-    public bool? IsShownOnMap { get; set; }
-
     public string? RememberToken { get; set; }
 
     public DateTime? TokenCreated { get; set; }

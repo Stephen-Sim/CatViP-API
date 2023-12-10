@@ -100,6 +100,9 @@ namespace CatViP_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("CatCaseReportStatusId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("CatCaseReportTypeId")
                         .HasColumnType("bigint");
 
@@ -114,6 +117,8 @@ namespace CatViP_API.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CatCaseReportStatusId");
 
                     b.HasIndex("CatCaseReportTypeId");
 
@@ -148,6 +153,40 @@ namespace CatViP_API.Migrations
                     b.HasIndex("CatCaseReportId");
 
                     b.ToTable("CatCaseReportImages");
+                });
+
+            modelBuilder.Entity("CatViP_API.Models.CatCaseReportStatus", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CatCaseReportStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "Pending"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "Settled"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Name = "Revoked"
+                        });
                 });
 
             modelBuilder.Entity("CatViP_API.Models.CatCaseReportType", b =>
@@ -607,9 +646,6 @@ namespace CatViP_API.Migrations
                     b.Property<bool>("Gender")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsShownOnMap")
-                        .HasColumnType("bit");
-
                     b.Property<decimal?>("Latitude")
                         .HasColumnType("decimal(9, 6)");
 
@@ -659,7 +695,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$uWPmlnO/T.JV77z4E47MWuHfnAWDtGQU/.NVfichcmD2KTJD/8Lky",
+                            Password = "$2a$11$r3hO9J2MY6YbXNihjJxFnOcQdVDZd6b6zTZv6e6cbdW/phFWAWVpW",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -670,7 +706,7 @@ namespace CatViP_API.Migrations
                             Email = "simshansiong2002@gmail.com",
                             FullName = "stephen sim",
                             Gender = true,
-                            Password = "$2a$11$hslIfX9wBXDAPpUK5kHRgu7ZEXV1LP3v81D37IZzz0fvg5jsNf31O",
+                            Password = "$2a$11$wMBvGmdwOf.LdgXUbFyNu.obvgE1ScY6m1JJfofoMBkUN.HBe1jc.",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -681,7 +717,7 @@ namespace CatViP_API.Migrations
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
                             Gender = false,
-                            Password = "$2a$11$dYms7CNHHn7bpNH9vQh6HeZlBgzkFaUmNE2wVL924zSTCEpLTNSV2",
+                            Password = "$2a$11$ZRZK4BeQPnofMMNk8ytuw.YPN5gWe6yyuDghIhU9zQsTyfAXjLSu6",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -692,7 +728,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$URnWkek7k7DTCcJFmttKguIw44K4oB86RKqLyHAht.UXAntczS3bm",
+                            Password = "$2a$11$FLbcZ1MxPGQ9h3WfWejziOva0mjEj5ZPnLVOvXd4Yv2vEtZPeDS2W",
                             RoleId = 4L,
                             Username = "wafir"
                         });
@@ -762,6 +798,12 @@ namespace CatViP_API.Migrations
 
             modelBuilder.Entity("CatViP_API.Models.CatCaseReport", b =>
                 {
+                    b.HasOne("CatViP_API.Models.CatCaseReportStatus", "CatCaseReportStatus")
+                        .WithMany("CatCaseReports")
+                        .HasForeignKey("CatCaseReportStatusId")
+                        .IsRequired()
+                        .HasConstraintName("FK_CatCaseReports_CatCaseReportStatuses");
+
                     b.HasOne("CatViP_API.Models.CatCaseReportType", "CatCaseReportType")
                         .WithMany("CatCaseReports")
                         .HasForeignKey("CatCaseReportTypeId")
@@ -780,6 +822,8 @@ namespace CatViP_API.Migrations
                         .HasConstraintName("FK_CatCaseReports_Users");
 
                     b.Navigation("Cat");
+
+                    b.Navigation("CatCaseReportStatus");
 
                     b.Navigation("CatCaseReportType");
 
@@ -1013,6 +1057,11 @@ namespace CatViP_API.Migrations
             modelBuilder.Entity("CatViP_API.Models.CatCaseReport", b =>
                 {
                     b.Navigation("CatCaseReportImages");
+                });
+
+            modelBuilder.Entity("CatViP_API.Models.CatCaseReportStatus", b =>
+                {
+                    b.Navigation("CatCaseReports");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.CatCaseReportType", b =>

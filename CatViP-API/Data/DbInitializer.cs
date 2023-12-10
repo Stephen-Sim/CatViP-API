@@ -27,6 +27,12 @@ namespace CatViP_API.Data
                 new CatCaseReportType() { Id = 2, Name = "Dead" }
             );
 
+            modelBuilder.Entity<CatCaseReportStatus>().HasData(
+                new CatCaseReportStatus() { Id = 1, Name = "Pending" },
+                new CatCaseReportStatus() { Id = 2, Name = "Settled" },
+                new CatCaseReportStatus() { Id = 3, Name = "Revoked" }
+            );
+
             modelBuilder.Entity<ExpertApplicationStatus>().HasData(
                 new ExpertApplicationStatus() { Id = 1, Name = "Success" },
                 new ExpertApplicationStatus() { Id = 2, Name = "Pending" },

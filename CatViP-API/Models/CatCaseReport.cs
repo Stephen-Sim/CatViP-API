@@ -15,11 +15,15 @@ public partial class CatCaseReport
 
     public long CatCaseReportTypeId { get; set; }
 
+    public long CatCaseReportStatusId { get; set; }
+
     public virtual Cat? Cat { get; set; }
 
     public virtual ICollection<CatCaseReportImage> CatCaseReportImages { get; set; } = new List<CatCaseReportImage>();
 
     public virtual CatCaseReportType CatCaseReportType { get; set; } = null!;
+
+    public virtual CatCaseReportStatus CatCaseReportStatus { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
 }

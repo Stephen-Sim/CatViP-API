@@ -10,6 +10,8 @@
 
         public string Username { get; set; } = null!;
 
+        public bool IsCurrentLoginUser { get; set; }
+
         public byte[]? ProfileImage { get; set; }
     }
 }

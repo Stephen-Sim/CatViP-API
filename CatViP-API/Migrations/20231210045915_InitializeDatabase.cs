@@ -27,6 +27,19 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CatCaseReportStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CatCaseReportStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CatCaseReportTypes",
                 columns: table => new
                 {
@@ -107,7 +120,6 @@ namespace CatViP_API.Migrations
                     ProfileImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Longitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
                     Latitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
-                    IsShownOnMap = table.Column<bool>(type: "bit", nullable: true),
                     RememberToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TokenCreated = table.Column<DateTime>(type: "datetime", nullable: true),
                     TokenExpires = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -290,11 +302,17 @@ namespace CatViP_API.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     CatId = table.Column<long>(type: "bigint", nullable: true),
-                    CatCaseReportTypeId = table.Column<long>(type: "bigint", nullable: false)
+                    CatCaseReportTypeId = table.Column<long>(type: "bigint", nullable: false),
+                    CatCaseReportStatusId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CatCaseReports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CatCaseReports_CatCaseReportStatuses",
+                        column: x => x.CatCaseReportStatusId,
+                        principalTable: "CatCaseReportStatuses",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CatCaseReports_CatCaseReportTypes",
                         column: x => x.CatCaseReportTypeId,
@@ -468,6 +486,16 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "CatCaseReportStatuses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "Pending" },
+                    { 2L, "Settled" },
+                    { 3L, "Revoked" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "CatCaseReportTypes",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -522,19 +550,24 @@ namespace CatViP_API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "IsShownOnMap", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
+                columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, null, "$2a$11$uWPmlnO/T.JV77z4E47MWuHfnAWDtGQU/.NVfichcmD2KTJD/8Lky", null, null, 1L, null, null, "admin" },
-                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, null, "$2a$11$hslIfX9wBXDAPpUK5kHRgu7ZEXV1LP3v81D37IZzz0fvg5jsNf31O", null, null, 2L, null, null, "stephen" },
-                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, null, "$2a$11$dYms7CNHHn7bpNH9vQh6HeZlBgzkFaUmNE2wVL924zSTCEpLTNSV2", null, null, 3L, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, null, "$2a$11$URnWkek7k7DTCcJFmttKguIw44K4oB86RKqLyHAht.UXAntczS3bm", null, null, 4L, null, null, "wafir" }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$r3hO9J2MY6YbXNihjJxFnOcQdVDZd6b6zTZv6e6cbdW/phFWAWVpW", null, null, 1L, null, null, "admin" },
+                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, "$2a$11$wMBvGmdwOf.LdgXUbFyNu.obvgE1ScY6m1JJfofoMBkUN.HBe1jc.", null, null, 2L, null, null, "stephen" },
+                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, "$2a$11$ZRZK4BeQPnofMMNk8ytuw.YPN5gWe6yyuDghIhU9zQsTyfAXjLSu6", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$FLbcZ1MxPGQ9h3WfWejziOva0mjEj5ZPnLVOvXd4Yv2vEtZPeDS2W", null, null, 4L, null, null, "wafir" }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CatCaseReportImages_CatCaseReportId",
                 table: "CatCaseReportImages",
                 column: "CatCaseReportId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatCaseReports_CatCaseReportStatusId",
+                table: "CatCaseReports",
+                column: "CatCaseReportStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CatCaseReports_CatCaseReportTypeId",
@@ -721,6 +754,9 @@ namespace CatViP_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "CatCaseReportStatuses");
 
             migrationBuilder.DropTable(
                 name: "CatCaseReportTypes");
