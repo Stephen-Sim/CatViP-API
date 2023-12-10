@@ -2,6 +2,7 @@
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CatViP_API.Repositories
 {
@@ -22,6 +23,11 @@ namespace CatViP_API.Repositories
         public ICollection<CatCaseReportImage> GetCaseReportImages(long id)
         {
             return _context.CatCaseReportImages.Where(x => x.CatCaseReportId == id).ToList();
+        }
+
+        public ICollection<CatCaseReport> GetCaseReportsMoreThan7Days()
+        {
+            return _context.CatCaseReports.Where(x => x.CatCaseReportStatusId == 1 && x.DateTime < DateTime.Now.AddDays(-7)).ToList();
         }
 
         public ICollection<CatCaseReport> GetOwnCaseReports(long autId)

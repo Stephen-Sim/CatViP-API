@@ -94,6 +94,16 @@ namespace CatViP_API.Services
             return res;
         }
 
+        public async Task RevokeCaseReportsMoreThan7Days()
+        {
+            var caseReports = _caseReportRepository.GetCaseReportsMoreThan7Days();
+
+            foreach (var caseReport in caseReports)
+            {
+                await _caseReportRepository.RevokeCaseReport(caseReport.Id);
+            }
+        }
+
         public async Task<ResponseResult> SettleCaseReport(long id)
         {
             var res = new ResponseResult();

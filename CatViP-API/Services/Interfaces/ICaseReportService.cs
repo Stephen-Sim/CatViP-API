@@ -8,6 +8,7 @@ namespace CatViP_API.Services.Interfaces
         Task<ResponseResult> CreateCaseReport(long id, CaseReportRequestDTO caseReportRequestDTO);
         ICollection<OwnCaseReportDTO> GetOwnCaseReports(long id);
         Task<ResponseResult> RevokeCaseReport(long id);
+        Task RevokeCaseReportsMoreThan7Days();
         Task<ResponseResult> SettleCaseReport(long id);
     }
 }

@@ -9,6 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
+using Quartz;
+using Quartz.Spi;
+using CatViP_API.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +44,6 @@ builder.Services.AddScoped<ICatService, CatService>();
 builder.Services.AddScoped<IExpertService, ExpertService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICaseReportService, CaseReportService>();
-
 
 //Add token configuration
 builder.Services.AddSwaggerGen(options =>
@@ -83,6 +85,20 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+
+// Add Quartz services
+builder.Services.AddQuartz(q =>
+{
+    q.AddJob<RevokeCaseReportsMoreThan7DaysJob>(opts => opts.WithIdentity("RevokeCaseReportsMoreThan7DaysJob"));
+
+    q.AddTrigger(opts => opts
+        .ForJob("RevokeCaseReportsMoreThan7DaysJob") 
+        .WithIdentity("RevokeCaseReportsMoreThan7DaysJob-trigger")
+        .WithCronSchedule("0 0 0 * * ?"));
+});
+
+// Add the Quartz hosted service
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 var app = builder.Build();
 
