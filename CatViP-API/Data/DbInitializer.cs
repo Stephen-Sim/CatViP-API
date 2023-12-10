@@ -22,11 +22,6 @@ namespace CatViP_API.Data
                 new ActionType() { Id = 2, Name = "DisLike" }
             );
 
-            modelBuilder.Entity<CatCaseReportType>().HasData(
-                new CatCaseReportType() { Id = 1, Name = "Missing" },
-                new CatCaseReportType() { Id = 2, Name = "Dead" }
-            );
-
             modelBuilder.Entity<CatCaseReportStatus>().HasData(
                 new CatCaseReportStatus() { Id = 1, Name = "Pending" },
                 new CatCaseReportStatus() { Id = 2, Name = "Settled" },

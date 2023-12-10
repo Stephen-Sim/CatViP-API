@@ -22,8 +22,6 @@ namespace CatViP_API.Data
 
         public virtual DbSet<CatCaseReportImage> CatCaseReportImages { get; set; }
 
-        public virtual DbSet<CatCaseReportType> CatCaseReportTypes { get; set; }
-
         public virtual DbSet<CatCaseReportStatus> CatCaseReportStatuses { get; set; }
 
         public virtual DbSet<Chat> Chats { get; set; }
@@ -71,11 +69,6 @@ namespace CatViP_API.Data
 
             modelBuilder.Entity<CatCaseReport>(entity =>
             {
-                entity.HasOne(d => d.CatCaseReportType).WithMany(p => p.CatCaseReports)
-                    .HasForeignKey(d => d.CatCaseReportTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CatCaseReports_CatCaseReportTypes");
-
                 entity.HasOne(d => d.CatCaseReportStatus).WithMany(p => p.CatCaseReports)
                     .HasForeignKey(d => d.CatCaseReportStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)

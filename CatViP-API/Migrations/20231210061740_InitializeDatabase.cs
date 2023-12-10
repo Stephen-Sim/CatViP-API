@@ -40,19 +40,6 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CatCaseReportTypes",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CatCaseReportTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ExpertApplicationStatuses",
                 columns: table => new
                 {
@@ -300,9 +287,11 @@ namespace CatViP_API.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Longitude = table.Column<decimal>(type: "decimal(9,6)", nullable: false),
+                    Latitude = table.Column<decimal>(type: "decimal(9,6)", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     CatId = table.Column<long>(type: "bigint", nullable: true),
-                    CatCaseReportTypeId = table.Column<long>(type: "bigint", nullable: false),
                     CatCaseReportStatusId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -312,11 +301,6 @@ namespace CatViP_API.Migrations
                         name: "FK_CatCaseReports_CatCaseReportStatuses",
                         column: x => x.CatCaseReportStatusId,
                         principalTable: "CatCaseReportStatuses",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CatCaseReports_CatCaseReportTypes",
-                        column: x => x.CatCaseReportTypeId,
-                        principalTable: "CatCaseReportTypes",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CatCaseReports_Cats",
@@ -496,15 +480,6 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "CatCaseReportTypes",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1L, "Missing" },
-                    { 2L, "Dead" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "ExpertApplicationStatuses",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -553,10 +528,10 @@ namespace CatViP_API.Migrations
                 columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$r3hO9J2MY6YbXNihjJxFnOcQdVDZd6b6zTZv6e6cbdW/phFWAWVpW", null, null, 1L, null, null, "admin" },
-                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, "$2a$11$wMBvGmdwOf.LdgXUbFyNu.obvgE1ScY6m1JJfofoMBkUN.HBe1jc.", null, null, 2L, null, null, "stephen" },
-                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, "$2a$11$ZRZK4BeQPnofMMNk8ytuw.YPN5gWe6yyuDghIhU9zQsTyfAXjLSu6", null, null, 3L, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$FLbcZ1MxPGQ9h3WfWejziOva0mjEj5ZPnLVOvXd4Yv2vEtZPeDS2W", null, null, 4L, null, null, "wafir" }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$dThHq/d7Y07uWDTTOWJE6uIuy4aBRb0LUaszRXi/eRYIx2ByAboYa", null, null, 1L, null, null, "admin" },
+                    { 2L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, null, null, "$2a$11$wMjelA3bdK2xLEY4TmOPIOctGGd6kECxClYRKnK6Klb03tlR2tCVe", null, null, 2L, null, null, "stephen" },
+                    { 3L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, null, null, "$2a$11$cdAj3GVD52Tx6om1caLThuGcIOKsX3TvMP90eU.Pq.3o/ulk23/jS", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$ch9xx8TQbS5a1hYGPheNwO8lRX5z/rzQLcSf64M3mKhLDr5TR6biK", null, null, 4L, null, null, "wafir" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -568,11 +543,6 @@ namespace CatViP_API.Migrations
                 name: "IX_CatCaseReports_CatCaseReportStatusId",
                 table: "CatCaseReports",
                 column: "CatCaseReportStatusId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CatCaseReports_CatCaseReportTypeId",
-                table: "CatCaseReports",
-                column: "CatCaseReportTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CatCaseReports_CatId",
@@ -757,9 +727,6 @@ namespace CatViP_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "CatCaseReportStatuses");
-
-            migrationBuilder.DropTable(
-                name: "CatCaseReportTypes");
 
             migrationBuilder.DropTable(
                 name: "Cats");

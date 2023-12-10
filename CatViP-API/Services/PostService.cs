@@ -119,11 +119,10 @@ namespace CatViP_API.Services
                 }).ToList()
             };
 
-            var storePostRes = await _postRepository.StorePost(post);
+            storeResult.IsSuccessful = await _postRepository.StorePost(post);
 
-            if (!storePostRes)
+            if (!storeResult.IsSuccessful)
             {
-                storeResult.IsSuccessful = false;
                 storeResult.ErrorMessage = "fail to store";
                 return storeResult;
             }

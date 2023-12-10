@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CatViP_API.Models;
 
@@ -9,19 +10,21 @@ public partial class CatCaseReport
 
     public string Description { get; set; } = null!;
 
+    public string Address { get; set; } = null!;
+    [Column(TypeName = "decimal(9,6)")]
+    public decimal Longitude { get; set; }
+    [Column(TypeName = "decimal(9,6)")]
+    public decimal Latitude { get; set; }
+
     public long UserId { get; set; }
 
     public long? CatId { get; set; }
-
-    public long CatCaseReportTypeId { get; set; }
 
     public long CatCaseReportStatusId { get; set; }
 
     public virtual Cat? Cat { get; set; }
 
     public virtual ICollection<CatCaseReportImage> CatCaseReportImages { get; set; } = new List<CatCaseReportImage>();
-
-    public virtual CatCaseReportType CatCaseReportType { get; set; } = null!;
 
     public virtual CatCaseReportStatus CatCaseReportStatus { get; set; } = null!;
 

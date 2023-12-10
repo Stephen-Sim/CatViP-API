@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatViP_API.Migrations
 {
     [DbContext(typeof(CatViPContext))]
-    [Migration("20231210045915_InitializeDatabase")]
+    [Migration("20231210061740_InitializeDatabase")]
     partial class InitializeDatabase
     {
         /// <inheritdoc />
@@ -103,10 +103,11 @@ namespace CatViP_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CatCaseReportStatusId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("CatCaseReportTypeId")
+                    b.Property<long>("CatCaseReportStatusId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("CatId")
@@ -116,14 +117,18 @@ namespace CatViP_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("decimal(9,6)");
+
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(9,6)");
+
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CatCaseReportStatusId");
-
-                    b.HasIndex("CatCaseReportTypeId");
 
                     b.HasIndex("CatId");
 
@@ -189,35 +194,6 @@ namespace CatViP_API.Migrations
                         {
                             Id = 3L,
                             Name = "Revoked"
-                        });
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.CatCaseReportType", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CatCaseReportTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Missing"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "Dead"
                         });
                 });
 
@@ -698,7 +674,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$r3hO9J2MY6YbXNihjJxFnOcQdVDZd6b6zTZv6e6cbdW/phFWAWVpW",
+                            Password = "$2a$11$dThHq/d7Y07uWDTTOWJE6uIuy4aBRb0LUaszRXi/eRYIx2ByAboYa",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -709,7 +685,7 @@ namespace CatViP_API.Migrations
                             Email = "simshansiong2002@gmail.com",
                             FullName = "stephen sim",
                             Gender = true,
-                            Password = "$2a$11$wMBvGmdwOf.LdgXUbFyNu.obvgE1ScY6m1JJfofoMBkUN.HBe1jc.",
+                            Password = "$2a$11$wMjelA3bdK2xLEY4TmOPIOctGGd6kECxClYRKnK6Klb03tlR2tCVe",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -720,7 +696,7 @@ namespace CatViP_API.Migrations
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
                             Gender = false,
-                            Password = "$2a$11$ZRZK4BeQPnofMMNk8ytuw.YPN5gWe6yyuDghIhU9zQsTyfAXjLSu6",
+                            Password = "$2a$11$cdAj3GVD52Tx6om1caLThuGcIOKsX3TvMP90eU.Pq.3o/ulk23/jS",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -731,7 +707,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$FLbcZ1MxPGQ9h3WfWejziOva0mjEj5ZPnLVOvXd4Yv2vEtZPeDS2W",
+                            Password = "$2a$11$ch9xx8TQbS5a1hYGPheNwO8lRX5z/rzQLcSf64M3mKhLDr5TR6biK",
                             RoleId = 4L,
                             Username = "wafir"
                         });
@@ -807,12 +783,6 @@ namespace CatViP_API.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_CatCaseReports_CatCaseReportStatuses");
 
-                    b.HasOne("CatViP_API.Models.CatCaseReportType", "CatCaseReportType")
-                        .WithMany("CatCaseReports")
-                        .HasForeignKey("CatCaseReportTypeId")
-                        .IsRequired()
-                        .HasConstraintName("FK_CatCaseReports_CatCaseReportTypes");
-
                     b.HasOne("CatViP_API.Models.Cat", "Cat")
                         .WithMany("CatCaseReports")
                         .HasForeignKey("CatId")
@@ -827,8 +797,6 @@ namespace CatViP_API.Migrations
                     b.Navigation("Cat");
 
                     b.Navigation("CatCaseReportStatus");
-
-                    b.Navigation("CatCaseReportType");
 
                     b.Navigation("User");
                 });
@@ -1063,11 +1031,6 @@ namespace CatViP_API.Migrations
                 });
 
             modelBuilder.Entity("CatViP_API.Models.CatCaseReportStatus", b =>
-                {
-                    b.Navigation("CatCaseReports");
-                });
-
-            modelBuilder.Entity("CatViP_API.Models.CatCaseReportType", b =>
                 {
                     b.Navigation("CatCaseReports");
                 });

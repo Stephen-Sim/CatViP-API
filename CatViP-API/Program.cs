@@ -31,6 +31,7 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ICatRepository, CatRepository>();
 builder.Services.AddScoped<IExpertRepository, ExpertRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICaseReportRepository, CaseReportRepository>();
 
 // Add services
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -39,6 +40,7 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICatService, CatService>();
 builder.Services.AddScoped<IExpertService, ExpertService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICaseReportService, CaseReportService>();
 
 
 //Add token configuration
