@@ -20,7 +20,7 @@ namespace CatViP_API.Controllers
             _caseReportService = caseReportService;
         }
 
-        [HttpGet("GetOwnCaseReports"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        [HttpGet("GetOwnPendingCaseReports"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetOwnCaseReports()
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
@@ -36,6 +36,66 @@ namespace CatViP_API.Controllers
             var cases = _caseReportService.GetOwnCaseReports(userResult.Result!.Id);
 
             return Ok(cases);
+        }
+
+        [HttpPut("SettleCaseReport/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> SettleCaseReport(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var checkIsReportExistRes = _caseReportService.CheckIsReportExist(userResult.Result!.Id, Id);
+
+            if (!checkIsReportExistRes.IsSuccessful)
+            {
+                return BadRequest(checkIsReportExistRes.ErrorMessage);
+            }
+
+            var res = await _caseReportService.SettleCaseReport(Id);
+
+            if (!res.IsSuccessful)
+            {
+                return BadRequest(res.ErrorMessage);
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("RevokeCaseReport/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> RevokeCaseReport(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var checkIsReportExistRes = _caseReportService.CheckIsReportExist(userResult.Result!.Id, Id);
+
+            if (!checkIsReportExistRes.IsSuccessful)
+            {
+                return BadRequest(checkIsReportExistRes.ErrorMessage);
+            }
+
+            var res = await _caseReportService.RevokeCaseReport(Id);
+
+            if (!res.IsSuccessful)
+            {
+                return BadRequest(res.ErrorMessage);
+            }
+
+            return Ok();
         }
 
         [HttpPost("CreateCaseReport"), Authorize(Roles = "Cat Owner,Cat Expert")]

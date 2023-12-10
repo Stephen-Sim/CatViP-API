@@ -19,6 +19,20 @@ namespace CatViP_API.Services
             _mapper = mapper;
         }
 
+        public ResponseResult CheckIsReportExist(long authId, long id)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = _caseReportRepository.CheckIsReportExist(authId, id);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "Report is not exist";
+            }
+
+            return res;
+        }
+
         public async Task<ResponseResult> CreateCaseReport(long authId, CaseReportRequestDTO caseReportRequestDTO)
         {
             var storeResult = new ResponseResult();
@@ -64,6 +78,34 @@ namespace CatViP_API.Services
             }
 
             return cases;
+        }
+
+        public async Task<ResponseResult> RevokeCaseReport(long id)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _caseReportRepository.RevokeCaseReport(id);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "Report is not exist";
+            }
+
+            return res;
+        }
+
+        public async Task<ResponseResult> SettleCaseReport(long id)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _caseReportRepository.SettleCaseReport(id);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "Report is not exist";
+            }
+
+            return res;
         }
     }
 }
