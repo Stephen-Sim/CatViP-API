@@ -18,7 +18,24 @@ namespace CatViP_API.Controllers
         {
             _authService = authService;
             _caseReportService = caseReportService;
+        }
 
+        [HttpGet("GetOwnCaseReports"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetOwnCaseReports()
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var cases = _caseReportService.GetOwnCaseReports(userResult.Result!.Id);
+
+            return Ok(cases);
         }
 
         [HttpPost("CreateCaseReport"), Authorize(Roles = "Cat Owner,Cat Expert")]

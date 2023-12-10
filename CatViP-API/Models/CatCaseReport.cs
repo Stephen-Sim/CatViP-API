@@ -22,6 +22,8 @@ public partial class CatCaseReport
 
     public long CatCaseReportStatusId { get; set; }
 
+    public DateTime DateTime { get; set; }
+
     public virtual Cat? Cat { get; set; }
 
     public virtual ICollection<CatCaseReportImage> CatCaseReportImages { get; set; } = new List<CatCaseReportImage>();

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CatViP_API.DTOs.CaseReportDTOs;
+using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Models;
 using CatViP_API.Repositories;
 using CatViP_API.Repositories.Interfaces;
@@ -31,6 +32,7 @@ namespace CatViP_API.Services
                 Latitude = caseReportRequestDTO.Latitude,
                 Longitude = caseReportRequestDTO.Longitude,
                 UserId = authId,
+                DateTime = DateTime.Now,
 
                 CatCaseReportImages = caseReportRequestDTO.CaseReportImages.Select(pi => new CatCaseReportImage
                 {
@@ -50,6 +52,18 @@ namespace CatViP_API.Services
             // push notification
 
             return storeResult;
+        }
+
+        public ICollection<OwnCaseReportDTO> GetOwnCaseReports(long autId)
+        {
+            var cases = _mapper.Map<ICollection<OwnCaseReportDTO>>(_caseReportRepository.GetOwnCaseReports(autId));
+
+            foreach (var caseReport in cases)
+            {
+                caseReport.CaseReportImages = _mapper.Map<ICollection<CaseReportImageDTO>>(_caseReportRepository.GetCaseReportImages(caseReport.Id));
+            }
+
+            return cases;
         }
     }
 }

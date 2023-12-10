@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CatViP_API.DTOs.AuthDTOs;
+using CatViP_API.DTOs.CaseReportDTOs;
 using CatViP_API.DTOs.CatDTOs;
 using CatViP_API.DTOs.ExpertDTOs;
 using CatViP_API.DTOs.PostDTOs;
@@ -53,6 +54,10 @@ namespace CatViP_API.Helpers
             CreateMap<Product, ProductDTO>()
                 .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.ProductType.Name));
 
+            CreateMap<CatCaseReport, OwnCaseReportDTO>()
+                .ForMember(dest => dest.CatName, opt => opt.MapFrom(src => src.Cat == null ? null : src.Cat.Name));
+
+            CreateMap<CatCaseReportImage, CaseReportImageDTO>();
         }
     }
 }

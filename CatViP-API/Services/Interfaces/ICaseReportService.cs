@@ -5,5 +5,6 @@ namespace CatViP_API.Services.Interfaces
     public interface ICaseReportService
     {
         Task<ResponseResult> CreateCaseReport(long id, CaseReportRequestDTO caseReportRequestDTO);
+        ICollection<OwnCaseReportDTO> GetOwnCaseReports(long id);
     }
 }
