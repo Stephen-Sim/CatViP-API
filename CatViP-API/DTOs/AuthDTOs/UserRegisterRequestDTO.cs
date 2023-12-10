@@ -18,5 +18,8 @@ namespace CatViP_API.DTOs.AuthDTOs
         public DateTime DateOfBirth { get; set; }
         [Required]
         public long RoleId { get; set; }
+        public string? Address { get; set; }
+        public decimal? Longitude { get; set; }
+        public decimal? Latitude { get; set; }
     }
 }
