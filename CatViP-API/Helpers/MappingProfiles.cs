@@ -2,6 +2,7 @@
 using CatViP_API.DTOs.AuthDTOs;
 using CatViP_API.DTOs.CaseReportDTOs;
 using CatViP_API.DTOs.CatDTOs;
+using CatViP_API.DTOs.ChatDTOs;
 using CatViP_API.DTOs.ExpertDTOs;
 using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.DTOs.ProductDTOs;
@@ -61,6 +62,8 @@ namespace CatViP_API.Helpers
 
             CreateMap<CatCaseReport, NearByCaseReportDTO>()
                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName));
+
+            CreateMap<User, ChatUserDTO>();
         }
     }
 }

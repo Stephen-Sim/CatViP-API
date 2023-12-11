@@ -14,15 +14,17 @@
 
         public byte[]? ProfileImage { get; set; }
 
-        public long PostTypeId { get; set; }
+        public long? PostTypeId { get; set; }
 
-        public int LikeCount { get; set; }
+        public int? LikeCount { get; set; }
 
-        public int CurrentUserAction { get; set; }
+        public int? CurrentUserAction { get; set; }
 
-        public int CommentCount { get; set; }
+        public int? CommentCount { get; set; }
 
-        public int DislikeCount { get; set; }
+        public int? DislikeCount { get; set; }
+
+        public bool IsAds {  get; set; } = false;
 
         public ICollection<PostImageDTO> PostImages { get; set; } = new List<PostImageDTO>();
 

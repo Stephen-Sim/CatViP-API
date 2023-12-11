@@ -12,6 +12,7 @@ using System.Text;
 using Quartz;
 using Quartz.Spi;
 using CatViP_API.Jobs;
+using CatViP_API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,7 @@ builder.Services.AddScoped<ICatRepository, CatRepository>();
 builder.Services.AddScoped<IExpertRepository, ExpertRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICaseReportRepository, CaseReportRepository>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
 
 // Add services
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -44,6 +46,7 @@ builder.Services.AddScoped<ICatService, CatService>();
 builder.Services.AddScoped<IExpertService, ExpertService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICaseReportService, CaseReportService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 //Add token configuration
 builder.Services.AddSwaggerGen(options =>
@@ -100,6 +103,9 @@ builder.Services.AddQuartz(q =>
 // Add the Quartz hosted service
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
+// add SingalR
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -118,5 +124,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map Hub
+app.MapHub<ChatHub>("/chathub");
 
 app.Run();
