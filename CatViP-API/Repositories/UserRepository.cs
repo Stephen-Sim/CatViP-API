@@ -124,6 +124,9 @@ namespace CatViP_API.Repositories
                 user.Gender = userRegisterDTO.Gender;
                 user.DateOfBirth = userRegisterDTO.DateOfBirth;
                 user.RoleId = userRegisterDTO.RoleId;
+                user.Latitude = userRegisterDTO.Latitude;
+                user.Longitude = userRegisterDTO.Longitude;
+                user.Address = userRegisterDTO.Address;
 
                 _context.Add(user);
                 await _context.SaveChangesAsync();
