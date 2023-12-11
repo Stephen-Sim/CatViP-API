@@ -11,8 +11,8 @@ namespace CatViP_API.DTOs.AuthDTOs
         [Required]
         public bool Gender { get; set; }
         public string Address { get; set; } = null!;
-        public decimal Longitude { get; set; }
         public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
         public byte[] ProfileImage { get; set; } = null!;
     }
 }

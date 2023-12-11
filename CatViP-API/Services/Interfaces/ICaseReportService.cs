@@ -1,4 +1,5 @@
 ﻿using CatViP_API.DTOs.CaseReportDTOs;
+using CatViP_API.Models;
 
 namespace CatViP_API.Services.Interfaces
 {
@@ -6,6 +7,9 @@ namespace CatViP_API.Services.Interfaces
     {
         ResponseResult CheckIsReportExist(long authId, long id);
         Task<ResponseResult> CreateCaseReport(long id, CaseReportRequestDTO caseReportRequestDTO);
+        ResponseResult<NearByCaseReportDTO> GetNearByCaseReport(long Id, User user);
+        ICollection<NearByCaseReportDTO> GetNearByCaseReports(User user);
+        ResponseResult<OwnCaseReportDTO> GetOwnCaseReport(long Id, User user);
         ICollection<OwnCaseReportDTO> GetOwnCaseReports(long id);
         Task<ResponseResult> RevokeCaseReport(long id);
         Task RevokeCaseReportsMoreThan7Days();

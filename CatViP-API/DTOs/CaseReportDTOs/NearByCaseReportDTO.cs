@@ -1,16 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace CatViP_API.DTOs.CaseReportDTOs
+﻿namespace CatViP_API.DTOs.CaseReportDTOs
 {
-    public class OwnCaseReportDTO
+    public class NearByCaseReportDTO
     {
         public long Id { get; set; }
 
         public string Description { get; set; } = null!;
 
+        public string Address { get; set; } = null!;
+
         public DateTime DateTime { get; set; }
 
-        public string Address { get; set; } = null!;
+        public string Username { get; set; } = null!;
 
         public decimal Latitude { get; set; }
 

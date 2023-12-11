@@ -17,7 +17,7 @@ namespace CatViP_API.Repositories
 
         public bool CheckIsReportExist(long authId, long id)
         {
-            return _context.CatCaseReports.Any(x => x.UserId == authId && x.Id == id);
+            return _context.CatCaseReports.Any(x => x.UserId == authId && x.Id == id && x.CatCaseReportStatusId == 1);
         }
 
         public ICollection<CatCaseReportImage> GetCaseReportImages(long id)
@@ -25,9 +25,14 @@ namespace CatViP_API.Repositories
             return _context.CatCaseReportImages.Where(x => x.CatCaseReportId == id).ToList();
         }
 
+        public ICollection<CatCaseReport> GetNotAuthCaseReports(long authId)
+        {
+            return _context.CatCaseReports.Include(x => x.User).Where(x => x.UserId != authId && x.CatCaseReportStatusId == 1).OrderByDescending(x => x.DateTime).ToList();
+        }
+
         public ICollection<CatCaseReport> GetCaseReportsMoreThan7Days()
         {
-            return _context.CatCaseReports.Where(x => x.CatCaseReportStatusId == 1 && x.DateTime < DateTime.Now.AddDays(-7)).ToList();
+            return _context.CatCaseReports.Where(x => x.CatCaseReportStatusId == 1 && x.DateTime < DateTime.Now.AddDays(-7)).OrderByDescending(x => x.DateTime).ToList();
         }
 
         public ICollection<CatCaseReport> GetOwnCaseReports(long autId)
@@ -79,6 +84,16 @@ namespace CatViP_API.Repositories
             {
                 return false;
             }
+        }
+
+        public CatCaseReport? GetNotAuthCaseReport(long Id, long userId)
+        {
+            return _context.CatCaseReports.Include(x => x.User).FirstOrDefault(x => x.Id == Id && x.UserId != userId && x.CatCaseReportStatusId == 1);
+        }
+
+        public CatCaseReport? GetOwnCaseReport(long Id, long userId)
+        {
+            return _context.CatCaseReports.Include(x => x.User).FirstOrDefault(x => x.Id == Id && x.UserId == userId && x.CatCaseReportStatusId == 1);
         }
     }
 }

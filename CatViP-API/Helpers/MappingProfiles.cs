@@ -58,6 +58,9 @@ namespace CatViP_API.Helpers
                 .ForMember(dest => dest.CatName, opt => opt.MapFrom(src => src.Cat == null ? null : src.Cat.Name));
 
             CreateMap<CatCaseReportImage, CaseReportImageDTO>();
+
+            CreateMap<CatCaseReport, NearByCaseReportDTO>()
+               .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName));
         }
     }
 }

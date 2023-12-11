@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using CatViP_API.DTOs.CaseReportDTOs;
 using CatViP_API.DTOs.PostDTOs;
+using CatViP_API.Helpers;
 using CatViP_API.Models;
 using CatViP_API.Repositories;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services.Interfaces;
+using System;
 
 namespace CatViP_API.Services
 {
@@ -66,6 +68,68 @@ namespace CatViP_API.Services
             // push notification
 
             return storeResult;
+        }
+
+        public ResponseResult<NearByCaseReportDTO> GetNearByCaseReport(long Id, User user)
+        {
+            var res = new ResponseResult<NearByCaseReportDTO>();
+
+            res.Result = _mapper.Map<NearByCaseReportDTO>(_caseReportRepository.GetNotAuthCaseReport(Id, user.Id));
+
+            if (res.Result == null)
+            {
+                res.ErrorMessage = "the case report is not exist.";
+                return res;
+            }
+
+            res.IsSuccessful = (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)res.Result!.Latitude, (double)res.Result!.Longitude) <= 10);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "the case report is not near by you.";
+            }
+
+            return res;
+        }
+
+        public ICollection<NearByCaseReportDTO> GetNearByCaseReports(User user)
+        {
+            var tempCases = _mapper.Map<ICollection<NearByCaseReportDTO>>(_caseReportRepository.GetNotAuthCaseReports(user.Id));
+
+            var cases = new List<NearByCaseReportDTO>();
+
+            foreach (var caseReport in tempCases)
+            {
+                if (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)caseReport.Latitude, (double)caseReport.Longitude) <= 10)
+                {
+                    cases.Add(caseReport);
+                    caseReport.CaseReportImages = _mapper.Map<ICollection<CaseReportImageDTO>>(_caseReportRepository.GetCaseReportImages(caseReport.Id));
+                }
+            }
+
+            return cases;
+        }
+
+        public ResponseResult<OwnCaseReportDTO> GetOwnCaseReport(long Id, User user)
+        {
+            var res = new ResponseResult<OwnCaseReportDTO>();
+
+            res.Result = _mapper.Map<OwnCaseReportDTO>(_caseReportRepository.GetOwnCaseReport(Id, user.Id));
+
+            if (res.Result == null)
+            {
+                res.ErrorMessage = "the case report is not exist.";
+                return res;
+            }
+
+            res.IsSuccessful = (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)res.Result!.Latitude, (double)res.Result!.Longitude) <= 10);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "the case report is not near by you.";
+            }
+
+            return res;
         }
 
         public ICollection<OwnCaseReportDTO> GetOwnCaseReports(long autId)

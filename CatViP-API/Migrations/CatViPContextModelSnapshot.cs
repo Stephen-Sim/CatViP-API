@@ -674,29 +674,35 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$3InnqNAZkQYb1itrFePFr.kXU7nA8TBAyODXUaYBod5Ugas6DVmTK",
+                            Password = "$2a$11$k/X0C7n3cDkBse0MI.Ik7.o0gwjDE1eTBF6sxrCMehqppJ/21p9by",
                             RoleId = 1L,
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2L,
+                            Address = "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka",
                             DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "simshansiong2002@gmail.com",
                             FullName = "stephen sim",
                             Gender = true,
-                            Password = "$2a$11$1KjKnWo0yVeCbyNkNYAWbuKTL7TlAt.cKiz7K2qlMs46lXriQRCue",
+                            Latitude = 2.3164m,
+                            Longitude = 102.3208m,
+                            Password = "$2a$11$I7KwQml2me1TbbVzl/Ae5OxlgYwB/C1q3/zi31rcEO5KrzCJzBPu2",
                             RoleId = 2L,
                             Username = "stephen"
                         },
                         new
                         {
                             Id = 3L,
+                            Address = "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka",
                             DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
                             Gender = false,
-                            Password = "$2a$11$K55/6unU4xpRPs9md.Cfx.P5kCNyCJI4nAfCD.6KlTgOK30MzRFK6",
+                            Latitude = 2.3164m,
+                            Longitude = 102.3208m,
+                            Password = "$2a$11$3ao2o4O1LV9pMyCeEYA/l.JcieUQ4j3D0Zp2p6489S6YdDAuBuLFm",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -707,7 +713,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$Mq6z6vCT0FvSGrkL7CIEueb4rvwYRCA2dbYoA3MWSfYSkm0zpWmkm",
+                            Password = "$2a$11$jcZk6etUlprV67YMIVd/X.2tgn4XjjKWLHj78nFb0na.UMx5Fo1NK",
                             RoleId = 4L,
                             Username = "wafir"
                         });

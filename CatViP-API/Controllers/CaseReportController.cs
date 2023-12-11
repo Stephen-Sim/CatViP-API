@@ -20,7 +20,7 @@ namespace CatViP_API.Controllers
             _caseReportService = caseReportService;
         }
 
-        [HttpGet("GetOwnPendingCaseReports"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        [HttpGet("GetOwnCaseReports"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetOwnCaseReports()
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
@@ -36,6 +36,70 @@ namespace CatViP_API.Controllers
             var cases = _caseReportService.GetOwnCaseReports(userResult.Result!.Id);
 
             return Ok(cases);
+        }
+
+        [HttpGet("GetOwnCaseReport/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetOwnCaseReport(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var caseRes = _caseReportService.GetOwnCaseReport(Id, userResult.Result!);
+
+            if (!caseRes.IsSuccessful)
+            {
+                return BadRequest(caseRes.ErrorMessage);
+            }
+
+            return Ok(caseRes.Result);
+        }
+
+        [HttpGet("GetNearByCaseReports"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetNearByCaseReports()
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var cases = _caseReportService.GetNearByCaseReports(userResult.Result!);
+
+            return Ok(cases);
+        }
+
+        [HttpGet("GetNearByCaseReport/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetNearByCaseReport(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var caseRes = _caseReportService.GetNearByCaseReport(Id, userResult.Result!);
+
+            if (!caseRes.IsSuccessful)
+            {
+                return BadRequest(caseRes.ErrorMessage);
+            }
+
+            return Ok(caseRes.Result);
         }
 
         [HttpPut("SettleCaseReport/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]

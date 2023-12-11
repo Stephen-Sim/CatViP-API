@@ -11,9 +11,9 @@ namespace CatViP_API.DTOs.CaseReportDTOs
         [Required]
         public string Address { get; set; } = null!;
         [Required]
-        public decimal Longitude { get; set; }
-        [Required]  
         public decimal Latitude { get; set; }
+        [Required]  
+        public decimal Longitude { get; set; }
 
         public long? CatId { get; set; }
 

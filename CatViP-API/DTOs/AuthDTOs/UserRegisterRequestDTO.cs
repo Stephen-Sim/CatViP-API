@@ -19,7 +19,7 @@ namespace CatViP_API.DTOs.AuthDTOs
         [Required]
         public long RoleId { get; set; }
         public string? Address { get; set; }
-        public decimal? Longitude { get; set; }
         public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
     }
 }
