@@ -15,19 +15,9 @@ namespace CatViP_API.Hubs
 
         public async Task SendPrivateMessage(string sendUser, string receiveUser, string message)
         {
-            await Clients.User(receiveUser).SendAsync($"ReceiveMessageFrom{sendUser}", message);
+            await Clients.All.SendAsync($"ReceiveMessageFrom{sendUser}To{receiveUser}", message);
 
             await _chatService.StoreChat(sendUser, receiveUser, message);
-        }
-
-        public async Task OnConnect(string username)
-        {
-            await Clients.User(username).SendAsync("OnConnect");
-        }
-
-        public async Task OnDisconnect(string username)
-        {
-            await Clients.User(username).SendAsync("OnDisconnect");
         }
     }
 }
