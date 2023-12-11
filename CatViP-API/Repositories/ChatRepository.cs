@@ -42,5 +42,25 @@ namespace CatViP_API.Repositories
                 .Select(x => x.User)
                 .ToList();
         }
+
+        public async Task StoreChat(string sendUser, string receiveUser, string message)
+        {
+            try
+            {
+                var chat = new Chat()
+                {
+                    DateTime = DateTime.Now,
+                    Message = message,
+                    UserSendId = _context.Users.First(x => x.Username == sendUser).Id,
+                    UserReceiveId = _context.Users.First(x => x.Username == receiveUser).Id,
+                };
+
+                _context.Add(chat);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+            }
+        }
     }
 }

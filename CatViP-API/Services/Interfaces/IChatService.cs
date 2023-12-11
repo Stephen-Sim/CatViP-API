@@ -6,5 +6,6 @@ namespace CatViP_API.Services.Interfaces
     {
         ICollection<ChatDTO> GetChats(long authId, long userId);
         ICollection<ChatUserDTO> GetChatUsers(long authId);
+        Task StoreChat(string sendUser, string receiveUser, string message);
     }
 }

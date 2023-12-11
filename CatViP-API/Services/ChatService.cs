@@ -35,5 +35,10 @@ namespace CatViP_API.Services
         {
             return _mapper.Map<ICollection<ChatUserDTO>>(_chatRepository.GetChatUsers(authId));
         }
+
+        public async Task StoreChat(string sendUser, string receiveUser, string message)
+        {
+            await _chatRepository.StoreChat(sendUser, receiveUser, message);
+        }
     }
 }
