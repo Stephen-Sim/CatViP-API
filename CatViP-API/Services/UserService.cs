@@ -57,7 +57,7 @@ namespace CatViP_API.Services
         {
             var res = new ResponseResult<UserInfoDTO>();
 
-            var user = await _userRepository.GetSearchUserById(id);
+            var user = await _userRepository.GetUserById(id);
 
             if (user == null)
             {
