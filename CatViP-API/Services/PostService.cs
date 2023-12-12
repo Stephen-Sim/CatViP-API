@@ -353,5 +353,27 @@ namespace CatViP_API.Services
 
             return res;
         }
+
+        public ResponseResult<PostDTO> GetPost(long authId, long id)
+        {
+            var res = new ResponseResult<PostDTO>();
+
+            res.Result = _mapper.Map<PostDTO>(_postRepository.GetPostById(id));
+
+            if (res.Result == null)
+            {
+                res.IsSuccessful = false;
+                res.ErrorMessage = "post is not exist";
+                return res;
+            }
+
+            res.Result!.LikeCount = _postRepository.GetPostLikeCount(id);
+            res.Result!.DislikeCount = _postRepository.GetPostDisLikeCount(id);
+            res.Result!.CommentCount = _postRepository.GetPostCommentCount(id);
+            res.Result!.PostImages = _mapper.Map<ICollection<PostImageDTO>>(_postRepository.GetPostImages(id));
+            res.Result!.CurrentUserAction = _postRepository.GetCurrentUserStatusOnPost(authId, id);
+
+            return res;
+        }
     }
 }

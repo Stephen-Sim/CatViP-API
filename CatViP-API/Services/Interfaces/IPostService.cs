@@ -23,5 +23,6 @@ namespace CatViP_API.Services.Interfaces
         ICollection<PostReportDTO> GetReportedPostDetails(long id);
         Task<ResponseResult> DeleteComment(long id);
         ResponseResult CheckIfCommentExist(long authId, long commentId);
+        ResponseResult<PostDTO> GetPost(long authId, long id);
     }
 }

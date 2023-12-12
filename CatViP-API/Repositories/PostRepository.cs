@@ -262,5 +262,10 @@ namespace CatViP_API.Repositories
                 return false;
             }
         }
+
+        public Post? GetPostById(long id)
+        {
+            return _context.Posts.Include(x => x.User).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).FirstOrDefault(x => x.Id == id);
+        }
     }
 }

@@ -78,6 +78,29 @@ namespace CatViP_API.Controllers
             return Ok(posts);
         }
 
+        [HttpGet("GetPost/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetPost(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var postRes  = _postService.GetPost(userResult.Result!.Id, Id);
+
+            if (!postRes.IsSuccessful)
+            {
+                return BadRequest(postRes.ErrorMessage);
+            }
+
+            return Ok(postRes.Result!);
+        }
+
         [HttpGet("GetPosts/{UserId}"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetPostsByUserId(long UserId)
         {
