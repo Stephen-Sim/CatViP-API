@@ -4,13 +4,15 @@
     {
         public long Id { get; set; }
 
+        public string Username { get; set; } = null!;
+
+        public byte[]? ProfileImage { get; set; }
+
         public string Description { get; set; } = null!;
 
         public string Address { get; set; } = null!;
 
         public DateTime DateTime { get; set; }
-
-        public string Username { get; set; } = null!;
 
         public decimal Latitude { get; set; }
 
