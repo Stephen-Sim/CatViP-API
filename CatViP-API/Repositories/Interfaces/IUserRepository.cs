@@ -23,5 +23,7 @@ namespace CatViP_API.Repositories.Interfaces
         bool CheckIfIsFollowed(long authId, long id);
         Task<bool> FollowUser(long authId, long userId);
         Task<bool> UnfollowUser(long authId, long userId);
+        User? GetActiveCatOwnerOrExpertByUsername(string username);
+        List<User> GetOtherActiveCatOwnerAndExpert(long authId);
     }
 }

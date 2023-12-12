@@ -16,7 +16,7 @@ namespace CatViP_API.Hubs
         public async Task SendPrivateMessage(string sendUser, string receiveUser, string message)
         {
             await Clients.All.SendAsync($"ReceiveMessageFrom{sendUser}To{receiveUser}", message);
-
+            await _chatService.PushNotification(sendUser, receiveUser, message);
             await _chatService.StoreChat(sendUser, receiveUser, message);
         }
     }

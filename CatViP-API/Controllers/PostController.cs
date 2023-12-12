@@ -88,7 +88,7 @@ namespace CatViP_API.Controllers
 
             if (!userResult.IsSuccessful)
             {
-                return Unauthorized("invalid token");
+                 return Unauthorized("invalid token");
             }
 
             var postRes  = _postService.GetPost(userResult.Result!.Id, Id);

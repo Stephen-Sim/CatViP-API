@@ -13,11 +13,13 @@ namespace CatViP_API.Services
     public class CaseReportService : ICaseReportService
     {
         private readonly ICaseReportRepository _caseReportRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public CaseReportService(ICaseReportRepository caseReportRepository, IMapper mapper)
+        public CaseReportService(ICaseReportRepository caseReportRepository, IUserRepository userRepository, IMapper mapper)
         {
             _caseReportRepository = caseReportRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -66,6 +68,19 @@ namespace CatViP_API.Services
             }
 
             // push notification
+            var users = _userRepository.GetOtherActiveCatOwnerAndExpert(authId);
+
+            var userTokens = new List<string>();
+
+            foreach (var user in users)
+            {
+                if (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)catCaseReport.Latitude, (double)catCaseReport.Longitude) <= 10)
+                {
+                    userTokens.Add(user.RememberToken!);
+                }
+            }
+
+            await OneSignalSendNotiHelper.OneSignalSendCaseReportNoti(userTokens, "there is a missing cat report nearby you.");
 
             return storeResult;
         }

@@ -249,5 +249,15 @@ namespace CatViP_API.Repositories
                 return false;
             }
         }
+
+        public User? GetActiveCatOwnerOrExpertByUsername(string username)
+        {
+            return _context.Users.FirstOrDefault(x => x.Username == username && x.RememberToken != null && (x.RoleId == 2 || x.RoleId == 3));
+        }
+
+        public List<User> GetOtherActiveCatOwnerAndExpert(long authId)
+        {
+            return _context.Users.Where(x => x.Id != authId && x.RememberToken != null && (x.RoleId == 2 || x.RoleId == 3)).ToList();
+        }
     }
 }
