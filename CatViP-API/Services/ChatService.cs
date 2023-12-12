@@ -39,18 +39,19 @@ namespace CatViP_API.Services
             return _mapper.Map<ICollection<ChatUserDTO>>(_chatRepository.GetChatUsers(authId));
         }
 
-        public async Task PushNotification(string senderUser, string receiver, string message)
+        public async Task PushNotification(string sender, string receiver, string message)
         {
-            var user = _userRepository.GetActiveCatOwnerOrExpertByUsername(receiver);
+            var receiveUser = _userRepository.GetActiveCatOwnerOrExpertByUsername(receiver);
+            var sendUser = _userRepository.GetActiveCatOwnerOrExpertByUsername(sender);
 
-            if (user == null)
+            if (receiveUser == null || sendUser == null)
             {
                 return;
             }
 
-            List<string> userTokens = new List<string>() { user.RememberToken!};
+            List<string> userTokens = new List<string>() { receiveUser.RememberToken!};
 
-            await OneSignalSendNotiHelper.OneSignalSendChatNoti(userTokens, senderUser, message);
+            await OneSignalSendNotiHelper.OneSignalSendChatNoti(userTokens, sendUser.FullName, message);
         }
 
         public async Task StoreChat(string sendUser, string receiveUser, string message)
