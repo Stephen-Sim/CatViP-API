@@ -443,6 +443,32 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CatCaseReportComments",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CatCaseReportId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CatCaseReportComments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CatCaseReportComment_CatCaseReport",
+                        column: x => x.CatCaseReportId,
+                        principalTable: "CatCaseReports",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CatCaseReportComment_Users",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CatCaseReportImages",
                 columns: table => new
                 {
@@ -530,11 +556,21 @@ namespace CatViP_API.Migrations
                 columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$qiThpU3t8X05rBvbTg/Nn.AjqtQWuvUp2lp/J3KtvFPcQtoGk/PAm", null, null, 1L, null, null, "admin" },
-                    { 2L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, 2.3164m, 102.3208m, "$2a$11$u8b4KNMwYaLczd9eY64wreHYwOHWmx2.b474Bhsy7Jc4mm52ZqitO", null, null, 2L, null, null, "stephen" },
-                    { 3L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, 2.3164m, 102.3208m, "$2a$11$kIbt0cm5Pc0o/hEE7UAqEekx.GlkVO0FW7DP64B2xwvG4aPcyz9yS", null, null, 3L, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$gQBI9OgEB2KtUe4R8foPze4cSpYUEnCn6BInts3O8hdQZ8ohQBco.", null, null, 4L, null, null, "wafir" }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$pgWxbecCwHUstYdLviI/u.pT0NHqrOmmoDYid.5hQ1xnmANG1vkJS", null, null, 1L, null, null, "admin" },
+                    { 2L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, 2.3164m, 102.3208m, "$2a$11$CdBiJGiO4THhyPyXiJj4reEGvHGNk8smuVCSZmZWgU94gkeDw/gmK", null, null, 2L, null, null, "stephen" },
+                    { 3L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, 2.3164m, 102.3208m, "$2a$11$G.nrmkUptcAnr4iP9WZJoeCVuS664HqEsSc3J8OWyPA02zQqXEyIe", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$eKn1KbVgaM1Co3g6jlQG6Ol2V3mh3.cWJrg98tHtKRV/V5zwL9M.6", null, null, 4L, null, null, "wafir" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatCaseReportComments_CatCaseReportId",
+                table: "CatCaseReportComments",
+                column: "CatCaseReportId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatCaseReportComments_UserId",
+                table: "CatCaseReportComments",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CatCaseReportImages_CatCaseReportId",
@@ -682,6 +718,9 @@ namespace CatViP_API.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CatCaseReportComments");
+
             migrationBuilder.DropTable(
                 name: "CatCaseReportImages");
 

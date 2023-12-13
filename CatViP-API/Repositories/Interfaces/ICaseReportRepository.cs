@@ -1,4 +1,6 @@
-﻿using CatViP_API.Models;
+﻿using CatViP_API.DTOs.CaseReportDTOs;
+using CatViP_API.Models;
+using System.Threading.Tasks;
 
 namespace CatViP_API.Repositories.Interfaces
 {
@@ -14,5 +16,10 @@ namespace CatViP_API.Repositories.Interfaces
         Task<bool> RevokeCaseReport(long id);
         Task<bool> SettleCaseReport(long id);
         Task<bool> StoreCaseReport(CatCaseReport catCaseReport);
+        object GetCaseReportComments(int caseReportId);
+        bool CheckCommentIsFromCurrentUser(long authId, long id);
+        Task<bool> CommentPost(long userId, CatCaseReportCommentRequestDTO commentRequestDTO);
+        Task<bool> DeleteComment(long id);
+        bool CheckIfCaseReportExist(long userId, long id);
     }
 }

@@ -152,19 +152,19 @@ namespace CatViP_API.Services
 
             if (!res.IsSuccessful)
             {
-                res.ErrorMessage = "Fail to store.";
+                res.ErrorMessage = "Fail to store comment.";
             }
 
             return res;
         }
 
-        public ICollection<CommentDTO> GetPostComments(long autId, long postId)
+        public ICollection<CommentDTO> GetPostComments(long authId, long postId)
         {
             var postComments = _mapper.Map<ICollection<CommentDTO>>(_postRepository.GetPostComments(postId));
 
             foreach (var comment in postComments)
             {
-                comment.IsCurrentLoginUser = _postRepository.CheckCommentIsFromCurrentUser(autId, comment.Id);
+                comment.IsCurrentLoginUser = _postRepository.CheckCommentIsFromCurrentUser(authId, comment.Id);
             }
 
             return postComments;

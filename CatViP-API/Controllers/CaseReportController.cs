@@ -1,4 +1,5 @@
 ﻿using CatViP_API.DTOs.CaseReportDTOs;
+using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Services;
 using CatViP_API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -190,5 +191,80 @@ namespace CatViP_API.Controllers
             return Ok();
         }
 
+        [HttpGet("GetCaseReportComments/{caseReportId}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetCaseReportComments(int caseReportId)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var comments = _caseReportService.GetCaseReportComments(userResult.Result!.Id, caseReportId);
+
+            return Ok(comments);
+        }
+
+        [HttpPost("CreateComment"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> CreateComment([FromBody] CatCaseReportCommentRequestDTO commentRequestDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var postActRes = await _caseReportService.CommentCaseReport(userResult.Result!, commentRequestDTO);
+
+            if (!postActRes.IsSuccessful)
+            {
+                return BadRequest(postActRes.ErrorMessage);
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("DeleteComment/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> DeleteComment(long Id)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var checkPostRes = _caseReportService.CheckIfCaseReportExist(userResult.Result!.Id, Id);
+
+            if (!checkPostRes.IsSuccessful)
+            {
+                return BadRequest(checkPostRes.ErrorMessage);
+            }
+
+            var delPostRes = await _caseReportService.DeleteComment(Id);
+
+            if (!delPostRes.IsSuccessful)
+            {
+                return BadRequest(delPostRes.ErrorMessage);
+            }
+
+            return Ok();
+        }
     }
 }

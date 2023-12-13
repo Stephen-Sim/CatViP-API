@@ -31,4 +31,6 @@ public partial class CatCaseReport
     public virtual CatCaseReportStatus CatCaseReportStatus { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
+
+    public virtual ICollection<CatCaseReportComment> Comments { get; set; } = new List<CatCaseReportComment>();
 }

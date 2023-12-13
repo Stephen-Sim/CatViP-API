@@ -1,8 +1,11 @@
 ﻿using CatViP_API.Data;
+using CatViP_API.DTOs.CaseReportDTOs;
+using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.Design;
 
 namespace CatViP_API.Repositories
 {
@@ -94,6 +97,64 @@ namespace CatViP_API.Repositories
         public CatCaseReport? GetOwnCaseReport(long Id, long userId)
         {
             return _context.CatCaseReports.Include(x => x.User).FirstOrDefault(x => x.Id == Id && x.UserId == userId && x.CatCaseReportStatusId == 1);
+        }
+
+        public object GetCaseReportComments(int caseReportId)
+        {
+            return _context.CatCaseReportComments.Where(x => x.CatCaseReportId == caseReportId).Include(x => x.User).ToList();
+        }
+
+        public bool CheckCommentIsFromCurrentUser(long authId, long id)
+        {
+            return _context.CatCaseReportComments.Any(x => x.Id == id && x.UserId == authId);
+        }
+
+        public async Task<bool> DeleteComment(long id)
+        {
+            try
+            {
+                var comment = _context.CatCaseReportComments.FirstOrDefault(x => x.Id == id);
+                _context.CatCaseReportComments.Remove(comment!);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> CommentPost(long userId, CatCaseReportCommentRequestDTO commentRequestDTO)
+        {
+            try
+            {
+                var comment = new CatCaseReportComment
+                {
+                    UserId = userId,
+                    CatCaseReportId = commentRequestDTO.CatCaseReportId,
+                    DateTime = DateTime.Now,
+                    Description = commentRequestDTO.Description
+                };
+
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool CheckIfCaseReportCommentExist(long userId, long id)
+        {
+            return _context.CatCaseReportComments.Any(x => x.UserId == userId && x.Id == id);
+        }
+
+        public bool CheckIfCaseReportExist(long userId, long id)
+        {
+            return _context.CatCaseReports.Any(x => x.UserId == userId && x.Id == id);
         }
     }
 }

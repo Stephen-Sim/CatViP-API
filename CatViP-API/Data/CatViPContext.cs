@@ -18,6 +18,8 @@ namespace CatViP_API.Data
 
         public virtual DbSet<Cat> Cats { get; set; }
 
+        public virtual DbSet<CatCaseReportComment> CatCaseReportComments { get; set; }
+
         public virtual DbSet<CatCaseReport> CatCaseReports { get; set; }
 
         public virtual DbSet<CatCaseReportImage> CatCaseReportImages { get; set; }
@@ -82,6 +84,21 @@ namespace CatViP_API.Data
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CatCaseReports_Users");
+            });
+
+            modelBuilder.Entity<CatCaseReportComment>(entity =>
+            {
+                entity.Property(e => e.DateTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.CatCaseReport).WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.CatCaseReportId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CatCaseReportComment_CatCaseReport");
+
+                entity.HasOne(d => d.User).WithMany(p => p.CatCaseReportComments)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CatCaseReportComment_Users");
             });
 
             modelBuilder.Entity<CatCaseReportImage>(entity =>

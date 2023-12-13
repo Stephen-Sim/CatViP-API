@@ -41,6 +41,11 @@ namespace CatViP_API.Helpers
                 .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                 .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
 
+            CreateMap<CatCaseReportComment, CatCaseReportCommentDTO>()
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
+
             CreateMap<MentionedCat, MentionedCatDTO>()
                 .ForMember(dest => dest.CatName, opt => opt.MapFrom(src => src.Cat.Name));
 

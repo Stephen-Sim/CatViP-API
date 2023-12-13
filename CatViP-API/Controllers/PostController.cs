@@ -119,7 +119,7 @@ namespace CatViP_API.Controllers
             return Ok(posts);
         }
 
-        [HttpGet("GetPostComments"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        [HttpGet("GetPostComments/{postId}"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetPostComments(int postId)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
@@ -215,7 +215,7 @@ namespace CatViP_API.Controllers
 
             if (!postActRes.IsSuccessful)
             {
-                return BadRequest("fail to comment");
+                return BadRequest(postActRes.ErrorMessage);
             }
 
             return Ok();

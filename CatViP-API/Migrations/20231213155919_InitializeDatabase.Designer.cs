@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatViP_API.Migrations
 {
     [DbContext(typeof(CatViPContext))]
-    [Migration("20231213083811_InitializeDatabase")]
+    [Migration("20231213155919_InitializeDatabase")]
     partial class InitializeDatabase
     {
         /// <inheritdoc />
@@ -138,6 +138,36 @@ namespace CatViP_API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CatCaseReports");
+                });
+
+            modelBuilder.Entity("CatViP_API.Models.CatCaseReportComment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CatCaseReportId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatCaseReportId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CatCaseReportComments");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.CatCaseReportImage", b =>
@@ -680,7 +710,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$qiThpU3t8X05rBvbTg/Nn.AjqtQWuvUp2lp/J3KtvFPcQtoGk/PAm",
+                            Password = "$2a$11$pgWxbecCwHUstYdLviI/u.pT0NHqrOmmoDYid.5hQ1xnmANG1vkJS",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -694,7 +724,7 @@ namespace CatViP_API.Migrations
                             Gender = true,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$u8b4KNMwYaLczd9eY64wreHYwOHWmx2.b474Bhsy7Jc4mm52ZqitO",
+                            Password = "$2a$11$CdBiJGiO4THhyPyXiJj4reEGvHGNk8smuVCSZmZWgU94gkeDw/gmK",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -708,7 +738,7 @@ namespace CatViP_API.Migrations
                             Gender = false,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$kIbt0cm5Pc0o/hEE7UAqEekx.GlkVO0FW7DP64B2xwvG4aPcyz9yS",
+                            Password = "$2a$11$G.nrmkUptcAnr4iP9WZJoeCVuS664HqEsSc3J8OWyPA02zQqXEyIe",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -719,7 +749,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$gQBI9OgEB2KtUe4R8foPze4cSpYUEnCn6BInts3O8hdQZ8ohQBco.",
+                            Password = "$2a$11$eKn1KbVgaM1Co3g6jlQG6Ol2V3mh3.cWJrg98tHtKRV/V5zwL9M.6",
                             RoleId = 4L,
                             Username = "wafir"
                         });
@@ -809,6 +839,25 @@ namespace CatViP_API.Migrations
                     b.Navigation("Cat");
 
                     b.Navigation("CatCaseReportStatus");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CatViP_API.Models.CatCaseReportComment", b =>
+                {
+                    b.HasOne("CatViP_API.Models.CatCaseReport", "CatCaseReport")
+                        .WithMany("Comments")
+                        .HasForeignKey("CatCaseReportId")
+                        .IsRequired()
+                        .HasConstraintName("FK_CatCaseReportComment_CatCaseReport");
+
+                    b.HasOne("CatViP_API.Models.User", "User")
+                        .WithMany("CatCaseReportComments")
+                        .HasForeignKey("UserId")
+                        .IsRequired()
+                        .HasConstraintName("FK_CatCaseReportComment_Users");
+
+                    b.Navigation("CatCaseReport");
 
                     b.Navigation("User");
                 });
@@ -1040,6 +1089,8 @@ namespace CatViP_API.Migrations
             modelBuilder.Entity("CatViP_API.Models.CatCaseReport", b =>
                 {
                     b.Navigation("CatCaseReportImages");
+
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.CatCaseReportStatus", b =>
@@ -1082,6 +1133,8 @@ namespace CatViP_API.Migrations
 
             modelBuilder.Entity("CatViP_API.Models.User", b =>
                 {
+                    b.Navigation("CatCaseReportComments");
+
                     b.Navigation("CatCaseReports");
 
                     b.Navigation("Cats");

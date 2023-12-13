@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CatViP_API.DTOs.CaseReportDTOs;
-using CatViP_API.DTOs.PostDTOs;
 using CatViP_API.Helpers;
 using CatViP_API.Models;
 using CatViP_API.Repositories;
@@ -83,6 +82,46 @@ namespace CatViP_API.Services
             await OneSignalSendNotiHelper.OneSignalSendCaseReportNoti(usernames, "there is a missing cat report nearby you.");
 
             return storeResult;
+        }
+
+        public ICollection<CatCaseReportCommentDTO> GetCaseReportComments(long authId, int caseReportId)
+        {
+            var comments = _mapper.Map<ICollection<CatCaseReportCommentDTO>>(_caseReportRepository.GetCaseReportComments(caseReportId));
+
+            foreach (var comment in comments)
+            {
+                comment.IsCurrentLoginUser = _caseReportRepository.CheckCommentIsFromCurrentUser(authId, comment.Id);
+            }
+
+            return comments;
+        }
+
+        public async Task<ResponseResult> CommentCaseReport(User user, CatCaseReportCommentRequestDTO commentRequestDTO)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _caseReportRepository.CommentPost(user.Id, commentRequestDTO);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "Fail to store.";
+            }
+
+            return res;
+        }
+
+        public async Task<ResponseResult> DeleteComment(long id)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = await _caseReportRepository.DeleteComment(id);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "fail to delete the comment.";
+            }
+
+            return res;
         }
 
         public ResponseResult<NearByCaseReportDTO> GetNearByCaseReport(long Id, User user)
@@ -192,6 +231,34 @@ namespace CatViP_API.Services
             if (!res.IsSuccessful)
             {
                 res.ErrorMessage = "Report is not exist";
+            }
+
+            return res;
+        }
+
+        public ResponseResult CheckIfCaseReportExist(long userId, long postId)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = _caseReportRepository.CheckIfCaseReportExist(userId, postId);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "Post is not exist.";
+            }
+
+            return res;
+        }
+
+        public ResponseResult CheckIfCommentExist(long authId, long commentId)
+        {
+            var res = new ResponseResult();
+
+            res.IsSuccessful = _caseReportRepository.CheckCommentIsFromCurrentUser(authId, commentId);
+
+            if (!res.IsSuccessful)
+            {
+                res.ErrorMessage = "comment is not exist.";
             }
 
             return res;

@@ -245,7 +245,7 @@ namespace CatViP_API.Repositories
 
         public bool CheckCommentIsFromCurrentUser(long authId, long commentId)
         {
-            return _context.Comments.Any(x => x.Id == commentId && x.UserId == commentId);
+            return _context.Comments.Any(x => x.Id == commentId && x.UserId == authId);
         }
 
         public async Task<bool> DeleteComment(long id)
