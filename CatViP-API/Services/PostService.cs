@@ -43,11 +43,11 @@ namespace CatViP_API.Services
             return posts;
         }
 
-        public ICollection<PostTypeDTO> GetPostTypes(bool isExpert)
+        public ICollection<PostTypeDTO> GetPostTypes(User user)
         {
             var postTypes = _mapper.Map<ICollection<PostTypeDTO>>(_postRepository.GetPostTypes());
 
-            if (!isExpert)
+            if (user.RoleId != 3)
             {
                 var itemToRemove = postTypes.SingleOrDefault(pt => pt.Id == 2);
                 postTypes.Remove(itemToRemove!);

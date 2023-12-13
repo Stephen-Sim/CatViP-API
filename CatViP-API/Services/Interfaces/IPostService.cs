@@ -8,7 +8,7 @@ namespace CatViP_API.Services.Interfaces
         ICollection<PostDTO> GetPosts(User currentUser);
         ICollection<PostDTO> GetOwnPosts(User currentUser);
         ICollection<PostDTO> GetPostsByCatId(long currentUserId, long catId);
-        ICollection<PostTypeDTO> GetPostTypes(bool isExpert);
+        ICollection<PostTypeDTO> GetPostTypes(User user);
         Task<ResponseResult> CreatePost(User user, PostRequestDTO createPostDTO);
         Task<ResponseResult> ActPost(User user, PostActionRequestDTO postActionDTO);
         Task<ResponseResult> CommentPost(User user, CommentRequestDTO commentRequestDTO);

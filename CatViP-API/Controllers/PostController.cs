@@ -234,8 +234,8 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var isExpert = User.IsInRole("Cat Expert");
-            var result = _postService.GetPostTypes(isExpert);
+            var result = _postService.GetPostTypes(userResult.Result!);
+
             return Ok(result);
         }
 
