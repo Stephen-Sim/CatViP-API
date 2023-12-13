@@ -13,6 +13,8 @@ public partial class Product
 
     public string Description { get; set; } = null!;
 
+    public bool Status { get; set; }
+
     public long SellerId { get; set; }
 
     public long ProductTypeId { get; set; }

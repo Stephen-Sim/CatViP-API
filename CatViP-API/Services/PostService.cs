@@ -172,15 +172,32 @@ namespace CatViP_API.Services
 
         public ICollection<PostDTO> GetPosts(User currentUser)
         {
-            var posts = _mapper.Map<ICollection<PostDTO>>(_postRepository.GetPosts(currentUser.Id));
+            var tempPosts = _postRepository.GetPosts(currentUser.Id);
 
-            foreach (var post in posts)
+            var posts = new List<PostDTO>();
+
+            for (int i = 0; i < tempPosts.Count; i++)
             {
+                var post = _mapper.Map<PostDTO>(tempPosts.ElementAt(i));
+
                 post.LikeCount = _postRepository.GetPostLikeCount(post.Id);
                 post.DislikeCount = _postRepository.GetPostDisLikeCount(post.Id);
                 post.CommentCount = _postRepository.GetPostCommentCount(post.Id);
                 post.PostImages = _mapper.Map<ICollection<PostImageDTO>>(_postRepository.GetPostImages(post.Id));
                 post.CurrentUserAction = _postRepository.GetCurrentUserStatusOnPost(currentUser.Id, post.Id);
+
+                posts.Add(post);
+
+                if ((i + 1) % 10 == 0)
+                {
+                    var product = _postRepository.GetRandomProduct();
+
+                    if (product != null)
+                    {
+                        var adsDTO = MapProductToPostAdsHelper.MapProductToPostAds(product);
+                        posts.Insert(i + 1, adsDTO);
+                    }
+                }
             }
 
             return posts;

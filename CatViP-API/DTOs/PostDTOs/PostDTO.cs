@@ -6,7 +6,9 @@
 
         public string Description { get; set; } = null!;
 
-        public DateTime DateTime { get; set; }
+        public DateTime? DateTime { get; set; }
+
+        public decimal? Price { get; set; }
 
         public long UserId { get; set; }
 

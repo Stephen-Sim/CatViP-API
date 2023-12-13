@@ -17,17 +17,17 @@ namespace CatViP_API.Repositories
 
         public bool CheckProductExist(long authId, long productId)
         {
-            return _context.Products.Any(x => x.SellerId == authId && x.Id == productId);
+            return _context.Products.Any(x => x.SellerId == authId && x.Id == productId && x.Status);
         }
 
         public Product GetProduct(long id)
         {
-            return _context.Products.Include(x => x.ProductType).FirstOrDefault(x => x.Id == id)!;
+            return _context.Products.Include(x => x.ProductType).FirstOrDefault(x => x.Id == id && x.Status)!;
         }
 
         public ICollection<Product> GetProducts(long authId)
         {
-            return _context.Products.Where(x => x.SellerId == authId).Include(x => x.ProductType).ToList();
+            return _context.Products.Where(x => x.SellerId == authId && x.Status).Include(x => x.ProductType).ToList();
         }
 
         public ICollection<ProductType> GetProductTypes()
@@ -39,7 +39,8 @@ namespace CatViP_API.Repositories
         {
             try
             {
-                _context.Remove(_context.Products.FirstOrDefault(x => x.Id == id)!);
+                var prod = _context.Products.FirstOrDefault(x => x.Id == id)!;
+                prod.Status = false;
                 await _context.SaveChangesAsync();
                 return true;
             }

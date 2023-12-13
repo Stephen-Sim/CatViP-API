@@ -267,5 +267,19 @@ namespace CatViP_API.Repositories
         {
             return _context.Posts.Include(x => x.User).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).FirstOrDefault(x => x.Id == id);
         }
+
+        public Product? GetRandomProduct()
+        {
+            var count = _context.Products.Count();
+
+            if (count == 0)
+            {
+                return null;
+            }
+
+            var randomIndex = new Random().Next(count);
+
+            return _context.Products.Where(x => x.Status).Include(x => x.Seller).ToList().ElementAt(randomIndex);
+        }
     }
 }
