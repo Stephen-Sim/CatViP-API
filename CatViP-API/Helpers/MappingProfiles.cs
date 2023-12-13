@@ -20,21 +20,25 @@ namespace CatViP_API.Helpers
             CreateMap<PostType, PostTypeDTO>();
 
             CreateMap<Post, PostDTO>()
-                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                 .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
 
             CreateMap<Post, ReportedPostDTO>()
+               .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName))
                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
 
             CreateMap<PostReport, PostReportDTO>()
-               .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName))
+               .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
+               .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
 
             CreateMap<PostImage, PostImageDTO>();
 
             CreateMap<Comment, CommentDTO>()
-                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
                 .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage));
 
             CreateMap<MentionedCat, MentionedCatDTO>()
@@ -61,7 +65,8 @@ namespace CatViP_API.Helpers
             CreateMap<CatCaseReportImage, CaseReportImageDTO>();
 
             CreateMap<CatCaseReport, NearByCaseReportDTO>()
-               .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.FullName));
+               .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
+               .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username));
 
             CreateMap<User, ChatUserDTO>();
         }

@@ -111,7 +111,7 @@ namespace CatViP_API.Repositories
 
         public ICollection<ExpertApplication> GetApplications()
         {
-            return _context.ExpertApplications.Include(x => x.Status).OrderByDescending(x => x.DateTime).ToList();
+            return _context.ExpertApplications.Where(x => x.StatusId == 1 || x.StatusId == 3).Include(x => x.Status).OrderByDescending(x => x.DateTime).ToList();
         }
 
         public ExpertApplication GetApplicationById(long Id)
