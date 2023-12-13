@@ -70,17 +70,17 @@ namespace CatViP_API.Services
             // push notification
             var users = _userRepository.GetOtherActiveCatOwnerAndExpert(authId);
 
-            var userTokens = new List<string>();
+            var usernames = new List<string>();
 
             foreach (var user in users)
             {
                 if (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)catCaseReport.Latitude, (double)catCaseReport.Longitude) <= 10)
                 {
-                    userTokens.Add(user.RememberToken!);
+                    usernames.Add(user.Username!);
                 }
             }
 
-            await OneSignalSendNotiHelper.OneSignalSendCaseReportNoti(userTokens, "there is a missing cat report nearby you.");
+            await OneSignalSendNotiHelper.OneSignalSendCaseReportNoti(usernames, "there is a missing cat report nearby you.");
 
             return storeResult;
         }

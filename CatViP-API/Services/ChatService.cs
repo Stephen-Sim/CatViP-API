@@ -49,9 +49,9 @@ namespace CatViP_API.Services
                 return;
             }
 
-            List<string> userTokens = new List<string>() { receiveUser.RememberToken!};
+            List<string> usernames = new List<string>() { receiveUser.Username!};
 
-            await OneSignalSendNotiHelper.OneSignalSendChatNoti(userTokens, sendUser.FullName, message);
+            await OneSignalSendNotiHelper.OneSignalSendChatNoti(usernames, sendUser.FullName, message);
         }
 
         public async Task StoreChat(string sendUser, string receiveUser, string message)

@@ -6,11 +6,11 @@ namespace CatViP_API.Helpers
 {
     public class OneSignalSendNotiHelper
     {
-        public static async Task OneSignalSendCaseReportNoti(List<string> userToken, string message)
+        public static async Task OneSignalSendCaseReportNoti(List<string> usernames, string message)
         {
             OneSignalNotiDTO oneSignalNotiDTO = new OneSignalNotiDTO();
             oneSignalNotiDTO.app_id = "2c9ce8b1-a075-4864-83a3-009c8497310e";
-            oneSignalNotiDTO.include_external_user_ids = userToken;
+            oneSignalNotiDTO.include_external_user_ids = usernames;
             oneSignalNotiDTO.contents = new Dictionary<string, string>();
             oneSignalNotiDTO.contents.Add("en", $"{message}");
 
@@ -26,11 +26,11 @@ namespace CatViP_API.Helpers
             }
         }
 
-        public static async Task OneSignalSendChatNoti(List<string> userToken, string sender, string message)
+        public static async Task OneSignalSendChatNoti(List<string> usernames, string sender, string message)
         {
             OneSignalNotiDTO oneSignalNotiDTO = new OneSignalNotiDTO();
             oneSignalNotiDTO.app_id = "2c9ce8b1-a075-4864-83a3-009c8497310e";
-            oneSignalNotiDTO.include_external_user_ids = userToken;
+            oneSignalNotiDTO.include_external_user_ids = usernames;
             oneSignalNotiDTO.contents = new Dictionary<string, string>();
             oneSignalNotiDTO.contents.Add("en", $"{sender}: {message}");
 
