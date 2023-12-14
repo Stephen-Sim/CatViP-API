@@ -12,6 +12,8 @@
 
         public DateTime DateTime { get; set; }
 
+        public DateTime? DateTimeUpdated { get; set; }
+
         public string Status { get; set; } = null!;
 
         public long CatOnwerId { get; set; }

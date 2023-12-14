@@ -15,6 +15,8 @@ public partial class ExpertApplication
 
     public DateTime DateTime { get; set; }
 
+    public DateTime? DateTimeUpdated { get; set; }
+
     public long StatusId { get; set; }
 
     public long UserId { get; set; }

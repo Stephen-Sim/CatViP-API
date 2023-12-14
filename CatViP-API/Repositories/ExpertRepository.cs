@@ -68,6 +68,7 @@ namespace CatViP_API.Repositories
             {
                 var application = _context.ExpertApplications.FirstOrDefault(x => x.Id == expertApplicationActionRequestDTO.ApplictionId);
                 application!.StatusId = expertApplicationActionRequestDTO.StatusId;
+                application.DateTimeUpdated = DateTime.Now;
 
                 if (expertApplicationActionRequestDTO.StatusId == 3)
                 {
@@ -99,6 +100,8 @@ namespace CatViP_API.Repositories
             {
                 var application = _context.ExpertApplications.FirstOrDefault(x => x.Id == id);
                 application!.StatusId = 4;
+                application.DateTimeUpdated = DateTime.Now;
+
                 _context.Update(application);
                 await _context.SaveChangesAsync();
                 return true;
