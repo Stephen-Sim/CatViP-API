@@ -8,6 +8,8 @@
 
         public string FullName { get; set; } = null!;
 
+        public string LastestChat { get; set; } = null!;
+
         public byte[]? ProfileImage { get; set; }
     }
 }

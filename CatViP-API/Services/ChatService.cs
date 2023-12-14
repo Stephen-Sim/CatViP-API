@@ -36,7 +36,26 @@ namespace CatViP_API.Services
 
         public ICollection<ChatUserDTO> GetChatUsers(long authId)
         {
-            return _mapper.Map<ICollection<ChatUserDTO>>(_chatRepository.GetChatUsers(authId));
+            var chatUsers = _chatRepository.GetChatUsers(authId);
+
+            var chatUserDTOs = new List<ChatUserDTO>();
+
+            foreach (var chatUser in chatUsers)
+            {
+                var lastestchat = _chatRepository.GetLastestChat(authId, chatUser.Id);
+
+                var chatuserDTO = _mapper.Map<ChatUserDTO>(chatUser);
+                chatuserDTO.LastestChat = ((lastestchat.UserReceiveId == authId ? "You: " : lastestchat.UserReceive.FullName + ": ") + lastestchat.Message);
+
+                if (chatuserDTO.LastestChat.Length > 30)
+                {
+                    chatuserDTO.LastestChat = chatuserDTO.LastestChat.Substring(0, 27) + "...";
+                }
+
+                chatUserDTOs.Add(chatuserDTO);
+            }
+
+            return chatUserDTOs;
         }
 
         public async Task PushNotification(string sender, string receiver, string message)

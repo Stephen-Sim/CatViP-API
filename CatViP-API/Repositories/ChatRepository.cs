@@ -43,6 +43,16 @@ namespace CatViP_API.Repositories
                 .ToList();
         }
 
+        public Chat GetLastestChat(long authId, long userId)
+        {
+            return _context.Chats
+                .Include(x => x.UserSend).Include(x => x.UserReceive)
+                .ToList()
+                .Where(c => (c.UserSendId == authId && c.UserReceiveId == userId) || (c.UserSendId == userId && c.UserReceiveId == authId))
+                .OrderByDescending(x => x.DateTime)
+                .First();
+        }
+
         public async Task StoreChat(string sendUser, string receiveUser, string message)
         {
             try

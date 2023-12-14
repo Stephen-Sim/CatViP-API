@@ -7,5 +7,6 @@ namespace CatViP_API.Repositories.Interfaces
         ICollection<Chat> GetChats(long authId, long userId);
         ICollection<User> GetChatUsers(long authId);
         Task StoreChat(string sendUser, string receiveUser, string message);
+        Chat GetLastestChat(long authId, long userId);
     }
 }
