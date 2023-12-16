@@ -15,6 +15,8 @@ public partial class Product
 
     public bool Status { get; set; }
 
+    public string URL { get; set; } = null!;
+
     public long SellerId { get; set; }
 
     public long ProductTypeId { get; set; }

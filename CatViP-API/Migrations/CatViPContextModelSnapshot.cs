@@ -539,6 +539,10 @@ namespace CatViP_API.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductTypeId");
@@ -710,7 +714,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$.iGSFqBeV4GP17WW4AmUb.loxbd/9ggXYemdc8jfXmXrbnIPtgSCy",
+                            Password = "$2a$11$abMw1mxOs0jTcpxZB1KgcOofo9emmJulAu2BNxJDKca0/Wo.u/lcC",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -724,7 +728,7 @@ namespace CatViP_API.Migrations
                             Gender = true,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$bqZ51U.HQB0D4.ZiT8HbnuW5j4h0AL/29czXCCXAeLOqis.mesBp2",
+                            Password = "$2a$11$.oGf37pfJa61sZBrJQqTNusnNYCZWSm3r6.8ffMFw6GeqM9Bdp7HO",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -738,7 +742,7 @@ namespace CatViP_API.Migrations
                             Gender = false,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$M.iBKzEZ/lYMfgEofrRKL.ZPZdJ6j77DoSdPHL3DfT9fm6EPqUNKm",
+                            Password = "$2a$11$YnSEayzp7rO/qEY5L9D73OKNYrTH6o6KoLQDQYM5MPDbBcFalI3Oe",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -749,7 +753,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$QVBarp5N82I3F4uprLQj0ur0cjxP.XDZQkADLUhuhS3RGzYTCBAYS",
+                            Password = "$2a$11$17Zh7q.wqEzTrZxEah2nBOs02GcwNwz4wE2f4GtgX/u7QKv7EnkWq",
                             RoleId = 4L,
                             Username = "wafir"
                         });

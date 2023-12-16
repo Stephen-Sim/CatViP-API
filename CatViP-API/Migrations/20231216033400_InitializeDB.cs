@@ -6,11 +6,18 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CatViP_API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDateTimeUpdatedToTableExpertApplication : Migration
+    public partial class InitializeDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "URL",
+                table: "Products",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
             migrationBuilder.AddColumn<DateTime>(
                 name: "DateTimeUpdated",
                 table: "ExpertApplications",
@@ -22,33 +29,37 @@ namespace CatViP_API.Migrations
                 keyColumn: "Id",
                 keyValue: 1L,
                 column: "Password",
-                value: "$2a$11$.iGSFqBeV4GP17WW4AmUb.loxbd/9ggXYemdc8jfXmXrbnIPtgSCy");
+                value: "$2a$11$abMw1mxOs0jTcpxZB1KgcOofo9emmJulAu2BNxJDKca0/Wo.u/lcC");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 2L,
                 column: "Password",
-                value: "$2a$11$bqZ51U.HQB0D4.ZiT8HbnuW5j4h0AL/29czXCCXAeLOqis.mesBp2");
+                value: "$2a$11$.oGf37pfJa61sZBrJQqTNusnNYCZWSm3r6.8ffMFw6GeqM9Bdp7HO");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 3L,
                 column: "Password",
-                value: "$2a$11$M.iBKzEZ/lYMfgEofrRKL.ZPZdJ6j77DoSdPHL3DfT9fm6EPqUNKm");
+                value: "$2a$11$YnSEayzp7rO/qEY5L9D73OKNYrTH6o6KoLQDQYM5MPDbBcFalI3Oe");
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 4L,
                 column: "Password",
-                value: "$2a$11$QVBarp5N82I3F4uprLQj0ur0cjxP.XDZQkADLUhuhS3RGzYTCBAYS");
+                value: "$2a$11$17Zh7q.wqEzTrZxEah2nBOs02GcwNwz4wE2f4GtgX/u7QKv7EnkWq");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "URL",
+                table: "Products");
+
             migrationBuilder.DropColumn(
                 name: "DateTimeUpdated",
                 table: "ExpertApplications");

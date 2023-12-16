@@ -9,7 +9,7 @@ namespace CatViP_API.Helpers
         {
             var post = new PostDTO()
             {
-                Id = 0,
+                Id = -1,
                 FullName = product.Seller.FullName,
                 Description = $"{product.Name} - {product.Description}",
                 IsAds = true,
@@ -17,7 +17,8 @@ namespace CatViP_API.Helpers
                 Username = product.Seller.Username,
                 ProfileImage = product.Seller.ProfileImage,
                 UserId = product.SellerId,
-                Price = product.Price
+                Price = product.Price,
+                AdsUrl = product.URL
             };
 
             return post;

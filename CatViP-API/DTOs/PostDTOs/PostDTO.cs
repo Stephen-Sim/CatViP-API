@@ -10,6 +10,8 @@
 
         public decimal? Price { get; set; }
 
+        public string? AdsUrl { get; set; }
+
         public long UserId { get; set; }
 
         public string Username { get; set; } = null!;

@@ -11,6 +11,8 @@ namespace CatViP_API.DTOs.ProductDTOs
         [Required]
         public string Description { get; set; } = null!;
         [Required]
+        public string URL { get; set; } = null!;
+        [Required]
         public long ProductTypeId { get; set; }
     }
 }

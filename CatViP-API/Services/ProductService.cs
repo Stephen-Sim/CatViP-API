@@ -87,6 +87,7 @@ namespace CatViP_API.Services
                 Price = productRequestDTO.Price,
                 SellerId = authId,
                 Status = true,
+                URL = productRequestDTO.URL,
                 ProductTypeId = productRequestDTO.ProductTypeId,
                 Image = productRequestDTO.Image,
             };
