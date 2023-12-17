@@ -16,7 +16,7 @@ namespace CatViP_API.Services
         {
             var res = new ResponseResult<Dictionary<string, int>>();
 
-            if (query == "lastOneWeek")
+            if (query == "lastWeek")
             {
                 var dicts = new Dictionary<string, int>();
 
