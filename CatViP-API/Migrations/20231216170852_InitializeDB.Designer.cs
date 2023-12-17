@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatViP_API.Migrations
 {
     [DbContext(typeof(CatViPContext))]
-    [Migration("20231216033400_InitializeDB")]
+    [Migration("20231216170852_InitializeDB")]
     partial class InitializeDB
     {
         /// <inheritdoc />
@@ -717,7 +717,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$abMw1mxOs0jTcpxZB1KgcOofo9emmJulAu2BNxJDKca0/Wo.u/lcC",
+                            Password = "$2a$11$OC783D.mBFXRLL/nGUjSa.leU1mFrOoJJJw9i7u5OaYJYQ1WBR.Jy",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -731,7 +731,7 @@ namespace CatViP_API.Migrations
                             Gender = true,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$.oGf37pfJa61sZBrJQqTNusnNYCZWSm3r6.8ffMFw6GeqM9Bdp7HO",
+                            Password = "$2a$11$JX6xf459KaSX1MNGz5qI6e9PGozGbbskUPZjTVsyBi/3yISABoFkS",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -745,7 +745,7 @@ namespace CatViP_API.Migrations
                             Gender = false,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$YnSEayzp7rO/qEY5L9D73OKNYrTH6o6KoLQDQYM5MPDbBcFalI3Oe",
+                            Password = "$2a$11$Q3KyiXz7kA6oQ2./RDcGZ.jGzQqiOUI/apDsuP4AmI7v3nn1rr9ey",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -756,7 +756,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$17Zh7q.wqEzTrZxEah2nBOs02GcwNwz4wE2f4GtgX/u7QKv7EnkWq",
+                            Password = "$2a$11$WlWqZTL7BgWr9yY65ioPd.5sojChX/rlwlmqOBneVNSZ0nszHqIdW",
                             RoleId = 4L,
                             Username = "wafir"
                         });

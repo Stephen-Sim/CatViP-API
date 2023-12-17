@@ -358,7 +358,7 @@ namespace CatViP_API.Controllers
             return Ok();
         }
 
-        [HttpPost("GetReportedPosts"), Authorize(Roles = "System Admin")]
+        [HttpGet("GetReportedPosts"), Authorize(Roles = "System Admin")]
         public async Task<IActionResult> GetReportedPosts()
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
@@ -376,7 +376,7 @@ namespace CatViP_API.Controllers
             return Ok(reportPosts);
         }
 
-        [HttpPost("GetReportedPostDetails/{Id}"), Authorize(Roles = "System Admin")]
+        [HttpGet("GetReportedPostDetails/{Id}"), Authorize(Roles = "System Admin")]
         public async Task<IActionResult> GetReportedPostDetails(long Id)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;

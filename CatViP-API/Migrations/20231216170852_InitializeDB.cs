@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CatViP_API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDatabase : Migration
+    public partial class InitializeDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -183,6 +183,7 @@ namespace CatViP_API.Migrations
                     Documentation = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     RejectedReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateTimeUpdated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     StatusId = table.Column<long>(type: "bigint", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -238,6 +239,7 @@ namespace CatViP_API.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
+                    URL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SellerId = table.Column<long>(type: "bigint", nullable: false),
                     ProductTypeId = table.Column<long>(type: "bigint", nullable: false),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
@@ -556,10 +558,10 @@ namespace CatViP_API.Migrations
                 columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$pgWxbecCwHUstYdLviI/u.pT0NHqrOmmoDYid.5hQ1xnmANG1vkJS", null, null, 1L, null, null, "admin" },
-                    { 2L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, 2.3164m, 102.3208m, "$2a$11$CdBiJGiO4THhyPyXiJj4reEGvHGNk8smuVCSZmZWgU94gkeDw/gmK", null, null, 2L, null, null, "stephen" },
-                    { 3L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, 2.3164m, 102.3208m, "$2a$11$G.nrmkUptcAnr4iP9WZJoeCVuS664HqEsSc3J8OWyPA02zQqXEyIe", null, null, 3L, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$eKn1KbVgaM1Co3g6jlQG6Ol2V3mh3.cWJrg98tHtKRV/V5zwL9M.6", null, null, 4L, null, null, "wafir" }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$OC783D.mBFXRLL/nGUjSa.leU1mFrOoJJJw9i7u5OaYJYQ1WBR.Jy", null, null, 1L, null, null, "admin" },
+                    { 2L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, 2.3164m, 102.3208m, "$2a$11$JX6xf459KaSX1MNGz5qI6e9PGozGbbskUPZjTVsyBi/3yISABoFkS", null, null, 2L, null, null, "stephen" },
+                    { 3L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, 2.3164m, 102.3208m, "$2a$11$Q3KyiXz7kA6oQ2./RDcGZ.jGzQqiOUI/apDsuP4AmI7v3nn1rr9ey", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$WlWqZTL7BgWr9yY65ioPd.5sojChX/rlwlmqOBneVNSZ0nszHqIdW", null, null, 4L, null, null, "wafir" }
                 });
 
             migrationBuilder.CreateIndex(
