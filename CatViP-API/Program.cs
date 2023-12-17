@@ -37,6 +37,7 @@ builder.Services.AddScoped<IExpertRepository, ExpertRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICaseReportRepository, CaseReportRepository>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<IAnalysisRepository, AnalysisRepository>();
 
 // Add services
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -47,6 +48,7 @@ builder.Services.AddScoped<IExpertService, ExpertService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICaseReportService, CaseReportService>();
 builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<IAnalysisService, AnalysisService>();
 
 //Add token configuration
 builder.Services.AddSwaggerGen(options =>
