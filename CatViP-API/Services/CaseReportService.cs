@@ -40,6 +40,13 @@ namespace CatViP_API.Services
         {
             var storeResult = new ResponseResult();
 
+            if (caseReportRequestDTO.CaseReportImages.Count == 0)
+            {
+                storeResult.IsSuccessful = false;
+                storeResult.ErrorMessage = "at least one image is required.";
+                return storeResult;
+            }
+
             var catCaseReport = new CatCaseReport()
             {
                 Address = caseReportRequestDTO.Address,
