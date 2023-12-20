@@ -28,6 +28,8 @@ namespace CatViP_API.Data
 
         public virtual DbSet<Chat> Chats { get; set; }
 
+        public virtual DbSet<UserChat> UserChats { get; set; }
+
         public virtual DbSet<Comment> Comments { get; set; }
 
         public virtual DbSet<ExpertApplication> ExpertApplications { get; set; }
@@ -115,15 +117,25 @@ namespace CatViP_API.Data
             {
                 entity.Property(e => e.DateTime).HasColumnType("datetime");
 
+                entity.HasOne(d => d.UserChat).WithMany(p => p.Chats)
+                    .HasForeignKey(d => d.UserChatId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Chats_UserChats");
+            });
+
+            modelBuilder.Entity<UserChat>(entity =>
+            {
+                entity.Property(e => e.LastSeen).HasColumnType("datetime");
+
                 entity.HasOne(d => d.UserReceive).WithMany(p => p.ChatUserReceives)
                     .HasForeignKey(d => d.UserReceiveId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Chats_Users1");
+                    .HasConstraintName("FK_UserChats_Users1");
 
                 entity.HasOne(d => d.UserSend).WithMany(p => p.ChatUserSends)
                     .HasForeignKey(d => d.UserSendId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Chats_Users");
+                    .HasConstraintName("FK_UserChats_Users");
             });
 
             modelBuilder.Entity<Comment>(entity =>

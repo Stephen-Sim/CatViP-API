@@ -11,11 +11,7 @@ public partial class Chat
 
     public DateTime DateTime { get; set; }
 
-    public long UserSendId { get; set; }
+    public long UserChatId { get; set; }
 
-    public long UserReceiveId { get; set; }
-
-    public virtual User UserReceive { get; set; } = null!;
-
-    public virtual User UserSend { get; set; } = null!;
+    public virtual UserChat UserChat { get; set; } = null!;
 }

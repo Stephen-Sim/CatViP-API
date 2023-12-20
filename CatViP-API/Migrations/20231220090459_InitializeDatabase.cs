@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CatViP_API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDB : Migration
+    public partial class InitializeDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -148,32 +148,6 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Chats",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserSendId = table.Column<long>(type: "bigint", nullable: false),
-                    UserReceiveId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Chats", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Chats_Users",
-                        column: x => x.UserSendId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Chats_Users1",
-                        column: x => x.UserReceiveId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ExpertApplications",
                 columns: table => new
                 {
@@ -255,6 +229,31 @@ namespace CatViP_API.Migrations
                     table.ForeignKey(
                         name: "FK_Products_Users",
                         column: x => x.SellerId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserChats",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LastSeen = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UserSendId = table.Column<long>(type: "bigint", nullable: false),
+                    UserReceiveId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserChats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserChats_Users",
+                        column: x => x.UserSendId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserChats_Users1",
+                        column: x => x.UserReceiveId,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
@@ -445,6 +444,26 @@ namespace CatViP_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Chats",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UserChatId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Chats_UserChats",
+                        column: x => x.UserChatId,
+                        principalTable: "UserChats",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CatCaseReportComments",
                 columns: table => new
                 {
@@ -558,10 +577,10 @@ namespace CatViP_API.Migrations
                 columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$OC783D.mBFXRLL/nGUjSa.leU1mFrOoJJJw9i7u5OaYJYQ1WBR.Jy", null, null, 1L, null, null, "admin" },
-                    { 2L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, 2.3164m, 102.3208m, "$2a$11$JX6xf459KaSX1MNGz5qI6e9PGozGbbskUPZjTVsyBi/3yISABoFkS", null, null, 2L, null, null, "stephen" },
-                    { 3L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, 2.3164m, 102.3208m, "$2a$11$Q3KyiXz7kA6oQ2./RDcGZ.jGzQqiOUI/apDsuP4AmI7v3nn1rr9ey", null, null, 3L, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$WlWqZTL7BgWr9yY65ioPd.5sojChX/rlwlmqOBneVNSZ0nszHqIdW", null, null, 4L, null, null, "wafir" }
+                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$eybrK7yatrttU1X2ilimheSHl9.4uTA9CO41.1O/K7WBTW3.xVDSi", null, null, 1L, null, null, "admin" },
+                    { 2L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, 2.3164m, 102.3208m, "$2a$11$1AlNb8T4AfpJZzyCq7CO.eKz1pmVz0rUoU.QZxJgt5QYFEW9FHVwe", null, null, 2L, null, null, "stephen" },
+                    { 3L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, 2.3164m, 102.3208m, "$2a$11$j9eMQbVSiiNBS2RoB1m1o.pvKuQFITduk3CVhtHTXNRpXuje5z1uq", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$oFhz1D7AMUaCYyc5hyGOk.pUmcMB2Rhk8rCFWjlN99TdMNWlH9XZy", null, null, 4L, null, null, "wafir" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -600,14 +619,9 @@ namespace CatViP_API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chats_UserReceiveId",
+                name: "IX_Chats_UserChatId",
                 table: "Chats",
-                column: "UserReceiveId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Chats_UserSendId",
-                table: "Chats",
-                column: "UserSendId");
+                column: "UserChatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",
@@ -690,6 +704,16 @@ namespace CatViP_API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserChats_UserReceiveId",
+                table: "UserChats",
+                column: "UserReceiveId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChats_UserSendId",
+                table: "UserChats",
+                column: "UserSendId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserFollowers_FollowerId",
                 table: "UserFollowers",
                 column: "FollowerId");
@@ -755,6 +779,9 @@ namespace CatViP_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "CatCaseReports");
+
+            migrationBuilder.DropTable(
+                name: "UserChats");
 
             migrationBuilder.DropTable(
                 name: "ExpertApplicationStatuses");

@@ -17,8 +17,8 @@ namespace CatViP_API.Repositories
         public ICollection<Chat> GetChats(long authId, long userId)
         {
             return _context.Chats
-                .Where(c => (c.UserSendId == authId && c.UserReceiveId == userId) || 
-                            (c.UserSendId == userId && c.UserReceiveId == authId))
+                .Where(c => (c.UserChat.UserSendId == authId && c.UserChat.UserReceiveId == userId) || 
+                            (c.UserChat.UserSendId == userId && c.UserChat.UserReceiveId == authId))
                 .OrderByDescending(c => c.DateTime)
                 .ToList();
         }
@@ -26,11 +26,11 @@ namespace CatViP_API.Repositories
         public ICollection<User> GetChatUsers(long authId)
         {
             return _context.Chats
-                .Include(x => x.UserSend).Include(x => x.UserReceive)
+                .Include(x => x.UserChat.UserSend).Include(x => x.UserChat.UserReceive)
                 .ToList()
-                .Where(c => c.UserSendId == authId || c.UserReceiveId == authId)
+                .Where(c => c.UserChat.UserSendId == authId || c.UserChat.UserReceiveId == authId)
                 .Select(c => new {
-                    User = c.UserSendId == authId ? c.UserReceive : c.UserSend,
+                    User = c.UserChat.UserSendId == authId ? c.UserChat.UserReceive : c.UserChat.UserSend,
                     LastChatDate = c.DateTime
                 })
                 .GroupBy(x => x.User.Id)
@@ -46,9 +46,9 @@ namespace CatViP_API.Repositories
         public Chat GetLastestChat(long authId, long userId)
         {
             return _context.Chats
-                .Include(x => x.UserSend).Include(x => x.UserReceive)
+                .Include(x => x.UserChat.UserSend).Include(x => x.UserChat.UserReceive)
                 .ToList()
-                .Where(c => (c.UserSendId == authId && c.UserReceiveId == userId) || (c.UserSendId == userId && c.UserReceiveId == authId))
+                .Where(c => (c.UserChat.UserSendId == authId && c.UserChat.UserReceiveId == userId) || (c.UserChat.UserSendId == userId && c.UserChat.UserReceiveId == authId))
                 .OrderByDescending(x => x.DateTime)
                 .First();
         }
@@ -57,19 +57,44 @@ namespace CatViP_API.Repositories
         {
             try
             {
+                var userChat = _context.UserChats.FirstOrDefault(x => x.UserSend.Username == sendUser && x.UserReceive.Username == receiveUser);
+
+                if (userChat == null)
+                {
+                    userChat = new UserChat()
+                    {
+                        LastSeen = DateTime.Now,
+                        UserReceiveId = _context.Users.First(x => x.Username == receiveUser).Id,
+                        UserSendId = _context.Users.First(x => x.Username == sendUser).Id,
+                    };
+
+                    _context.Add(userChat);
+
+                    var userChat1 = new UserChat()
+                    {
+                        LastSeen = DateTime.Now,
+                        UserSendId = _context.Users.First(x => x.Username == receiveUser).Id,
+                        UserReceiveId = _context.Users.First(x => x.Username == sendUser).Id,
+                    };
+
+                    _context.Add(userChat1);
+
+                    await _context.SaveChangesAsync();
+                }
+
                 var chat = new Chat()
                 {
                     DateTime = DateTime.Now,
                     Message = message,
-                    UserSendId = _context.Users.First(x => x.Username == sendUser).Id,
-                    UserReceiveId = _context.Users.First(x => x.Username == receiveUser).Id,
+                    UserChatId = userChat.Id
                 };
 
                 _context.Add(chat);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception err)
             {
+                await Console.Out.WriteLineAsync(err.Message);
             }
         }
     }

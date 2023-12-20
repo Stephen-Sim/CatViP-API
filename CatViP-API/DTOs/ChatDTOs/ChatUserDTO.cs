@@ -10,6 +10,8 @@
 
         public string LastestChat { get; set; } = null!;
 
+        public int UnreadMessageCount { get; set; }
+
         public byte[]? ProfileImage { get; set; }
     }
 }

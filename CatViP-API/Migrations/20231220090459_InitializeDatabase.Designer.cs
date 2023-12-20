@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatViP_API.Migrations
 {
     [DbContext(typeof(CatViPContext))]
-    [Migration("20231216170852_InitializeDB")]
-    partial class InitializeDB
+    [Migration("20231220090459_InitializeDatabase")]
+    partial class InitializeDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -245,17 +245,12 @@ namespace CatViP_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserReceiveId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserSendId")
+                    b.Property<long>("UserChatId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserReceiveId");
-
-                    b.HasIndex("UserSendId");
+                    b.HasIndex("UserChatId");
 
                     b.ToTable("Chats");
                 });
@@ -717,7 +712,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$OC783D.mBFXRLL/nGUjSa.leU1mFrOoJJJw9i7u5OaYJYQ1WBR.Jy",
+                            Password = "$2a$11$eybrK7yatrttU1X2ilimheSHl9.4uTA9CO41.1O/K7WBTW3.xVDSi",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -731,7 +726,7 @@ namespace CatViP_API.Migrations
                             Gender = true,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$JX6xf459KaSX1MNGz5qI6e9PGozGbbskUPZjTVsyBi/3yISABoFkS",
+                            Password = "$2a$11$1AlNb8T4AfpJZzyCq7CO.eKz1pmVz0rUoU.QZxJgt5QYFEW9FHVwe",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -745,7 +740,7 @@ namespace CatViP_API.Migrations
                             Gender = false,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$Q3KyiXz7kA6oQ2./RDcGZ.jGzQqiOUI/apDsuP4AmI7v3nn1rr9ey",
+                            Password = "$2a$11$j9eMQbVSiiNBS2RoB1m1o.pvKuQFITduk3CVhtHTXNRpXuje5z1uq",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -756,7 +751,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$WlWqZTL7BgWr9yY65ioPd.5sojChX/rlwlmqOBneVNSZ0nszHqIdW",
+                            Password = "$2a$11$oFhz1D7AMUaCYyc5hyGOk.pUmcMB2Rhk8rCFWjlN99TdMNWlH9XZy",
                             RoleId = 4L,
                             Username = "wafir"
                         });
@@ -788,6 +783,32 @@ namespace CatViP_API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserActions");
+                });
+
+            modelBuilder.Entity("CatViP_API.Models.UserChat", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("LastSeen")
+                        .HasColumnType("datetime");
+
+                    b.Property<long>("UserReceiveId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserSendId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserReceiveId");
+
+                    b.HasIndex("UserSendId");
+
+                    b.ToTable("UserChats");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.UserFollower", b =>
@@ -882,21 +903,13 @@ namespace CatViP_API.Migrations
 
             modelBuilder.Entity("CatViP_API.Models.Chat", b =>
                 {
-                    b.HasOne("CatViP_API.Models.User", "UserReceive")
-                        .WithMany("ChatUserReceives")
-                        .HasForeignKey("UserReceiveId")
+                    b.HasOne("CatViP_API.Models.UserChat", "UserChat")
+                        .WithMany("Chats")
+                        .HasForeignKey("UserChatId")
                         .IsRequired()
-                        .HasConstraintName("FK_Chats_Users1");
+                        .HasConstraintName("FK_Chats_UserChats");
 
-                    b.HasOne("CatViP_API.Models.User", "UserSend")
-                        .WithMany("ChatUserSends")
-                        .HasForeignKey("UserSendId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Chats_Users");
-
-                    b.Navigation("UserReceive");
-
-                    b.Navigation("UserSend");
+                    b.Navigation("UserChat");
                 });
 
             modelBuilder.Entity("CatViP_API.Models.Comment", b =>
@@ -1062,6 +1075,25 @@ namespace CatViP_API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CatViP_API.Models.UserChat", b =>
+                {
+                    b.HasOne("CatViP_API.Models.User", "UserReceive")
+                        .WithMany("ChatUserReceives")
+                        .HasForeignKey("UserReceiveId")
+                        .IsRequired()
+                        .HasConstraintName("FK_UserChats_Users1");
+
+                    b.HasOne("CatViP_API.Models.User", "UserSend")
+                        .WithMany("ChatUserSends")
+                        .HasForeignKey("UserSendId")
+                        .IsRequired()
+                        .HasConstraintName("FK_UserChats_Users");
+
+                    b.Navigation("UserReceive");
+
+                    b.Navigation("UserSend");
+                });
+
             modelBuilder.Entity("CatViP_API.Models.UserFollower", b =>
                 {
                     b.HasOne("CatViP_API.Models.User", "Follower")
@@ -1165,6 +1197,11 @@ namespace CatViP_API.Migrations
                     b.Navigation("UserFollowerFollowers");
 
                     b.Navigation("UserFollowerUsers");
+                });
+
+            modelBuilder.Entity("CatViP_API.Models.UserChat", b =>
+                {
+                    b.Navigation("Chats");
                 });
 #pragma warning restore 612, 618
         }

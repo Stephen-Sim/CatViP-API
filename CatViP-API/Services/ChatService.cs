@@ -28,7 +28,7 @@ namespace CatViP_API.Services
 
             foreach (var chat in chats)
             {
-                chatDTOs.Add(new ChatDTO { Message = chat.Message, DateTime = chat.DateTime, IsCurrentUserSent = chat.UserSendId == authId });
+                chatDTOs.Add(new ChatDTO { Message = chat.Message, DateTime = chat.DateTime, IsCurrentUserSent = chat.UserChat.UserSendId == authId });
             }
 
             return chatDTOs;
@@ -45,7 +45,7 @@ namespace CatViP_API.Services
                 var lastestchat = _chatRepository.GetLastestChat(authId, chatUser.Id);
 
                 var chatuserDTO = _mapper.Map<ChatUserDTO>(chatUser);
-                chatuserDTO.LastestChat = ((lastestchat.UserReceiveId == authId ? "You: " : lastestchat.UserReceive.FullName + ": ") + lastestchat.Message);
+                chatuserDTO.LastestChat = ((lastestchat.UserChat.UserReceiveId == authId ? "You: " : lastestchat.UserChat.UserReceive.FullName + ": ") + lastestchat.Message);
 
                 if (chatuserDTO.LastestChat.Length > 30)
                 {

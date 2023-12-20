@@ -44,9 +44,9 @@ public partial class User
 
     public virtual ICollection<CatCaseReportComment> CatCaseReportComments { get; set; } = new List<CatCaseReportComment>();
 
-    public virtual ICollection<Chat> ChatUserReceives { get; set; } = new List<Chat>();
+    public virtual ICollection<UserChat> ChatUserReceives { get; set; } = new List<UserChat>();
 
-    public virtual ICollection<Chat> ChatUserSends { get; set; } = new List<Chat>();
+    public virtual ICollection<UserChat> ChatUserSends { get; set; } = new List<UserChat>();
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
