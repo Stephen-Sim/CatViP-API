@@ -4,6 +4,7 @@ using CatViP_API.Helpers;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services.Interfaces;
+using NuGet.Protocol.Plugins;
 
 namespace CatViP_API.Services
 {
@@ -52,6 +53,8 @@ namespace CatViP_API.Services
                     chatuserDTO.LastestChat = chatuserDTO.LastestChat.Substring(0, 27) + "...";
                 }
 
+                chatuserDTO.UnreadMessageCount = _chatRepository.GetUnreadChatCount(authId, chatUser.Id);
+
                 chatUserDTOs.Add(chatuserDTO);
             }
 
@@ -76,6 +79,11 @@ namespace CatViP_API.Services
         public async Task StoreChat(string sendUser, string receiveUser, string message)
         {
             await _chatRepository.StoreChat(sendUser, receiveUser, message);
+        }
+
+        public async Task UpdateLastSeen(long authId, long userId)
+        {
+            await _chatRepository.UpdateLastSeen(authId, userId);
         }
     }
 }

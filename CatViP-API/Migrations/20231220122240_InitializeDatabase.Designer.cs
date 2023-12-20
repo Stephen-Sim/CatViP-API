@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatViP_API.Migrations
 {
     [DbContext(typeof(CatViPContext))]
-    [Migration("20231220090459_InitializeDatabase")]
+    [Migration("20231220122240_InitializeDatabase")]
     partial class InitializeDatabase
     {
         /// <inheritdoc />
@@ -712,7 +712,7 @@ namespace CatViP_API.Migrations
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$eybrK7yatrttU1X2ilimheSHl9.4uTA9CO41.1O/K7WBTW3.xVDSi",
+                            Password = "$2a$11$IAXd7px7HqFnIQkd/34.7e8bJ/P0JgQ6a0QfRneEXvlg7fy7bM3vm",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -726,7 +726,7 @@ namespace CatViP_API.Migrations
                             Gender = true,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$1AlNb8T4AfpJZzyCq7CO.eKz1pmVz0rUoU.QZxJgt5QYFEW9FHVwe",
+                            Password = "$2a$11$PoPcFBdd7JOG/N6tSOhHB.3RAUR.fJ7L/.68cCXv.NksGFEhG1HCS",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -740,7 +740,7 @@ namespace CatViP_API.Migrations
                             Gender = false,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$j9eMQbVSiiNBS2RoB1m1o.pvKuQFITduk3CVhtHTXNRpXuje5z1uq",
+                            Password = "$2a$11$rdLGbvHDw.HHn2MYNnr2v.6BlvCrSPANB/PI0gVQyjPAq4r8D1QO2",
                             RoleId = 3L,
                             Username = "tong"
                         },
@@ -751,7 +751,7 @@ namespace CatViP_API.Migrations
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$oFhz1D7AMUaCYyc5hyGOk.pUmcMB2Rhk8rCFWjlN99TdMNWlH9XZy",
+                            Password = "$2a$11$uSdCAs3OrDzaE/53HKSAeeS5OcdjCvo9ECoiBDn7dk3TgYf1McILu",
                             RoleId = 4L,
                             Username = "wafir"
                         });
@@ -793,7 +793,7 @@ namespace CatViP_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime>("LastSeen")
+                    b.Property<DateTime?>("LastSeen")
                         .HasColumnType("datetime");
 
                     b.Property<long>("UserReceiveId")

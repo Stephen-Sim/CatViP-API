@@ -2,6 +2,7 @@
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CatViP_API.Repositories
 {
@@ -17,6 +18,8 @@ namespace CatViP_API.Repositories
         public ICollection<Chat> GetChats(long authId, long userId)
         {
             return _context.Chats
+                .Include(x => x.UserChat)
+                .Include(x => x.UserChat.UserSend).Include(x => x.UserChat.UserReceive)
                 .Where(c => (c.UserChat.UserSendId == authId && c.UserChat.UserReceiveId == userId) || 
                             (c.UserChat.UserSendId == userId && c.UserChat.UserReceiveId == authId))
                 .OrderByDescending(c => c.DateTime)
@@ -53,6 +56,19 @@ namespace CatViP_API.Repositories
                 .First();
         }
 
+        public int GetUnreadChatCount(long authId, long userId)
+        {
+            var authUserChat = _context.UserChats.FirstOrDefault(x => x.UserSendId == authId && x.UserReceiveId == userId);
+            var recevieUserChat = _context.UserChats.FirstOrDefault(x => x.UserSendId == userId && x.UserReceiveId == authId);
+
+            if (authUserChat!.LastSeen == null)
+            {
+                return _context.Chats.Where(x => x.UserChatId == recevieUserChat!.Id).Count();
+            }
+
+            return _context.Chats.Where(x => x.UserChatId == recevieUserChat!.Id && x.DateTime > authUserChat.LastSeen).Count();
+        }
+
         public async Task StoreChat(string sendUser, string receiveUser, string message)
         {
             try
@@ -63,7 +79,6 @@ namespace CatViP_API.Repositories
                 {
                     userChat = new UserChat()
                     {
-                        LastSeen = DateTime.Now,
                         UserReceiveId = _context.Users.First(x => x.Username == receiveUser).Id,
                         UserSendId = _context.Users.First(x => x.Username == sendUser).Id,
                     };
@@ -72,7 +87,6 @@ namespace CatViP_API.Repositories
 
                     var userChat1 = new UserChat()
                     {
-                        LastSeen = DateTime.Now,
                         UserSendId = _context.Users.First(x => x.Username == receiveUser).Id,
                         UserReceiveId = _context.Users.First(x => x.Username == sendUser).Id,
                     };
@@ -96,6 +110,18 @@ namespace CatViP_API.Repositories
             {
                 await Console.Out.WriteLineAsync(err.Message);
             }
+        }
+
+        public async Task UpdateLastSeen(long authId, long userId)
+        {
+            var chatUser = _context.UserChats.FirstOrDefault(x => x.UserSendId == authId && x.UserReceiveId == userId);
+
+            if (chatUser == null)
+                return;
+
+            chatUser.LastSeen = DateTime.Now;
+            _context.Update(chatUser);
+            await _context.SaveChangesAsync();
         }
     }
 }

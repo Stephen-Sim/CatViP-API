@@ -4,7 +4,7 @@
     {
         public long Id { get; set; }
 
-        public DateTime LastSeen { get; set; }
+        public DateTime? LastSeen { get; set; }
 
         public long UserSendId { get; set; }
 

@@ -21,6 +21,24 @@ namespace CatViP_API.Controllers
             _chatService = chatService;
         }
 
+        [HttpPut("UpdateLastSeen/{UserId}"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> UpdateLastSeen(long UserId)
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            await _chatService.UpdateLastSeen(userResult.Result!.Id, UserId);
+
+            return Ok();
+        }
+
         [HttpGet("GetChatUsers"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetChatUsers()
         {

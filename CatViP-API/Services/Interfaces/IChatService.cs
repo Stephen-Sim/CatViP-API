@@ -8,5 +8,6 @@ namespace CatViP_API.Services.Interfaces
         ICollection<ChatUserDTO> GetChatUsers(long authId);
         Task PushNotification(string sender, string receiver, string message);
         Task StoreChat(string sendUser, string receiveUser, string message);
+        Task UpdateLastSeen(long authId, long userId);
     }
 }
