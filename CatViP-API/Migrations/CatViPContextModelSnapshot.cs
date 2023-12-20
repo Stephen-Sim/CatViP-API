@@ -646,6 +646,9 @@ namespace CatViP_API.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("date");
 
@@ -705,11 +708,12 @@ namespace CatViP_API.Migrations
                         new
                         {
                             Id = 1L,
+                            CreatedTime = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@catvip.my",
                             FullName = "CatViP Admin",
                             Gender = true,
-                            Password = "$2a$11$IAXd7px7HqFnIQkd/34.7e8bJ/P0JgQ6a0QfRneEXvlg7fy7bM3vm",
+                            Password = "$2a$11$re2aiLrIxTcBf92JKyUjzudLLa3pw/YnRuX7nkN7h9DW8aKCWm71q",
                             RoleId = 1L,
                             Username = "admin"
                         },
@@ -717,13 +721,14 @@ namespace CatViP_API.Migrations
                         {
                             Id = 2L,
                             Address = "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka",
+                            CreatedTime = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "simshansiong2002@gmail.com",
                             FullName = "stephen sim",
                             Gender = true,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$PoPcFBdd7JOG/N6tSOhHB.3RAUR.fJ7L/.68cCXv.NksGFEhG1HCS",
+                            Password = "$2a$11$NG6wT23YBtHIlb0CgjcKAOKuXvxdD0AmJxMrWmlIa.BnumJ/9oNJe",
                             RoleId = 2L,
                             Username = "stephen"
                         },
@@ -731,24 +736,26 @@ namespace CatViP_API.Migrations
                         {
                             Id = 3L,
                             Address = "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka",
+                            CreatedTime = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "tong@catvip.my",
                             FullName = "yung huey",
                             Gender = false,
                             Latitude = 2.3164m,
                             Longitude = 102.3208m,
-                            Password = "$2a$11$rdLGbvHDw.HHn2MYNnr2v.6BlvCrSPANB/PI0gVQyjPAq4r8D1QO2",
+                            Password = "$2a$11$hjUonKwpfesr4oHOEuGob.3WVpPqFSC8715li6eNpwIGKRad0fmVe",
                             RoleId = 3L,
                             Username = "tong"
                         },
                         new
                         {
                             Id = 4L,
+                            CreatedTime = new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "wafir@catvip.my",
                             FullName = "wafir the best",
                             Gender = true,
-                            Password = "$2a$11$uSdCAs3OrDzaE/53HKSAeeS5OcdjCvo9ECoiBDn7dk3TgYf1McILu",
+                            Password = "$2a$11$9tWxigV565qDS8dr5tRnM.7Hi59SM95lv1ESHvUy2e5H1hRjQVUZW",
                             RoleId = 4L,
                             Username = "wafir"
                         });

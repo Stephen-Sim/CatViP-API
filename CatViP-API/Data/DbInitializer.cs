@@ -58,10 +58,10 @@ namespace CatViP_API.Data
             );
 
             modelBuilder.Entity<User>().HasData(
-                new User() { Id = 1, Username = "admin", FullName = "CatViP Admin", Email = "admin@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 1 },
-                new User() { Id = 2, Username = "stephen", FullName = "stephen sim", Email = "simshansiong2002@gmail.com", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 2, Address = "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", Latitude = 2.3164m, Longitude = 102.3208m },
-                new User() { Id = 3, Username = "tong", FullName = "yung huey", Email = "tong@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = false, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 3, Address = "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", Latitude = 2.3164m, Longitude = 102.3208m },
-                new User() { Id = 4, Username = "wafir", FullName = "wafir the best", Email = "wafir@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 4 }
+                new User() { Id = 1, Username = "admin", FullName = "CatViP Admin", Email = "admin@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), CreatedTime = new DateTime(2023, 12, 1), RoleId = 1 },
+                new User() { Id = 2, Username = "stephen", FullName = "stephen sim", Email = "simshansiong2002@gmail.com", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 2, Address = "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", Latitude = 2.3164m, Longitude = 102.3208m, CreatedTime = new DateTime(2023, 12, 1) },
+                new User() { Id = 3, Username = "tong", FullName = "yung huey", Email = "tong@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = false, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 3, Address = "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", Latitude = 2.3164m, Longitude = 102.3208m, CreatedTime = new DateTime(2023, 12, 1) },
+                new User() { Id = 4, Username = "wafir", FullName = "wafir the best", Email = "wafir@catvip.my", Password = BCrypt.Net.BCrypt.HashPassword("abc12345"), Gender = true, DateOfBirth = new DateTime(2000, 1, 1), RoleId = 4, CreatedTime = new DateTime(2023, 12, 1), }
             );
         }
     }

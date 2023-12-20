@@ -127,6 +127,7 @@ namespace CatViP_API.Repositories
                 user.Latitude = userRegisterDTO.Latitude;
                 user.Longitude = userRegisterDTO.Longitude;
                 user.Address = userRegisterDTO.Address;
+                user.CreatedTime = DateTime.Now;
 
                 _context.Add(user);
                 await _context.SaveChangesAsync();

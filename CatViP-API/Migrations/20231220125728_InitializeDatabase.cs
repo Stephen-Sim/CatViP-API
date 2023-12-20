@@ -107,6 +107,7 @@ namespace CatViP_API.Migrations
                     ProfileImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Longitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
                     Latitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RememberToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TokenCreated = table.Column<DateTime>(type: "datetime", nullable: true),
                     TokenExpires = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -574,13 +575,13 @@ namespace CatViP_API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Address", "DateOfBirth", "Email", "FullName", "Gender", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
+                columns: new[] { "Id", "Address", "CreatedTime", "DateOfBirth", "Email", "FullName", "Gender", "Latitude", "Longitude", "Password", "ProfileImage", "RememberToken", "RoleId", "TokenCreated", "TokenExpires", "Username" },
                 values: new object[,]
                 {
-                    { 1L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$IAXd7px7HqFnIQkd/34.7e8bJ/P0JgQ6a0QfRneEXvlg7fy7bM3vm", null, null, 1L, null, null, "admin" },
-                    { 2L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, 2.3164m, 102.3208m, "$2a$11$PoPcFBdd7JOG/N6tSOhHB.3RAUR.fJ7L/.68cCXv.NksGFEhG1HCS", null, null, 2L, null, null, "stephen" },
-                    { 3L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, 2.3164m, 102.3208m, "$2a$11$rdLGbvHDw.HHn2MYNnr2v.6BlvCrSPANB/PI0gVQyjPAq4r8D1QO2", null, null, 3L, null, null, "tong" },
-                    { 4L, null, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$uSdCAs3OrDzaE/53HKSAeeS5OcdjCvo9ECoiBDn7dk3TgYf1McILu", null, null, 4L, null, null, "wafir" }
+                    { 1L, null, new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@catvip.my", "CatViP Admin", true, null, null, "$2a$11$re2aiLrIxTcBf92JKyUjzudLLa3pw/YnRuX7nkN7h9DW8aKCWm71q", null, null, 1L, null, null, "admin" },
+                    { 2L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "simshansiong2002@gmail.com", "stephen sim", true, 2.3164m, 102.3208m, "$2a$11$NG6wT23YBtHIlb0CgjcKAOKuXvxdD0AmJxMrWmlIa.BnumJ/9oNJe", null, null, 2L, null, null, "stephen" },
+                    { 3L, "UTeM, Jalan Hang Tuah Jaya, 76100 Durian Tunggal, Melaka", new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tong@catvip.my", "yung huey", false, 2.3164m, 102.3208m, "$2a$11$hjUonKwpfesr4oHOEuGob.3WVpPqFSC8715li6eNpwIGKRad0fmVe", null, null, 3L, null, null, "tong" },
+                    { 4L, null, new DateTime(2023, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "wafir@catvip.my", "wafir the best", true, null, null, "$2a$11$9tWxigV565qDS8dr5tRnM.7Hi59SM95lv1ESHvUy2e5H1hRjQVUZW", null, null, 4L, null, null, "wafir" }
                 });
 
             migrationBuilder.CreateIndex(
