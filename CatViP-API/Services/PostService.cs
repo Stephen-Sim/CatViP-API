@@ -180,6 +180,7 @@ namespace CatViP_API.Services
             {
                 var post = _mapper.Map<PostDTO>(tempPosts.ElementAt(i));
 
+                post.IsCurrentUserPost = (post.UserId == currentUser.Id);
                 post.LikeCount = _postRepository.GetPostLikeCount(post.Id);
                 post.DislikeCount = _postRepository.GetPostDisLikeCount(post.Id);
                 post.CommentCount = _postRepository.GetPostCommentCount(post.Id);

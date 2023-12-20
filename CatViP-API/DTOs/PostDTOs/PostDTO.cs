@@ -14,6 +14,8 @@
 
         public long UserId { get; set; }
 
+        public bool? IsCurrentUserPost { get; set; }
+
         public string Username { get; set; } = null!;
 
         public string FullName { get; set; } = null!;
