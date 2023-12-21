@@ -72,7 +72,6 @@ namespace CatViP_API.Data
                 new Product() { Id = 1, Name = "Minkas Junior Care", Price = 41.00m, Description = "Our Happy Cat Minkas Junior Care is provided with valuable proteins and high-quality ingredients such as omega-3 and omega-6 fatty acids.", Status = true, URL = "https://www.happypetmalaysia.com/SalePage/Index/287683", SellerId = 4, ProductTypeId = 1, Image = ConvertFileToByteArrayHelper.ConvertImageFileToByteArray("minkas-junior.jpg") },
                 new Product() { Id = 2, Name = "Royal Canin Bowl", Price = 12.00m, Description = "This versatile dish has an accent-patterned outer dish with a stainless steel dish insert.", Status = true, URL = "https://shp.ee/i8viwu2", SellerId = 4, ProductTypeId = 6, Image = ConvertFileToByteArrayHelper.ConvertImageFileToByteArray("royal-chin.jpg") },
                 new Product() { Id = 3, Name = "Catit Play", Price = 29.00m, Description = "The Catit Play Circuit Ball Toy is a 3 in 1 activity toy that will entertain your kitty with hours of playtime. The 3 in 1 activity toy includes a: Multi massager with combs, circuit ball toy, a bouncy bee and catnip.", Status = true, URL = "https://shp.ee/pk74sfe", SellerId = 4, ProductTypeId = 4, Image = ConvertFileToByteArrayHelper.ConvertImageFileToByteArray("catit-play.jpg") }
-
             );
         }
     }
