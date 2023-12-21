@@ -5,7 +5,7 @@ namespace CatViP_API.Services.Interfaces
     public interface IExpertService
     {
         Task<ResponseResult> ApplyAsExpert(long userId, ExpertApplicationRequestDTO expertApplicationRequestDTO);
-        ExpertApplicationDTO GetLastestApplication(long userId);
+        ExpertApplicationDTO? GetLastestApplication(long userId);
         ICollection<ExpertApplicationDTO> GetPendingApplications();
         Task<ResponseResult> UpdateApplicationStatus(ExpertApplicationActionRequestDTO expertApplicationActionRequestDTO);
         ResponseResult CheckIfPendingApplicationExist(long applicationId);

@@ -25,9 +25,9 @@ namespace CatViP_API.Repositories
             return _context.ExpertApplications.Any(x => x.Id == applicationId && x.UserId == userId && x.StatusId == 2);
         }
 
-        public ExpertApplication GetExpertLastestApplication(long userId)
+        public ExpertApplication? GetExpertLastestApplication(long userId)
         {
-            return _context.ExpertApplications.Include(x => x.Status).Where(x => x.UserId == userId).OrderBy(x => x.DateTime).Last();
+            return _context.ExpertApplications.Include(x => x.Status).Where(x => x.UserId == userId).OrderBy(x => x.DateTime).LastOrDefault();
         }
 
         public ICollection<ExpertApplication> GetPendingApplications()

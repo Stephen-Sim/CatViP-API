@@ -36,6 +36,11 @@ namespace CatViP_API.Controllers
 
             var application = _expertService.GetLastestApplication(userResult.Result!.Id);
 
+            if (application == null)
+            {
+                return NoContent();
+            }
+
             return Ok(application);
         }
 

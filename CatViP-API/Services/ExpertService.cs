@@ -43,9 +43,16 @@ namespace CatViP_API.Services
             return res;
         }
 
-        public ExpertApplicationDTO GetLastestApplication(long userId)
+        public ExpertApplicationDTO? GetLastestApplication(long userId)
         {
-            return _mapper.Map<ExpertApplicationDTO>(_expertRepository.GetExpertLastestApplication(userId));
+            var lastestApplication = _expertRepository.GetExpertLastestApplication(userId);
+
+            if (lastestApplication == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<ExpertApplicationDTO>(lastestApplication);
         }
 
         public ICollection<ExpertApplicationDTO> GetPendingApplications()

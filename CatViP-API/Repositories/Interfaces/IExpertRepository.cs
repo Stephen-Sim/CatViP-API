@@ -9,7 +9,7 @@ namespace CatViP_API.Repositories.Interfaces
         bool HasPendingApplication(long userId);
         bool CheckIfPendingApplicationExist(long application);
         bool CheckIfPendingApplicationExist(long userId, long applicationId);
-        ExpertApplication GetExpertLastestApplication(long userId);
+        ExpertApplication? GetExpertLastestApplication(long userId);
         ICollection<ExpertApplication> GetPendingApplications();
         Task<bool> UpdateApplicationStatus(ExpertApplicationActionRequestDTO expertApplicationActionRequestDTO);
         Task<bool> RevokeApplicaton(long Id);
