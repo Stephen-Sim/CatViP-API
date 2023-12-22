@@ -270,5 +270,20 @@ namespace CatViP_API.Services
 
             return res;
         }
+
+        public int GetNearByCaseReportsCount(User user)
+        {
+            var tempCases = _mapper.Map<ICollection<NearByCaseReportDTO>>(_caseReportRepository.GetNotAuthCaseReports(user.Id));
+
+            int count = 0;
+
+            foreach (var caseReport in tempCases)
+            {
+                if (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)caseReport.Latitude, (double)caseReport.Longitude) <= 10)
+                    count++;
+            }
+
+            return count;
+        }
     }
 }

@@ -57,6 +57,24 @@ namespace CatViP_API.Controllers
             return Ok(users);
         }
 
+        [HttpGet("GetUnreadChatsCount"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetUnreadChatsCount()
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var count = _chatService.GetUnreadChatsCount(userResult.Result!.Id);
+
+            return Ok(count);
+        }
+
         [HttpGet("GetChats/{UserId}"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetChats(long UserId)
         {

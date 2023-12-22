@@ -80,6 +80,24 @@ namespace CatViP_API.Controllers
             return Ok(cases);
         }
 
+        [HttpGet("GetNearByCaseReportsCount"), Authorize(Roles = "Cat Owner,Cat Expert")]
+        public async Task<IActionResult> GetNearByCaseReportsCount()
+        {
+            string authorizationHeader = Request.Headers["Authorization"]!;
+            string token = authorizationHeader.Substring("Bearer ".Length);
+
+            var userResult = await _authService.GetUserFromJWTToken(token);
+
+            if (!userResult.IsSuccessful)
+            {
+                return Unauthorized("invalid token");
+            }
+
+            var count = _caseReportService.GetNearByCaseReportsCount(userResult.Result!);
+
+            return Ok(count);
+        }
+
         [HttpGet("GetNearByCaseReport/{Id}"), Authorize(Roles = "Cat Owner,Cat Expert")]
         public async Task<IActionResult> GetNearByCaseReport(long Id)
         {

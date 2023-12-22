@@ -18,5 +18,6 @@ namespace CatViP_API.Services.Interfaces
         Task<ResponseResult> CommentCaseReport(User user, CatCaseReportCommentRequestDTO commentRequestDTO);
         Task<ResponseResult> DeleteComment(long id);
         ResponseResult CheckIfCaseReportExist(long userId, long postId);
+        int GetNearByCaseReportsCount(User user);
     }
 }

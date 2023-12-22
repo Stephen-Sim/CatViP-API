@@ -10,5 +10,6 @@ namespace CatViP_API.Repositories.Interfaces
         Chat GetLastestChat(long authId, long userId);
         Task UpdateLastSeen(long authId, long userId);
         int GetUnreadChatCount(long authId, long userId);
+        int GetUnreadChatsCount(long authId);
     }
 }

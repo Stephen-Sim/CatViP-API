@@ -61,6 +61,11 @@ namespace CatViP_API.Services
             return chatUserDTOs;
         }
 
+        public int GetUnreadChatsCount(long authId)
+        {
+            return _chatRepository.GetUnreadChatsCount(authId);
+        }
+
         public async Task PushNotification(string sender, string receiver, string message)
         {
             var receiveUser = _userRepository.GetActiveCatOwnerOrExpertByUsername(receiver);
