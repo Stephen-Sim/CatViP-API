@@ -46,7 +46,7 @@ namespace CatViP_API.Services
                 var lastestchat = _chatRepository.GetLastestChat(authId, chatUser.Id);
 
                 var chatuserDTO = _mapper.Map<ChatUserDTO>(chatUser);
-                chatuserDTO.LastestChat = ((lastestchat.UserChat.UserReceiveId == authId ? "You: " : lastestchat.UserChat.UserReceive.FullName + ": ") + lastestchat.Message);
+                chatuserDTO.LastestChat = ((lastestchat.UserChat.UserSendId == authId ? "You: " : lastestchat.UserChat.UserReceive.FullName + ": ") + lastestchat.Message);
 
                 if (chatuserDTO.LastestChat.Length > 30)
                 {
