@@ -11,5 +11,11 @@ namespace CatViP_API.Repositories.Interfaces
         int GetCatExpertCount();
         int GetMissingCatCount(DateTime date);
         int GetMissingCatCount(DateTime startDate, DateTime endDate);
+        int GetProductsCount();
+        int GetNewUsersCount();
+        int GetTodayPostsCount();
+        int GetThreeMonthsPostsCount();
+        int GetOneMonthPostsCount();
+        int GetOneWeekPostsCount();
     }
 }

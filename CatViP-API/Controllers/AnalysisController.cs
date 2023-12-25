@@ -20,8 +20,8 @@ namespace CatViP_API.Controllers
             _analysisService = analysisService;
         }
 
-        [HttpGet("GetExpertTipsCount"), Authorize(Roles = "System Admin")]
-        public async Task<IActionResult> GetExpertTipsCount([FromQuery]string query)
+        [HttpGet("GetPostsAndExpertTipsCount"), Authorize(Roles = "System Admin")]
+        public async Task<IActionResult> GetPostsAndExpertTipsCount([FromQuery]string query)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -33,7 +33,7 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var countRes = _analysisService.GetExpertTipsCount(query);
+            var countRes = _analysisService.GetPostsAndExpertTipsCount(query);
 
             if (!countRes.IsSuccessful)
             {
@@ -43,8 +43,8 @@ namespace CatViP_API.Controllers
             return Ok(countRes.Result!);
         }
 
-        [HttpGet("GetUsersCount"), Authorize(Roles = "System Admin")]
-        public async Task<IActionResult> GetUsersCount()
+        [HttpGet("GetUsersAndProductsCount"), Authorize(Roles = "System Admin")]
+        public async Task<IActionResult> GetUsersAndProductsCount()
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -56,9 +56,9 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var usersCount = _analysisService.GetUsersCount();
+            var count = _analysisService.GetUsersAndProductsCount();
 
-            return Ok(usersCount);
+            return Ok(count);
         }
 
         [HttpGet("GetMissingCatsCount"), Authorize(Roles = "System Admin")]

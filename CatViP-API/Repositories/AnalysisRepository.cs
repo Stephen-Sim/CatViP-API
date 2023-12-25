@@ -51,5 +51,37 @@ namespace CatViP_API.Repositories
         {
             return _context.CatCaseReports.Where(x => x.DateTime.Date >= startDate.Date && x.DateTime.Date <= endDate).Count();
         }
+
+        public int GetProductsCount()
+        {
+            return _context.Products.Where(x => x.Status).Count();
+        }
+
+        public int GetNewUsersCount()
+        {
+            return _context.Users.Where(x => x.CreatedTime >= DateTime.Now.Date.AddDays(-30) 
+                        && x.CreatedTime < DateTime.Now.Date 
+                        && (x.RoleId == 2 || x.RoleId == 3)).Count();
+        }
+
+        public int GetTodayPostsCount()
+        {
+            return _context.Posts.Where(x => x.PostTypeId == 1 && x.DateTime.Date >= DateTime.Today.Date && x.Status).Count();
+        }
+
+        public int GetThreeMonthsPostsCount()
+        {
+            return _context.Posts.Where(x => x.PostTypeId == 1 && x.DateTime.Date >= DateTime.Today.AddMonths(-3).Date && x.Status).Count();
+        }
+
+        public int GetOneMonthPostsCount()
+        {
+            return _context.Posts.Where(x => x.PostTypeId == 1 && x.DateTime.Date >= DateTime.Today.AddMonths(-1).Date && x.Status).Count();
+        }
+
+        public int GetOneWeekPostsCount()
+        {
+            return _context.Posts.Where(x => x.PostTypeId == 1 && x.DateTime.Date >= DateTime.Today.AddDays(-7).Date && x.Status).Count();
+        }
     }
 }

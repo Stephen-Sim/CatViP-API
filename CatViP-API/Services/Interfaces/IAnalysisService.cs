@@ -2,8 +2,8 @@
 {
     public interface IAnalysisService
     {
-        ResponseResult<int> GetExpertTipsCount(string query);
+        ResponseResult<Dictionary<string, int>> GetPostsAndExpertTipsCount(string query);
         ResponseResult<Dictionary<string, int>> GetMissingCatsCount(string query);
-        Dictionary<string, int> GetUsersCount();
+        Dictionary<string, int> GetUsersAndProductsCount();
     }
 }

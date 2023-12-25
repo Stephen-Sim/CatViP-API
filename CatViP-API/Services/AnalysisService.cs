@@ -64,26 +64,40 @@ namespace CatViP_API.Services
             return res;
         }
 
-        public Dictionary<string, int> GetUsersCount()
+        public Dictionary<string, int> GetUsersAndProductsCount()
         {
             return new Dictionary<string, int>
             {
-                { "Cat Owner", _analysisRepository.GetCatOwnerCount() },
-                { "Cat Expert", _analysisRepository.GetCatExpertCount() },
+                { "Cat Owners", _analysisRepository.GetCatOwnerCount() },
+                { "Cat Experts", _analysisRepository.GetCatExpertCount() },
+                { "New Users", _analysisRepository.GetNewUsersCount() },
+                { "Products", _analysisRepository.GetProductsCount() },
             };
         }
 
-        public ResponseResult<int> GetExpertTipsCount(string query)
+        public ResponseResult<Dictionary<string, int>> GetPostsAndExpertTipsCount(string query)
         {
-            Dictionary<string, int> queryValues = new Dictionary<string, int>()
+            Dictionary<string, Dictionary<string, int>> queryValues = new Dictionary<string, Dictionary<string, int>>()
             {
-                { "today", _analysisRepository.GetTodayTipsCount() },
-                { "lastWeek", _analysisRepository.GetOneWeekTipsCount() },
-                { "lastMonth", _analysisRepository.GetOneMonthTipsCount() },
-                { "last3Months", _analysisRepository.GetThreeMonthsTipsCount() },
+                { "today", new Dictionary<string, int>(){
+                    { "Posts", _analysisRepository.GetTodayPostsCount() },
+                    { "Expert Tips", _analysisRepository.GetTodayTipsCount() }
+                } },
+                { "lastWeek", new Dictionary<string, int>(){
+                    { "Posts", _analysisRepository.GetOneWeekPostsCount() },
+                    { "Expert Tips", _analysisRepository.GetOneWeekTipsCount() }
+                } },
+                { "lastMonth", new Dictionary<string, int>(){
+                    { "Posts", _analysisRepository.GetOneMonthPostsCount() },
+                    { "Expert Tips", _analysisRepository.GetOneMonthTipsCount() }
+                } },
+                { "last3Months", new Dictionary<string, int>(){
+                    { "Posts", _analysisRepository.GetThreeMonthsPostsCount() },
+                    { "Expert Tips", _analysisRepository.GetThreeMonthsTipsCount() }
+                } },
             };
 
-            var res = new ResponseResult<int>();
+            var res = new ResponseResult<Dictionary<string, int>>();
 
             if (queryValues.ContainsKey(query))
             {
