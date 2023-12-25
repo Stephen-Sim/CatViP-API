@@ -71,7 +71,7 @@ namespace CatViP_API.Repositories
 
         public int GetUnreadChatsCount(long authId)
         {
-            return _context.UserChats.ToList().Where(x => x.UserSendId == authId).Select(x => new
+            return _context.UserChats.ToList().Where(x => x.UserReceiveId == authId).Select(x => new
             {
                 count = new Func<int>(() =>
                 {
