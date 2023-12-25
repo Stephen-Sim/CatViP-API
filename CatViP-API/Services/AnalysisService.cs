@@ -12,11 +12,18 @@ namespace CatViP_API.Services
             _analysisRepository = analysisRepository;
         }
 
-        public ResponseResult<Dictionary<string, int>> GetMissingCatsCount(string query)
+        public ResponseResult<Dictionary<string, int>> GetMissingCatsCount(string query, DateTime? startDate, DateTime? endDate)
         {
             var res = new ResponseResult<Dictionary<string, int>>();
 
-            if (query == "lastWeek")
+            if (startDate != null && endDate != null && startDate > endDate)
+            {
+                res.IsSuccessful = false;
+                res.ErrorMessage = "start date could not greater than end date";
+                return res;
+            }
+
+            if (query == "7days")
             {
                 var dicts = new Dictionary<string, int>();
 
@@ -27,11 +34,11 @@ namespace CatViP_API.Services
 
                 res.Result = dicts;
             }
-            else if (query == "last28Days")
+            else if (query == "weeks")
             {
                 var dicts = new Dictionary<string, int>();
-                var startOfPeriod = DateTime.Today.AddDays(-27);
-                var endOfPeriod = DateTime.Today;
+                var startOfPeriod = startDate ?? DateTime.Today.AddDays(-27);
+                var endOfPeriod = endDate ?? DateTime.Today;
 
                 for (var i = startOfPeriod; i <= endOfPeriod; i = i.AddDays(7))
                 {
@@ -41,11 +48,12 @@ namespace CatViP_API.Services
 
                 res.Result = dicts;
             }
-            else if (query == "last12Months")
+            else if (query == "months")
             {
                 var dicts = new Dictionary<string, int>();
-                var startOfYear = DateTime.Today.AddMonths(-11);
-                var endOfYear = DateTime.Today;
+
+                var startOfYear = startDate ?? DateTime.Today.AddMonths(-11);
+                var endOfYear = endDate ?? DateTime.Today;
 
                 for (var i = startOfYear; i <= endOfYear; i = i.AddMonths(1))
                 {

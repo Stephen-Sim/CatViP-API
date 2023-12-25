@@ -62,7 +62,7 @@ namespace CatViP_API.Controllers
         }
 
         [HttpGet("GetMissingCatsCount"), Authorize(Roles = "System Admin")]
-        public async Task<IActionResult> GetMissingCatsCount([FromQuery] string query)
+        public async Task<IActionResult> GetMissingCatsCount([FromQuery] string query, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             string authorizationHeader = Request.Headers["Authorization"]!;
             string token = authorizationHeader.Substring("Bearer ".Length);
@@ -74,7 +74,7 @@ namespace CatViP_API.Controllers
                 return Unauthorized("invalid token");
             }
 
-            var countRes = _analysisService.GetMissingCatsCount(query);
+            var countRes = _analysisService.GetMissingCatsCount(query, startDate, endDate);
 
             if (!countRes.IsSuccessful)
             {
