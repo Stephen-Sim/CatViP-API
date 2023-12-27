@@ -71,7 +71,7 @@ namespace CatViP_API.Repositories
 
         public int GetUnreadChatsCount(long authId)
         {
-            var x =  _context.UserChats.ToList().Where(x => x.UserSendId == authId).Select(x => new
+            return _context.UserChats.ToList().Where(x => x.UserSendId == authId).Select(x => new
             {
                 count = new Func<int>(() =>
                 {
@@ -84,9 +84,7 @@ namespace CatViP_API.Repositories
 
                     return _context.Chats.Where(y => y.UserChatId == userchat.Id && y.DateTime > x.LastSeen).Count();
                 })(),
-            }).ToList();
-
-            return x.Sum(x => x.count);
+            }).Sum(x => x.count);
         }
 
         public async Task StoreChat(string sendUser, string receiveUser, string message)
