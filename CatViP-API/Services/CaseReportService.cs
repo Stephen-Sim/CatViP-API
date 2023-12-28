@@ -161,7 +161,7 @@ namespace CatViP_API.Services
 
             foreach (var caseReport in tempCases)
             {
-                if (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)caseReport.Latitude, (double)caseReport.Longitude) <= 10)
+                if (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)caseReport.Latitude, (double)caseReport.Longitude) <= 3)
                 {
                     cases.Add(caseReport);
                     caseReport.CaseReportImages = _mapper.Map<ICollection<CaseReportImageDTO>>(_caseReportRepository.GetCaseReportImages(caseReport.Id));
@@ -279,7 +279,7 @@ namespace CatViP_API.Services
 
             foreach (var caseReport in tempCases)
             {
-                if (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)caseReport.Latitude, (double)caseReport.Longitude) <= 10)
+                if (CalculateDistanceHelper.CalculateDistance((double)user.Latitude!, (double)user.Longitude!, (double)caseReport.Latitude, (double)caseReport.Longitude) <= 3)
                     count++;
             }
 
