@@ -5,6 +5,7 @@ using CatViP_API.Models;
 using CatViP_API.Repositories;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using System;
 
 namespace CatViP_API.Services
@@ -40,10 +41,17 @@ namespace CatViP_API.Services
         {
             var storeResult = new ResponseResult();
 
-            if (caseReportRequestDTO.CaseReportImages.Count == 0)
+            if (caseReportRequestDTO.CaseReportImages.IsNullOrEmpty())
             {
                 storeResult.IsSuccessful = false;
                 storeResult.ErrorMessage = "at least one image is required.";
+                return storeResult;
+            }
+
+            if (caseReportRequestDTO.CaseReportImages.Count > 5)
+            {
+                storeResult.IsSuccessful = false;
+                storeResult.ErrorMessage = "the maximum images count is 5.";
                 return storeResult;
             }
 

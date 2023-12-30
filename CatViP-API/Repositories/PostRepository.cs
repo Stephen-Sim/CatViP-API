@@ -230,7 +230,7 @@ namespace CatViP_API.Repositories
 
         public ICollection<Post> GetPostsByUserId(long authId, long userId)
         {
-            return _context.Posts.Where(x => x.UserId == userId && x.Status && !x.PostReports.Any(y => y.UserId == authId)).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
+            return _context.Posts.Where(x => x.UserId == userId && x.Status).Include(x => x.MentionedCats).ThenInclude(x => x.Cat).ToList();
         }
 
         public ICollection<Post> GetReportedPost()

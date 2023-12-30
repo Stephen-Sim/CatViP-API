@@ -74,6 +74,13 @@ namespace CatViP_API.Services
                 return storeResult;
             }
 
+            if (createPostDTO.PostImages.Count > 5)
+            {
+                storeResult.IsSuccessful = false;
+                storeResult.ErrorMessage = "the maximum images count is 5.";
+                return storeResult;
+            }
+
             foreach (var mentionCat in createPostDTO.MentionedCats)
             {
                 if (!_catRepository.CheckIfCatExist(user.Id, mentionCat.CatId))
