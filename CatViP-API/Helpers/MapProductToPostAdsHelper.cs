@@ -11,7 +11,7 @@ namespace CatViP_API.Helpers
             {
                 Id = -1,
                 FullName = product.Seller.FullName,
-                Description = $"{product.Name} - {product.Description}",
+                Description = $"{product.Name} - {(product.Description.Length > 80 ? product.Description.Substring(0, 77) + "..." : product.Description)}",
                 IsAds = true,
                 PostImages = new List<PostImageDTO>() { new PostImageDTO() { Image = product.Image, IsBloodyContent = false } },
                 Username = product.Seller.Username,
