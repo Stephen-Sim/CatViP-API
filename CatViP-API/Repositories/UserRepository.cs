@@ -193,7 +193,7 @@ namespace CatViP_API.Repositories
 
         public int GetExpertTipsCount(long UserId)
         {
-            return _context.Posts.Where(x => x.PostTypeId == 2 && x.UserId == UserId).Count();
+            return _context.Posts.Where(x => x.PostTypeId == 2 && x.UserId == UserId && x.Status).Count();
         }
 
         public ICollection<User> SearchByUsenameOrFullName(string name, long authId)
