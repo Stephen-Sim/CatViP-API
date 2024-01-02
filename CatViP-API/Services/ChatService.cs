@@ -4,7 +4,6 @@ using CatViP_API.Helpers;
 using CatViP_API.Models;
 using CatViP_API.Repositories.Interfaces;
 using CatViP_API.Services.Interfaces;
-using NuGet.Protocol.Plugins;
 
 namespace CatViP_API.Services
 {
