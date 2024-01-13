@@ -67,7 +67,7 @@ namespace CatViP_API.Services
                 return storeResult;
             }
 
-            if (createPostDTO.PostImages.IsNullOrEmpty())
+            if (createPostDTO.PostTypeId == 1 && createPostDTO.PostImages.IsNullOrEmpty())
             {
                 storeResult.IsSuccessful = false;
                 storeResult.ErrorMessage = "must be at least one image.";
