@@ -291,7 +291,6 @@ namespace CatViP_API.Data
                 .IsUnique();
 
             OnModelCreatingPartial(modelBuilder);
-            new DbInitializer(modelBuilder).Seed();
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
