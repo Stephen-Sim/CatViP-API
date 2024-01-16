@@ -77,7 +77,7 @@ namespace CatViP_API.Services
 
             List<string> usernames = new List<string>() { receiveUser.Username!};
 
-            await OneSignalSendNotiHelper.OneSignalSendChatNoti(usernames, sendUser.FullName, message);
+            await OneSignalSendNotiHelper.OneSignalSendChatNoti(usernames, sendUser.Username, message);
         }
 
         public async Task StoreChat(string sendUser, string receiveUser, string message)
