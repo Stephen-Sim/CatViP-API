@@ -71,6 +71,7 @@ namespace CatViP_API.Helpers
 
             CreateMap<CatCaseReport, NearByCaseReportDTO>()
                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
+               .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.User.ProfileImage))
                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username));
 
             CreateMap<User, ChatUserDTO>();
